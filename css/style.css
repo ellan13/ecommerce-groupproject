@@ -33,7 +33,6 @@ main {
     padding-inline: var(--space-sm);
 }
 
-/* ----------------- PRODUCTS PAGE ----------------- */
 .breadcrumbs {
     display: flex;
     gap: var(--space);
@@ -51,6 +50,8 @@ main {
 .breadcrumbs a:hover {
     text-decoration: underline;
 }
+
+/* ----------------- PRODUCTS PAGE ----------------- */
 
 .sort-filter-wrapper {
     display: flex;
@@ -91,7 +92,7 @@ main {
 .product-card>a {
     aspect-ratio: 3 / 4;
     background: #f0f0f0;
-    /* bakgrund sålägne tills bild finns */ 
+    /* bakgrund sålägne tills bild finns */
 }
 
 .product-card img {
