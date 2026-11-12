@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <title>Document</title>
+    <script src="js/products.js" defer></script>
+    <title>Products catalog</title>
 </head>
+
 <body>
     <header>
         <nav>
@@ -14,11 +17,138 @@
     </header>
 
     <main>
+        <nav class="breadcrumbs container">
+            <a href="index.html">Home</a>
+            <span>&gt;</span>
+            <span>All products</span>
+        </nav>
+
+        <div class="sort-filter-wrapper container">
+            <button type="button" id="open-filter-btn" class="open-filter-btn">
+                Filter(<span id="filter-count">0</span>)
+            </button>
+
+            <select id="sort-by-price">
+                <option value="default">Sort by price</option>
+                <option value="price-asc">Price: low to high</option>
+                <option value="price-desc">Price: high to low</option>
+            </select>
+        </div>
+
+        <!--denna e gömd tills man klickar på filter knnappen-->
+        <div id="filter-modal" class="filter-modal">
+            <div class="filter-header">
+                <button type="button" id="close-filter-btn" class="close-filter-btn">&times;</button>
+                <h2>Filter</h2>
+            </div>
+
+            <div class="filter-content">
+                <h3>Categories</h3>
+
+                <div id="category-list" class="category-list">
+                    <label>
+                        <input type="checkbox" name="category" value="smartphones">
+                        smartphones
+                    </label>
+                    <label>
+                        <input type="checkbox" name="category" value="laptops">
+                        laptops
+                    </label>
+                    <label>
+                        <input type="checkbox" name="category" value="fragrances">
+                        fragrances
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="filter-footer">
+                <button type="button" id="apply-filter-btn" class="apply-filter-btn">Apply filter</button>
+            </div>
+        </div>
+
+
         <section class="container">
+            <div id="products-grid" class="products-grid">
+                <!--NÄSTA GÅNG: börja på product.html,sen kolla hms filtergrej där att man kan visa hur många produkter som finns av varje kategori-->
+                <!-- Produkt 1 -->
+                <article class="product-card" data-category="smartphones" data-price="549">
+                    <a href="product.html?id=1">
+                        <img src="" alt="">
+                    </a>
+                    <div class="product-info">
+                        <div class="product-info-text">
+                            <a href="product.html?id=1">iPhone 9</a>
+                            <p>$549</p>
+                        </div>
+                        <div class="product-info-icons">
+                            <button type="button">♡</button>
+                            <button type="button">👜</button>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!-- Produkt 2 -->
+                <article class="product-card" data-category="smartphones" data-price="899">
+                    <a href="product.html?id=2">
+                        <img src="" alt="">
+                    </a>
+                    <div class="product-info">
+                        <div class="product-info-text">
+                            <a href="product.html?id=2">iPhone X</a>
+                            <p>$899</p>
+                        </div>
+                        <div class="product-info-icons">
+                            <button type="button">♡</button>
+                            <button type="button">👜</button>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!-- Produkt 3 -->
+                <article class="product-card" data-category="laptops" data-price="1749">
+                    <a href="product.html?id=6">
+                        <img src="" alt="">
+                    </a>
+                    <div class="product-info">
+                        <div class="product-info-text">
+                            <a href="product.html?id=6">MacBook Pro</a>
+                            <p>$1749</p>
+                        </div>
+                        <div class="product-info-icons">
+                            <button type="button">♡</button>
+                            <button type="button">👜</button>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!-- Produkt 4 -->
+                <article class="product-card" data-category="fragrances" data-price="13">
+                    <a href="product.html?id=11">
+                        <img src="" alt="">
+                    </a>
+                    <div class="product-info">
+                        <div class="product-info-text">
+                            <a href="product.html?id=11">Perfume Oil</a>
+                            <p>$13</p>
+                        </div>
+                        <div class="product-info-icons">
+                            <button type="button">♡</button>
+                            <button type="button">👜</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
         </section>
+
     </main>
 
     <footer>
+        <p>&copy; 2026 Ecommerce Group Project</p>
     </footer>
 </body>
+
 </html>
