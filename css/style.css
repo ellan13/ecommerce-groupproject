@@ -34,7 +34,7 @@ main {
     padding-inline: var(--space-sm);
 }
 
-.breadcrumbs {
+.breadcrumbs, .back-to-shopping {
     display: flex;
     gap: var(--space);
     padding-block: var(--space-sm);
@@ -43,12 +43,12 @@ main {
     color: #666;
 }
 
-.breadcrumbs a {
+.breadcrumbs a, .back-to-shopping a {
     color: inherit;
     text-decoration: none;
 }
 
-.breadcrumbs a:hover {
+.breadcrumbs a:hover, .back-to-shopping a:hover {
     text-decoration: underline;
 }
 
