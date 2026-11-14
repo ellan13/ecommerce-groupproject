@@ -236,6 +236,97 @@ main {
     cursor: pointer;
 }
 
+/* ----------------- PRODUCT PAGE ----------------- */
+
+
+.product {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding-bottom: var(--space-md);
+}
+.product > img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+.product-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+.product-details-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+.product h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+.product .brand {
+    margin-top: 0;
+    font-size: 0.875rem;
+    color: #666;
+}
+.product .price {
+    margin-top: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #000;
+}
+.product .category {
+    display: inline-block;
+    align-self: flex-start;
+    padding: var(--space) var(--space-sm);
+    border: 1px solid #000;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    text-transform: lowercase;
+}
+.product .description {
+    margin-top: var(--space-sm);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #333;
+}
+.product-details-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+.add-to-cart-btn {
+    flex: 1;
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    background: #000;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+.favorite-btn {
+    border: 1px solid #000;
+    background: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+@media (min-width: 768px) {
+    .product {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-lg);
+        align-items: start;
+    }
+    .product > img {
+        aspect-ratio: 3 / 4;
+    }
+}
 /* ----------------- FOOTER ----------------- */
 footer {
     margin-top: var(--space-md);
