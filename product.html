@@ -40,12 +40,16 @@
         </nav>
 
         <section class="container">
-            <!-- NÄSTA GÅNG: Läs in produkt från API utifrån ?id= -->
+            <!-- NÄSTA GÅNG: Fixa så edit knappe, add to cart och favorit knappen försvinner i edit läge, sedan Läs in produkt från API utifrån ?id= -->
             <article class="product" data-id="1" data-category="smartphones" data-price="549">
                 <img src="" alt="title">
 
                 <div class="product-details">
-                    <div class="product-details-text">
+
+                    <button type="button" id="edit-product-btn" class="edit-product-btn">Edit</button>
+
+
+                    <div class="product-details-text" id="product-view">
                         <h1>iPhone 9</h1>
                         <p class="brand">Apple</p>
                         <p class="price">$549</p>
@@ -54,6 +58,36 @@
                             An apple mobile which is nothing like apple.
                         </p>
                     </div>
+
+                    <!-- Edit-läge (också gömmd från början tills de klickas) -->
+                    <form id="edit-product-form" class="product-form product-edit-form">
+                        <label>
+                            Title
+                            <input type="text" name="title" value="iPhone 9" required>
+                        </label>
+                        <label>
+                            Brand
+                            <input type="text" name="brand" value="Apple">
+                        </label>
+                        <label>
+                            Price
+                            <input type="number" name="price" value="549" min="0" step="0.01" required>
+                        </label>
+                        <label>
+                            Category
+                            <input type="text" name="category" value="smartphones" required>
+                        </label>
+                        <label>
+                            Description
+                            <textarea name="description"
+                                rows="4">An apple mobile which is nothing like apple.</textarea>
+                        </label>
+                        <div class="product-form-actions">
+                            <button type="submit" class="save-btn">Save</button>
+                            <button type="button" id="cancel-edit-btn" class="cancel-btn">Cancel</button>
+                            <button type="button" id="delete-product-btn" class="delete-btn">Delete product</button>
+                        </div>
+                    </form>
 
                     <div class="product-details-actions">
                         <button type="button" class="add-to-cart-btn">👜 Add to cart</button>

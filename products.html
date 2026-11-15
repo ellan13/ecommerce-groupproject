@@ -93,7 +93,7 @@
 
         <section class="container">
             <div id="products-grid" class="products-grid">
-                <!--NÄSTA GÅNG: Läs in produkter från API-->
+                <!--NÄSTA GÅNG: Fixa så även krysset försvinner i add produkt modalen, sedan Läs in produkter från API-->
                 <!-- Produkt 1 -->
                 <article class="product-card" data-category="smartphones" data-price="549">
                     <a href="product.html?id=1">
@@ -166,6 +166,46 @@
                 </article>
             </div>
         </section>
+
+        <section class="pagination container">
+            <!-- Fixa denna typ sist, inte med sidor dock vill ha laddning när man scrollar nerr -->
+            <button type="button" id="prev-page-btn" class="prev-page-btn">Previous</button>
+            <button type="button" id="next-page-btn" class="next-page-btn">Next</button>
+        </section>
+
+        <button type="button" id="open-create-btn" class="open-create-btn" aria-label="Add product">+</button>
+        <div id="create-modal" class="create-modal">
+            <div class="create-header">
+                <button type="button" id="close-create-btn" class="close-create-btn">&times;</button>
+                <h2>Add product</h2>
+            </div>
+            <form id="create-product-form" class="product-form">
+                <label>
+                    Title
+                    <input type="text" name="title" required>
+                </label>
+                <label>
+                    Brand
+                    <input type="text" name="brand">
+                </label>
+                <label>
+                    Price
+                    <input type="number" name="price" min="0" step="0.01" required>
+                </label>
+                <label>
+                    Category
+                    <input type="text" name="category" required>
+                </label>
+                <label>
+                    Description
+                    <textarea name="description" rows="4"></textarea>
+                </label>
+                <div class="product-form-actions">
+                    <button type="submit" class="save-btn">Add product</button>
+                    <button type="button" id="cancel-create-btn" class="cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
 
     </main>
 
