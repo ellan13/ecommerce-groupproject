@@ -199,6 +199,7 @@ main {
     flex-direction: column;
     gap: var(--space-md);
     padding: var(--space-sm) 0;
+    list-style: none;
 }
 
 .category-list label {
@@ -216,6 +217,12 @@ main {
     height: 1.25rem;
     width: 1.25rem;
     cursor: pointer;
+}
+
+.category-count {
+    margin-left: auto;
+    font-size: 0.875rem;
+    color: #666;
 }
 
 .filter-footer {

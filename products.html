@@ -59,20 +59,29 @@
             <div class="filter-content">
                 <h3>Categories</h3>
 
-                <div id="category-list" class="category-list">
-                    <label>
-                        <input type="checkbox" name="category" value="smartphones">
-                        smartphones
-                    </label>
-                    <label>
-                        <input type="checkbox" name="category" value="laptops">
-                        laptops
-                    </label>
-                    <label>
-                        <input type="checkbox" name="category" value="fragrances">
-                        fragrances
-                    </label>
-                </div>
+                <ul id="category-list" class="category-list">
+                    <li>
+                        <label>
+                            <input type="checkbox" name="category" value="smartphones">
+                            smartphones
+                            <span class="category-count">[16]</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="category" value="laptops">
+                            laptops
+                            <span class="category-count">[16]</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="category" value="fragrances">
+                            fragrances
+                            <span class="category-count">[16]</span>
+                        </label>
+                    </li>
+                </ul>
 
             </div>
 
@@ -84,7 +93,7 @@
 
         <section class="container">
             <div id="products-grid" class="products-grid">
-                <!--NÄSTA GÅNG: kolla hms filtergrej där att man kan visa hur många produkter som finns av varje kategori, sen börja läsa in från api-->
+                <!--NÄSTA GÅNG: Läs in produkter från API-->
                 <!-- Produkt 1 -->
                 <article class="product-card" data-category="smartphones" data-price="549">
                     <a href="product.html?id=1">
