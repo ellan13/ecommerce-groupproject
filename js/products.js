@@ -6,6 +6,8 @@ const applyFilterBtn = document.getElementById("apply-filter-btn");
 const filterModal = document.getElementById("filter-modal");
 const filterCount = document.getElementById("filter-count");
 
+
+//EVENTLISTENERS
 // öppna filtret
 openFilterBtn.addEventListener("click", function () {
     filterModal.style.display = "flex";
@@ -19,4 +21,10 @@ closeFilterBtn.addEventListener("click", function () {
 //tillämpa filtret
 applyFilterBtn.addEventListener("click", function () {
     filterModal.style.display = "none";
+    const checked = filterModal.querySelectorAll("input[name='category']:checked");
+    if (checked.length > 0) {
+        filterCount.textContent = `(${checked.length})`;
+    } else {
+        filterCount.textContent = "";
+    }
 });
