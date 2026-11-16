@@ -9,19 +9,21 @@
 const openFilterBtn = document.getElementById("open-filter-btn");
 const closeFilterBtn = document.getElementById("close-filter-btn");
 const applyFilterBtn = document.getElementById("apply-filter-btn");
-
 const filterModal = document.getElementById("filter-modal");
 const filterCount = document.getElementById("filter-count");
 
+const productsSortSelect = document.getElementById("products-sort-select");
+
 const openAddProductBtn = document.getElementById("open-add-product-btn");
 const closeAddProductBtn = document.getElementById("close-add-product-btn");
-const saveAddProductBtn = document.getElementById("save-add-product-btn");
 const cancelAddProductBtn = document.getElementById("cancel-add-product-btn");
-
 const addProductModal = document.getElementById("add-product-modal");
 const addProductForm = document.getElementById("add-product-form");
 
 const productsGrid = document.getElementById("products-grid");
+
+let allProducts = [];
+let activeCategories = [];
 
 //FUNKTIONER
 // products.forEach((product) => {

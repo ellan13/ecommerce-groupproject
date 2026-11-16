@@ -42,8 +42,8 @@
                 Filter<span id="filter-count"></span>
             </button>
 
-            <select id="sort-by-price">
-                <option value="default">Sort by price</option>
+            <select id="products-sort-select" name="products-sort">
+                <option value="default">Default</option>
                 <option value="price-asc">Price: low to high</option>
                 <option value="price-desc">Price: high to low</option>
             </select>
@@ -201,7 +201,7 @@
                     <textarea name="description" rows="4"></textarea>
                 </label>
                 <div class="product-form-actions">
-                    <button type="submit" id="save-add-product-btn" class="save-btn">Add product</button>
+                    <button type="submit" class="save-btn">Add product</button>
                     <button type="button" id="cancel-add-product-btn" class="cancel-btn">Cancel</button>
                 </div>
             </form>
