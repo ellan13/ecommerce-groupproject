@@ -5,7 +5,7 @@
 
 
 //IMPORT
-// import { fetchProducts } from "./api.js";
+import { fetchAllProducts, addNewProduct } from "./api.js";
 // import { addToCart, toggleFavorite } from "./storage.js";
 
 //HÄMTA DOM-ELEMENT
@@ -80,9 +80,7 @@ function updateProductList() {
 }
 async function loadProducts() {
     // TODO: Byt till fetchProducts() från api.js senare
-    const response = await fetch("https://dummyjson.com/products?limit=20");
-    const data = await response.json();
-    allProducts = data.products;
+    allProducts = await fetchAllProducts();
     updateProductList();
 }
 function closeAddProductModal() {
