@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <script type="module" src="js/favorites.js"></script>
     <title>Document</title>
 </head>
+
 <body>
     <header>
         <nav>
+            <div class="nav-left">
+                <button class="menu-btn">☰</button>
+            </div>
+
+            <div class="logo">
+                <h2>MIN WEBBSIDA</h2>
+            </div>
+
+            <div class="nav-right">
+                <a href="search.html">Sök</a>
+                <a href="favorites.html">Sparade</a>
+                <a href="cart.html">Kundkorg</a>
+            </div>
+            </div>
 
         </nav>
     </header>
@@ -18,15 +35,17 @@
             <h1>Favorites</h1>
 
             <ul id="favorite-items">
-    <!-- Läggs in med JavaScript -->
+                <!-- Läggs in med JavaScript -->
             </ul>
 
-            <a class="back-to-shopping" href="products.html">Back to shopping</a>
+            <a class="back-to-shopping" href="products.html" id="back-link">Back to shopping</a>
 
         </section>
     </main>
 
     <footer>
+        <p>&copy; 2026 Ecommerce Group Project</p>
     </footer>
 </body>
+
 </html>

@@ -1,0 +1,560 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ----------------- VARIABLES ----------------- */
+:root {
+    --space: 0.25rem;
+    --space-sm: calc(var(--space) * 4);
+    --space-md: calc(var(--space) * 8);
+    --space-lg: calc(var(--space) * 16);
+    --space-xl: calc(var(--space) * 20);
+}
+
+/* ----------------- GENERAL ----------------- */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+main {
+    flex: 1;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding-inline: var(--space-sm);
+}
+
+.breadcrumbs,
+.back-to-shopping {
+    display: flex;
+    gap: var(--space);
+    padding-block: var(--space-sm);
+    font-size: 0.75rem;
+    text-transform: lowercase;
+    color: #666;
+}
+
+.breadcrumbs a,
+.back-to-shopping a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover,
+.back-to-shopping a:hover {
+    text-decoration: underline;
+}
+
+/* ----------------- PRODUCTS PAGE ----------------- */
+
+.sort-filter-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.open-filter-btn {
+    border: none;
+    background: none;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+#sort-by-price {
+    border: none;
+    font-size: 0.875rem;
+    cursor: pointer;
+    text-align: right;
+}
+
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md) var(--space-sm);
+    padding-bottom: var(--space-md);
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.product-card>a {
+    aspect-ratio: 3 / 4;
+    background: #f0f0f0;
+    /* bakgrund sålägne tills bild finns */
+}
+
+.product-card a {
+    color: #000;
+}
+
+.product-card a:visited {
+    color: #000;
+}
+
+.product-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.product-info a {
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+
+.product-info p {
+    margin-top: var(--space);
+    font-size: 0.875rem;
+    color: #333;
+}
+
+.product-info-text {
+    max-width: 80%;
+}
+
+.product-info-icons {
+    display: flex;
+    gap: var(--space);
+}
+
+.product-info-icons button {
+    border: none;
+    background: none;
+    padding: var(--space);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+@media (min-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-md);
+    }
+}
+
+@media (min-width: 1024px) {
+    .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+
+.filter-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #fff;
+    padding: var(--space-sm) var(--space-md);
+    flex-direction: column;
+    gap: var(--space-sm);
+    z-index: 100;
+}
+
+.filter-header {
+    display: flex;
+    justify-content: center;
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-sm);
+}
+
+.close-filter-btn {
+    position: fixed;
+    top: var(--space-sm);
+    right: var(--space-md);
+    z-index: 101;
+    border: none;
+    background: none;
+    font-size: 1.75rem;
+    cursor: pointer;
+}
+
+.filter-header h2 {
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.filter-content h3 {
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-sm) 0;
+    list-style: none;
+}
+
+.category-list label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.875rem;
+    text-transform: capitalize;
+    cursor: pointer;
+    padding-left: 0.5rem;
+}
+
+.category-list input[type="checkbox"] {
+    accent-color: #000;
+    height: 1.25rem;
+    width: 1.25rem;
+    cursor: pointer;
+}
+
+.category-count {
+    margin-left: auto;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.filter-footer {
+    margin-top: auto;
+    padding-top: var(--space-md);
+}
+
+.apply-filter-btn {
+    width: 100%;
+    padding: var(--space-sm);
+    border: none;
+    background: #000;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+
+.reviews {
+    padding-block: var(--space-md);
+    border-top: 1px solid #e5e5e5;
+}
+
+.reviews h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-md);
+}
+
+.reviews-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.review {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space);
+    padding-block: var(--space-md);
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.review-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.review-rating {
+    font-size: 0.875rem;
+    color: #000;
+    letter-spacing: 0.05em;
+}
+
+.review-comment {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #333;
+}
+
+.review-date {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* ----------------- PRODUCT PAGE ----------------- */
+
+
+.product {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding-bottom: var(--space-md);
+}
+
+.product>img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.product-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.product-details-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.product h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.product .brand {
+    margin-top: 0;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.product .price {
+    margin-top: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #000;
+}
+
+.product .category {
+    display: inline-block;
+    align-self: flex-start;
+    padding: var(--space) var(--space-sm);
+    border: 1px solid #000;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    text-transform: lowercase;
+}
+
+.product .description {
+    margin-top: var(--space-sm);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #333;
+}
+
+.product-details-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.add-to-cart-btn {
+    flex: 1;
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    background: #000;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.toggle-favorite-btn {
+    border: 1px solid #000;
+    background: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.toggle-favorite-btn.active {
+    /* TODO:Lägg till denna klass när favoritknappen är aktiv. då ska hjärtat fyllas i*/
+    color: #f00;
+}
+
+@media (min-width: 768px) {
+    .product {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-lg);
+        align-items: start;
+    }
+
+    .product>img {
+        aspect-ratio: 3 / 4;
+    }
+}
+
+/* ----------------- CREATE / EDIT FORMS ----------------- */
+/* TODO: Gör en gemensam styling för add och edit form, kanske att filtret kan vara med på något vänster där att knappar osv också är gemenssamt */
+
+.open-add-product-btn {
+    position: fixed;
+    right: var(--space-md);
+    bottom: var(--space-md);
+    z-index: 90;
+    width: 3.5rem;
+    height: 3.5rem;
+    border: none;
+    border-radius: 50%;
+    background: #000;
+    color: #fff;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.add-product-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #fff;
+    padding: var(--space-sm) var(--space-md);
+    flex-direction: column;
+    gap: var(--space-sm);
+    z-index: 100;
+    overflow-y: auto;
+}
+
+.add-product-header {
+    display: flex;
+    justify-content: center;
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-sm);
+}
+
+.add-product-header h2 {
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.close-add-product-btn {
+    position: fixed;
+    top: var(--space-sm);
+    right: var(--space-md);
+    z-index: 101;
+    border: none;
+    background: none;
+    font-size: 1.75rem;
+    cursor: pointer;
+}
+
+
+.edit-product-btn {
+    align-self: flex-end;
+    border: none;
+    background: none;
+    font-size: 0.875rem;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #666;
+}
+
+.product-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding-block: var(--space-sm);
+}
+
+.product-edit-form {
+    display: none;
+}
+
+.product-form label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #666;
+}
+
+.product-form input,
+.product-form textarea {
+    padding: var(--space-sm);
+    border: 1px solid #e0e0e0;
+    font-size: 0.875rem;
+    font-family: inherit;
+    color: #000;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.product-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+}
+
+.save-btn {
+    flex: 1;
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    background: #000;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid #000;
+    background: #fff;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.delete-btn {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid #c00;
+    background: #fff;
+    color: #c00;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+/* ----------------- FOOTER ----------------- */
+footer {
+    margin-top: var(--space-md);
+    padding: var(--space-md) 0;
+    border-top: 1px solid #e5e5e5;
+    text-align: center;
+    color: #666;
+    font-size: 0.75rem;
+}
