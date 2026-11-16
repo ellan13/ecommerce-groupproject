@@ -1,4 +1,7 @@
 // Produktkatalog: lista, filter, sortering och create.
+// TODO: korta ner funktionere som finns flera gånger
+// TODO: korta ner funktioner som bara har ett rad skriv => istället för function (){} 
+//       dvs function test(){ return "test"; } => const test = () => "test"; Alex gick igenom det kolla kompendiet.
 
 
 //IMPORT
@@ -26,20 +29,66 @@ let allProducts = [];
 let activeCategories = [];
 
 //FUNKTIONER
-// products.forEach((product) => {
-//     const card = document.createElement("article");
-//     card.className = "product-card";
-//     card.dataset.id = product.id; // blir data-id="..."
-//     card.dataset.category = product.category;
-//     card.dataset.price = product.price;
-
-//     card.innerHTML = `
-//       <a href="product.html?id=${product.id}">bild</a>
-//       <button type="button" class="add-to-cart-btn">👜</button>
-//     `;
-
-//     productsGrid.appendChild(card);
-// });
+function createProductCard(product) {
+    const card = document.createElement("article");
+    card.className = "product-card";
+    card.dataset.id = product.id;
+    card.dataset.category = product.category;
+    card.dataset.price = product.price;
+    card.innerHTML = `
+      <a href="product.html?id=${product.id}">
+        <img src="${product.thumbnail ?? ""}" alt="${product.title}">
+      </a>
+      <div class="product-info">
+        <div class="product-info-text">
+          <a href="product.html?id=${product.id}">${product.title}</a>
+          <p>$${product.price}</p>
+        </div>
+        <div class="product-info-icons">
+          <button type="button" class="toggle-favorite-btn">♡</button>
+          <button type="button" class="add-to-cart-btn">👜</button>
+        </div>
+      </div>
+    `;
+    return card;
+}
+function renderProducts(products) {
+    productsGrid.innerHTML = "";
+    products.forEach((product) => {
+        console.log(product);
+        productsGrid.appendChild(createProductCard(product));
+    });
+}
+function getFilteredAndSortedProducts() {
+    let list = [...allProducts];
+    if (activeCategories.length > 0) {
+        list = list.filter((product) =>
+            // TODO: kolla upp.includes() funktionen och hur den fungerar.
+            activeCategories.includes(product.category)
+        );
+    }
+    // TODO: Kolla upp sort() funktionen och hur den fungerar.
+    if (productsSortSelect.value === "price-asc") {
+        list.sort((a, b) => a.price - b.price);
+    } else if (productsSortSelect.value === "price-desc") {
+        list.sort((a, b) => b.price - a.price);
+    }
+    return list;
+}
+function updateProductList() {
+    renderProducts(getFilteredAndSortedProducts());
+}
+async function loadProducts() {
+    // TODO: Byt till fetchProducts() från api.js senare
+    const response = await fetch("https://dummyjson.com/products?limit=20");
+    const data = await response.json();
+    allProducts = data.products;
+    updateProductList();
+}
+function closeAddProductModal() {
+    addProductModal.style.display = "none";
+    addProductForm.reset();
+}
 
 //EVENTLISTENERS
 openFilterBtn.addEventListener("click", function () {
@@ -53,46 +102,51 @@ closeFilterBtn.addEventListener("click", function () {
 applyFilterBtn.addEventListener("click", function () {
     filterModal.style.display = "none";
     const checked = filterModal.querySelectorAll("input[name='category']:checked");
-    if (checked.length > 0) {
-        filterCount.textContent = `(${checked.length})`;
-    } else {
-        filterCount.textContent = "";
-    }
+
+    // TODO: kolla skillnnaden på dessa och hur de fungerar, vilken är bäst?
+    activeCategories = [...checked].map((input) => input.value);
+    // activeCategories = Array.from(checked).map(checkbox => checkbox.value);
+
+    filterCount.textContent = activeCategories.length > 0 ? `(${activeCategories.length})` : "";
+    updateProductList();
+});
+
+productsSortSelect.addEventListener("change", function () {
+    updateProductList();
 });
 
 openAddProductBtn.addEventListener("click", function () {
     addProductModal.style.display = "flex";
 });
-closeAddProductBtn.addEventListener("click", function () {
-    addProductModal.style.display = "none";
-    addProductForm.reset();
+
+closeAddProductBtn.addEventListener("click", closeAddProductModal);
+cancelAddProductBtn.addEventListener("click", closeAddProductModal);
+
+addProductForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    // TODO: POST till API + LocalStorage + uppdatera allProducts/UI
+    closeAddProductModal();
 });
 
-saveAddProductBtn.addEventListener("click", function () {
-    // Skicka till API (skapa produkt) och sen uppdatera localStorage samt UI
-    addProductModal.style.display = "none";
-    addProductForm.reset();
-});
-cancelAddProductBtn.addEventListener("click", function () {
-    addProductModal.style.display = "none";
-    addProductForm.reset();
-});
 
 productsGrid.addEventListener("click", function (event) {
+    // TODO: kolla upp closest() funktionen och hur den fungerar.
     const cartBtn = event.target.closest(".add-to-cart-btn");
     const favBtn = event.target.closest(".toggle-favorite-btn");
-
+    if (!cartBtn && !favBtn) return;
+    const card = event.target.closest(".product-card");
+    const productId = card.dataset.id;
     if (cartBtn) {
-        const card = cartBtn.closest(".product-card");
-        addToCart(card.dataset.id); // koppla till addToCart funktionen (ska göras i storage.js sen)
+        console.log("Add to cart:", productId);
+        // addToCart(productId); // när storage.js finns
         return;
     }
     if (favBtn) {
-        const card = favBtn.closest(".product-card");
-        toggleFavorite(card.dataset.id); // koppla till toggleFavorite funktionen (ska göras i storage.js sen)
-        return;
+        console.log("Toggle favorite:", productId);
+        // toggleFavorite(productId); // när storage.js finns
     }
 });
+loadProducts();
 
 
 
