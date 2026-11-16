@@ -93,9 +93,9 @@
 
         <section class="container">
             <div id="products-grid" class="products-grid">
-                <!--NÄSTA GÅNG: Fixa så även krysset försvinner i add produkt modalen, sedan Läs in produkter från API-->
+                <!--TODO: sedan Läs in produkter från API-->
                 <!-- Produkt 1 -->
-                <article class="product-card" data-category="smartphones" data-price="549">
+                <article class="product-card" data-id="1" data-category="smartphones" data-price="549">
                     <a href="product.html?id=1">
                         <img src="" alt="">
                     </a>
@@ -105,15 +105,15 @@
                             <p>$549</p>
                         </div>
                         <div class="product-info-icons">
-                            <button type="button">♡</button>
-                            <button type="button">👜</button>
+                            <button type="button" class="toggle-favorite-btn">♡</button>
+                            <button type="button" class="add-to-cart-btn">👜</button>
                         </div>
                     </div>
                 </article>
 
 
                 <!-- Produkt 2 -->
-                <article class="product-card" data-category="smartphones" data-price="899">
+                <article class="product-card" data-id="2" data-category="smartphones" data-price="899">
                     <a href="product.html?id=2">
                         <img src="" alt="">
                     </a>
@@ -123,15 +123,15 @@
                             <p>$899</p>
                         </div>
                         <div class="product-info-icons">
-                            <button type="button">♡</button>
-                            <button type="button">👜</button>
+                            <button type="button" class="toggle-favorite-btn">♡</button>
+                            <button type="button" class="add-to-cart-btn">👜</button>
                         </div>
                     </div>
                 </article>
 
 
                 <!-- Produkt 3 -->
-                <article class="product-card" data-category="laptops" data-price="1749">
+                <article class="product-card" data-id="6" data-category="laptops" data-price="1749">
                     <a href="product.html?id=6">
                         <img src="" alt="">
                     </a>
@@ -141,15 +141,15 @@
                             <p>$1749</p>
                         </div>
                         <div class="product-info-icons">
-                            <button type="button">♡</button>
-                            <button type="button">👜</button>
+                            <button type="button" class="toggle-favorite-btn">♡</button>
+                            <button type="button" class="add-to-cart-btn">👜</button>
                         </div>
                     </div>
                 </article>
 
 
                 <!-- Produkt 4 -->
-                <article class="product-card" data-category="fragrances" data-price="13">
+                <article class="product-card" data-id="11" data-category="fragrances" data-price="13">
                     <a href="product.html?id=11">
                         <img src="" alt="">
                     </a>
@@ -159,8 +159,8 @@
                             <p>$13</p>
                         </div>
                         <div class="product-info-icons">
-                            <button type="button">♡</button>
-                            <button type="button">👜</button>
+                            <button type="button" class="toggle-favorite-btn">♡</button>
+                            <button type="button" class="add-to-cart-btn">👜</button>
                         </div>
                     </div>
                 </article>
@@ -168,18 +168,18 @@
         </section>
 
         <section class="pagination container">
-            <!-- Fixa denna typ sist, inte med sidor dock vill ha laddning när man scrollar nerr -->
+            <!-- TODO:Fixa denna typ sist, inte med sidor dock vill ha laddning när man scrollar nerr -->
             <button type="button" id="prev-page-btn" class="prev-page-btn">Previous</button>
             <button type="button" id="next-page-btn" class="next-page-btn">Next</button>
         </section>
 
-        <button type="button" id="open-create-btn" class="open-create-btn" aria-label="Add product">+</button>
-        <div id="create-modal" class="create-modal">
-            <div class="create-header">
-                <button type="button" id="close-create-btn" class="close-create-btn">&times;</button>
+        <button type="button" id="open-add-product-btn" class="open-add-product-btn" aria-label="Add product">+</button>
+        <div id="add-product-modal" class="add-product-modal">
+            <div class="add-product-header">
+                <button type="button" id="close-add-product-btn" class="close-add-product-btn">&times;</button>
                 <h2>Add product</h2>
             </div>
-            <form id="create-product-form" class="product-form">
+            <form id="add-product-form" class="product-form">
                 <label>
                     Title
                     <input type="text" name="title" required>
@@ -201,8 +201,8 @@
                     <textarea name="description" rows="4"></textarea>
                 </label>
                 <div class="product-form-actions">
-                    <button type="submit" class="save-btn">Add product</button>
-                    <button type="button" id="cancel-create-btn" class="cancel-btn">Cancel</button>
+                    <button type="submit" id="save-add-product-btn" class="save-btn">Add product</button>
+                    <button type="button" id="cancel-add-product-btn" class="cancel-btn">Cancel</button>
                 </div>
             </form>
         </div>

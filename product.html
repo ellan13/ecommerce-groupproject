@@ -40,7 +40,7 @@
         </nav>
 
         <section class="container">
-            <!-- NÄSTA GÅNG: Fixa så edit knappe, add to cart och favorit knappen försvinner i edit läge, sedan Läs in produkt från API utifrån ?id= -->
+            <!-- TODO: Fixa så edit knappe, add to cart och favorit knappen försvinner i edit läge, sedan Läs in produkt från API utifrån ?id= -->
             <article class="product" data-id="1" data-category="smartphones" data-price="549">
                 <img src="" alt="title">
 
@@ -83,15 +83,15 @@
                                 rows="4">An apple mobile which is nothing like apple.</textarea>
                         </label>
                         <div class="product-form-actions">
-                            <button type="submit" class="save-btn">Save</button>
+                            <button type="submit" id="save-edit-btn" class="save-btn">Save</button>
                             <button type="button" id="cancel-edit-btn" class="cancel-btn">Cancel</button>
                             <button type="button" id="delete-product-btn" class="delete-btn">Delete product</button>
                         </div>
                     </form>
 
-                    <div class="product-details-actions">
-                        <button type="button" class="add-to-cart-btn">👜 Add to cart</button>
-                        <button type="button" class="favorite-btn">♡</button>
+                    <div class="product-details-actions" id="product-details-actions">
+                        <button type="button" id="add-to-cart-btn" class="add-to-cart-btn">👜 Add to cart</button>
+                        <button type="button" id="toggle-favorite-btn" class="toggle-favorite-btn">♡</button>
                     </div>
                 </div>
             </article>
