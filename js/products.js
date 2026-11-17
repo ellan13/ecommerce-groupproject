@@ -2,7 +2,7 @@
 
 // IMPORT
 import { fetchAllProducts, addNewProduct } from "./api.js";
-import { saveProducts, getCachedProducts, addToCart, toggleFavorite } from "./storage.js";
+import { saveProducts, getCachedProducts, addToCart, getFavorites, toggleFavorite } from "./storage.js";
 
 // DOM ELEMENTS
 const openFilterBtn = document.getElementById("open-filter-btn");
@@ -68,6 +68,7 @@ function closeAddProductModal() {
 
 // FUNCTIONS (render)
 function createProductCard(product) {
+    const isFavorite = getFavorites().includes(product.id);
     const card = document.createElement("article");
     card.className = "product-card";
     card.dataset.id = product.id;
@@ -83,7 +84,7 @@ function createProductCard(product) {
           <p>$${product.price}</p>
         </div>
         <div class="product-info-icons">
-          <button type="button" class="toggle-favorite-btn">♡</button>
+          <button type="button" class="toggle-favorite-btn${isFavorite ? " active" : ""}">${isFavorite ? "♥" : "♡"}</button>
           <button type="button" class="add-to-cart-btn">👜</button>
         </div>
       </div>
