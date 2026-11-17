@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,78 +13,92 @@
     <!-- Header -->
     <header>
         <nav class="navbar">
-
             <div class="nav-left">
-                <button class="menu-btn">☰</button>
+                <button class="menu-btn" id="open-menu-btn" aria-label="Open menu">☰</button>
             </div>
 
-            <div class="logo">
-                <h2>MY WEBSITE</h2>
-            </div>
+            <a href="index.html" class="logo">MY WEBSITE</a>
 
             <div class="nav-right">
-                <a href="search.html">Search</a>
-                <a href="favorites.html">Favorites</a>
-                <a href="cart.html">Cart</a>
+                <a href="search.html" aria-label="Search">🔍</a>
+                <a href="favorites.html" aria-label="Favorites">♡</a>
+                <a href="cart.html" aria-label="Cart">🛍</a>
             </div>
-
         </nav>
+
+        <!-- Menu overlay (dold tills man klickar på ☰) -->
+        <div class="menu-modal" id="menu-modal">
+            <button class="close-menu-btn" id="close-menu-btn" aria-label="Close menu">✕</button>
+            <h2>Categories</h2>
+            <ul class="menu-list">
+                <li><a href="products.html">Shop all</a></li>
+                <li><a href="products.html">Category 1</a></li>
+                <li><a href="products.html">Category 2</a></li>
+                <li><a href="products.html">Category 3</a></li>
+            </ul>
+        </div>
     </header>
 
     <!-- Main -->
     <main>
 
-        <!-- Hero image -->
+        <!-- Hero -->
         <section class="hero-section container">
-
             <img src="images/news-banner.jpg" alt="Latest news">
-
+            <div class="hero-content">
+                <h1>New collection</h1>
+                <a href="products.html" class="hero-btn">See products</a>
+            </div>
         </section>
 
-        <!-- News section -->
-        <section class="news-section container">
-
+        <!-- News -->
+        <section class="home-section container">
             <h2>News</h2>
-
-            <div class="product-container">
-
+            <div class="home-grid">
                 <article class="product-card">
-                    <img src="images/news1.jpg" alt="News">
+                    <a href="product.html"><img src="images/news1.jpg" alt="News"></a>
                 </article>
-
                 <article class="product-card">
-                    <img src="images/news2.jpg" alt="News">
+                    <a href="product.html"><img src="images/news2.jpg" alt="News"></a>
                 </article>
-
                 <article class="product-card">
-                    <img src="images/news3.jpg" alt="News">
+                    <a href="product.html"><img src="images/news3.jpg" alt="News"></a>
                 </article>
-
+                <article class="product-card">
+                    <a href="product.html"><img src="images/news4.jpg" alt="News"></a>
+                </article>
+                <article class="product-card">
+                    <a href="product.html"><img src="images/news5.jpg" alt="News"></a>
+                </article>
+                <article class="product-card">
+                    <a href="product.html"><img src="images/news6.jpg" alt="News"></a>
+                </article>
             </div>
-
         </section>
 
-        <!-- Best Sellers section -->
-        <section class="bestseller-section container">
-
+        <!-- Best Sellers -->
+        <section class="home-section container">
             <h2>Best Sellers</h2>
-
-            <div class="product-container">
-
+            <div class="home-grid">
                 <article class="product-card">
-                    <img src="images/bestseller1.jpg" alt="Best seller">
+                    <a href="product.html"><img src="images/bestseller1.jpg" alt="Best seller"></a>
                 </article>
-
                 <article class="product-card">
-                    <img src="images/bestseller2.jpg" alt="Best seller">
+                    <a href="product.html"><img src="images/bestseller2.jpg" alt="Best seller"></a>
                 </article>
-
                 <article class="product-card">
-                    <img src="images/bestseller3.jpg" alt="Best seller">
+                    <a href="product.html"><img src="images/bestseller3.jpg" alt="Best seller"></a>
                 </article>
-
+                <article class="product-card">
+                    <a href="product.html"><img src="images/bestseller4.jpg" alt="Best seller"></a>
+                </article>
+                <article class="product-card">
+                    <a href="product.html"><img src="images/bestseller5.jpg" alt="Best seller"></a>
+                </article>
+                <article class="product-card">
+                    <a href="product.html"><img src="images/bestseller6.jpg" alt="Best seller"></a>
+                </article>
             </div>
-
         </section>
 
     </main>
@@ -94,6 +107,9 @@
     <footer>
         <p>&copy; 2026 Ecommerce Group Project</p>
     </footer>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/home.js"></script>
 
 </body>
 

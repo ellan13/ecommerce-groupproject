@@ -161,6 +161,182 @@ main {
 }
 
 
+/* ----------------- NAVBAR ----------------- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm);
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/* Homepage */
+
+/* Flebox för att dela upp vänster och höger del av navbaren. Vänster del innehåller loggan, höger del innehåller länkarna */
+
+.nav-left,
+.nav-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.nav-right {
+    justify-content: flex-end;
+    gap: var(--space-sm);
+}
+
+.nav-right a {
+    color: #000;
+    text-decoration: none;
+    font-size: 1.25rem;
+}
+
+.logo {
+    color: #000;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.menu-btn {
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* ----------------- MENU ----------------- */
+.menu-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #fff;
+    padding: var(--space-lg) var(--space-md) var(--space-md);
+    flex-direction: column;
+    gap: var(--space-sm);
+    z-index: 100;
+}
+
+/* När menyn är öppen, lägg till klassen "open" på menu-modal. Då ska display vara flex istället för none */
+
+.menu-modal.open {
+    display: flex;
+}
+
+.close-menu-btn {
+    position: fixed;
+    top: var(--space-sm);
+    left: var(--space-md);
+    border: none;
+    background: none;
+    font-size: 1.75rem;
+    cursor: pointer;
+}
+
+.menu-modal h2 {
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.menu-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding-left: var(--space-sm);
+}
+
+.menu-list a {
+    color: #000;
+    text-decoration: none;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+}
+
+.menu-list a:hover {
+    text-decoration: underline;
+}
+
+/* ----------------- HOME PAGE ----------------- */
+.hero-section {
+    position: relative;
+}
+
+.hero-section img {
+    display: block;
+    width: 100%;
+    height: 50vh;
+    min-height: 240px;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+/* Ligger ovanpå bilden. inset sidledes matchar containerns padding */
+.hero-content {
+    position: absolute;
+    inset: 0 var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-sm);
+    background: rgba(0, 0, 0, 0.25);
+    color: #fff;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.hero-btn {
+    padding: var(--space-sm) var(--space-md);
+    border-radius: 999px;
+    background: #fff;
+    color: #000;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.home-section {
+    padding-block: var(--space-md);
+}
+
+.home-section h2 {
+    margin-bottom: var(--space-sm);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* Grid för att visa produkter på startsidan. */ 
+
+.home-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+}
+
+@media (min-width: 768px) {
+    .home-grid {
+        gap: var(--space-md);
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+}
+
 .filter-modal {
     display: none;
     position: fixed;
