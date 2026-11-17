@@ -153,7 +153,7 @@ applyFilterBtn.addEventListener("click", () => {
     activeCategories = [...checked].map((input) => input.value);
     activeFilterCount.textContent = activeCategories.length > 0 ? `(${activeCategories.length})` : "";
 
-    renderProductGrid(); // bara lokalt filter dvs ingen fetch, också fel?
+    renderProductGrid(); // TODO:bara lokalt filter dvs ingen fetch, också fel?
 });
 
 sortSelect.addEventListener("change", () => {
