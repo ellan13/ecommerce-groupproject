@@ -2,14 +2,17 @@
 // TODO: Felhantering för API-anrop (try/catch)
 
 const BASE_URL = "https://dummyjson.com/products";
-const limit = 20;
+const limit = 40;
 const skip = 0;
 const select = "id,title,price,thumbnail,category";
 
 export async function fetchAllProducts() {
     const response = await fetch(`${BASE_URL}?limit=${limit}&skip=${skip}&select=${select}`);
     const data = await response.json();
-    return data.products;
+    return {
+        products: data.products,
+        total: data.total,
+    };
 }
 
 export async function fetchSingleProduct(id) {
