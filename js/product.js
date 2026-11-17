@@ -6,6 +6,8 @@
 // import { addToCart, toggleFavorite } from "./storage.js";
 
 //HÄMTA DOM-ELEMENT
+const productId = Number(new URLSearchParams(location.search).get("id"));
+
 const editProductBtn = document.getElementById("edit-product-btn");
 const editProductForm = document.getElementById("edit-product-form");
 const cancelEditBtn = document.getElementById("cancel-edit-btn");
