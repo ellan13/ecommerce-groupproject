@@ -4,10 +4,11 @@ const CART_KEY = "cart";
 const FAVORITES_KEY = "favorites";
 const MAX_AGE_MS = 1000 * 60 * 30; // 30 min
 
+//Ella
 export function getCart() {
   return JSON.parse(localStorage.getItem(CART_KEY)) ?? [];
 }
-
+//Ella
 export function getFavorites() {
   return JSON.parse(localStorage.getItem(FAVORITES_KEY)) ?? [];
 }
@@ -23,13 +24,14 @@ export function addToCart(productId) {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
   console.log("Added to cart:", productId);
 }
-
+//Ella
 export function removeFromCart(productId) {
   const cart = getCart().filter((item) => item.id !== productId);
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
   console.log("Removed from cart:", productId);
 }
 
+//Ella
 export function setQuantity(productId, quantity) {
   const newQuantity = Number(quantity);
 
@@ -60,7 +62,7 @@ export function addToFavorites(productId) {
     console.log("Added to favorites:", productId);
   }
 }
-
+//Ella
 export function removeFromFavorites(productId) {
   const favorites = getFavorites().filter((id) => id !== productId);
   localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
