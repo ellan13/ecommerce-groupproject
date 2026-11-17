@@ -10,24 +10,33 @@
 </head>
 
 <body>
+    <!-- Header -->
     <header>
-        <nav>
+        <nav class="navbar">
             <div class="nav-left">
-                <button class="menu-btn">☰</button>
+                <button class="menu-btn" id="open-menu-btn" aria-label="Open menu">☰</button>
             </div>
 
-            <div class="logo">
-                <h2>MIN WEBBSIDA</h2>
-            </div>
+            <a href="index.html" class="logo">MY WEBSITE</a>
 
             <div class="nav-right">
-                <a href="search.html">Sök</a>
-                <a href="favorites.html">Sparade</a>
-                <a href="cart.html">Kundkorg</a>
+                <a href="search.html" aria-label="Search">🔍</a>
+                <a href="favorites.html" aria-label="Favorites">♡</a>
+                <a href="cart.html" aria-label="Cart">🛍</a>
             </div>
-            </div>
-
         </nav>
+
+        <!-- Menu overlay (dold tills man klickar på ☰) -->
+        <div class="menu-modal" id="menu-modal">
+            <button class="close-menu-btn" id="close-menu-btn" aria-label="Close menu">✕</button>
+            <h2>Categories</h2>
+            <ul class="menu-list">
+                <li><a href="products.html">Shop all</a></li>
+                <li><a href="products.html">Category 1</a></li>
+                <li><a href="products.html">Category 2</a></li>
+                <li><a href="products.html">Category 3</a></li>
+            </ul>
+        </div>
     </header>
 
     <main>
