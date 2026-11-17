@@ -1,21 +1,18 @@
 // Produktkatalog: lista, filter, sortering och create.
-// TODO: korta ner funktionere som finns flera gånger
-// TODO: korta ner funktioner som bara har ett rad skriv => istället för function (){} 
-//       dvs function test(){ return "test"; } => const test = () => "test"; Alex gick igenom det kolla kompendiet.
 
-
-//IMPORT
+// IMPORT
 import { fetchAllProducts, addNewProduct } from "./api.js";
-// import { addToCart, toggleFavorite } from "./storage.js";
+import { saveProducts, getCachedProducts, addToCart, toggleFavorite } from "./storage.js";
 
-//HÄMTA DOM-ELEMENT
+// DOM ELEMENTS
 const openFilterBtn = document.getElementById("open-filter-btn");
 const closeFilterBtn = document.getElementById("close-filter-btn");
 const applyFilterBtn = document.getElementById("apply-filter-btn");
 const filterModal = document.getElementById("filter-modal");
-const filterCount = document.getElementById("filter-count");
+const activeFilterCount = document.getElementById("active-filter-count");
+const filterCategoryList = document.getElementById("filter-category-list");
 
-const productsSortSelect = document.getElementById("products-sort-select");
+const sortSelect = document.getElementById("products-sort-select");
 
 const openAddProductBtn = document.getElementById("open-add-product-btn");
 const closeAddProductBtn = document.getElementById("close-add-product-btn");
@@ -25,10 +22,51 @@ const addProductForm = document.getElementById("add-product-form");
 
 const productsGrid = document.getElementById("products-grid");
 
+// VARIABLES
 let allProducts = [];
 let activeCategories = [];
+let totalProducts = 0;
 
-//FUNKTIONER
+// FUNCTIONS (helpers)
+function countProductsInCategory(category) {
+    return allProducts.filter((product) => product.category === category).length;
+}
+
+function getProductCategories() {
+    const categories = [];
+    allProducts.forEach((product) => {
+        if (!categories.includes(product.category)) {
+            categories.push(product.category);
+        }
+    });
+    return categories;
+}
+
+
+function getFilteredAndSortedProducts() { // TODO: filtrera och sortera produkter lokalt, vilket kqnske är fel?
+    let productsToShow = [...allProducts];
+
+    if (activeCategories.length > 0) {
+        productsToShow = productsToShow.filter((product) =>
+            activeCategories.includes(product.category)
+        );
+    }
+
+    if (sortSelect.value === "price-asc") {
+        productsToShow.sort((a, b) => a.price - b.price);
+    } else if (sortSelect.value === "price-desc") {
+        productsToShow.sort((a, b) => b.price - a.price);
+    }
+
+    return productsToShow;
+}
+
+function closeAddProductModal() {
+    addProductModal.style.display = "none";
+    addProductForm.reset();
+}
+
+// FUNCTIONS (render)
 function createProductCard(product) {
     const card = document.createElement("article");
     card.className = "product-card";
@@ -52,99 +90,123 @@ function createProductCard(product) {
     `;
     return card;
 }
-function renderProducts(products) {
+
+function renderProductGrid() {
     productsGrid.innerHTML = "";
-    products.forEach((product) => {
-        console.log(product);
+    getFilteredAndSortedProducts().forEach((product) => {
         productsGrid.appendChild(createProductCard(product));
     });
 }
-function getFilteredAndSortedProducts() {
-    let list = [...allProducts];
-    if (activeCategories.length > 0) {
-        list = list.filter((product) =>
-            // TODO: kolla upp.includes() funktionen och hur den fungerar.
-            activeCategories.includes(product.category)
-        );
-    }
-    // TODO: Kolla upp sort() funktionen och hur den fungerar.
-    if (productsSortSelect.value === "price-asc") {
-        list.sort((a, b) => a.price - b.price);
-    } else if (productsSortSelect.value === "price-desc") {
-        list.sort((a, b) => b.price - a.price);
-    }
-    return list;
-}
-function updateProductList() {
-    renderProducts(getFilteredAndSortedProducts());
-}
-async function loadProducts() {
-    // TODO: Byt till fetchProducts() från api.js senare
-    allProducts = await fetchAllProducts();
-    updateProductList();
-}
-function closeAddProductModal() {
-    addProductModal.style.display = "none";
-    addProductForm.reset();
+
+function renderCategoryFilters() {
+    filterCategoryList.innerHTML = "";
+    getProductCategories().forEach((category) => {
+        const total = countProductsInCategory(category);
+        const checked = activeCategories.includes(category) ? "checked" : "";
+        const li = document.createElement("li");
+        li.innerHTML = `
+        <label>
+          <input type="checkbox" name="category" value="${category}" ${checked}>
+          ${category}
+          <span class="category-count">[${total}]</span>
+        </label>
+      `;
+        filterCategoryList.appendChild(li);
+    });
 }
 
-//EVENTLISTENERS
-openFilterBtn.addEventListener("click", function () {
+
+function refreshCatalog() { // TODO: när själva produktlistan ändras (load / create (frågan är dock om det ska vara även för update eller delete från product.js?))
+    renderCategoryFilters();
+    renderProductGrid();
+}
+
+// FUNCTIONS (load)
+async function loadProducts() {
+    const cached = getCachedProducts();
+
+    if (cached) {
+        allProducts = cached.products;
+        totalProducts = cached.total;
+    } else {
+        const data = await fetchAllProducts();
+        allProducts = data.products;
+        totalProducts = data.total;
+        saveProducts(allProducts, totalProducts);
+    }
+
+    refreshCatalog();
+}
+
+// EVENTS (filter and sort)
+openFilterBtn.addEventListener("click", () => {
     filterModal.style.display = "flex";
 });
 
-closeFilterBtn.addEventListener("click", function () {
+closeFilterBtn.addEventListener("click", () => {
     filterModal.style.display = "none";
 });
 
-applyFilterBtn.addEventListener("click", function () {
+applyFilterBtn.addEventListener("click", () => {
     filterModal.style.display = "none";
     const checked = filterModal.querySelectorAll("input[name='category']:checked");
-
-    // TODO: kolla skillnnaden på dessa och hur de fungerar, vilken är bäst?
     activeCategories = [...checked].map((input) => input.value);
-    // activeCategories = Array.from(checked).map(checkbox => checkbox.value);
+    activeFilterCount.textContent = activeCategories.length > 0 ? `(${activeCategories.length})` : "";
 
-    filterCount.textContent = activeCategories.length > 0 ? `(${activeCategories.length})` : "";
-    updateProductList();
+    renderProductGrid(); // bara lokalt filter dvs ingen fetch, också fel?
 });
 
-productsSortSelect.addEventListener("change", function () {
-    updateProductList();
+sortSelect.addEventListener("change", () => {
+    renderProductGrid();
 });
 
-openAddProductBtn.addEventListener("click", function () {
+// EVENTS (add product)
+openAddProductBtn.addEventListener("click", () => {
     addProductModal.style.display = "flex";
 });
 
 closeAddProductBtn.addEventListener("click", closeAddProductModal);
 cancelAddProductBtn.addEventListener("click", closeAddProductModal);
 
-addProductForm.addEventListener("submit", function (event) {
+addProductForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    // TODO: POST till API + LocalStorage + uppdatera allProducts/UI
+    const formData = new FormData(addProductForm);
+    const product = {
+        title: formData.get("title"),
+        brand: formData.get("brand"),
+        price: Number(formData.get("price")),
+        category: formData.get("category"),
+        description: formData.get("description"),
+    };
+    const createdProduct = await addNewProduct(product);
+    allProducts.push(createdProduct);
+    totalProducts++;
+    saveProducts(allProducts, totalProducts);
+    refreshCatalog();
     closeAddProductModal();
 });
 
-
-productsGrid.addEventListener("click", function (event) {
-    // TODO: kolla upp closest() funktionen och hur den fungerar.
+// EVENTS (product card actions)
+productsGrid.addEventListener("click", (event) => {
     const cartBtn = event.target.closest(".add-to-cart-btn");
     const favBtn = event.target.closest(".toggle-favorite-btn");
     if (!cartBtn && !favBtn) return;
+
     const card = event.target.closest(".product-card");
-    const productId = card.dataset.id;
+    if (!card) return;
+
+    const productId = Number(card.dataset.id);
+
     if (cartBtn) {
-        console.log("Add to cart:", productId);
-        // addToCart(productId); // när storage.js finns
-        return;
-    }
-    if (favBtn) {
-        console.log("Toggle favorite:", productId);
-        // toggleFavorite(productId); // när storage.js finns
+        addToCart(productId);
+        //TODO: uppdatera UI så att varukorgen uppdateras med produkten
+    } else if (favBtn) {
+        toggleFavorite(productId);
+        favBtn.classList.toggle("active");
+        //TODO: ha iconer dvs två svg filer för fyllt och tomt hjärta
+        favBtn.textContent = favBtn.classList.contains("active") ? "♥" : "♡";
     }
 });
+
+// START
 loadProducts();
-
-
-
