@@ -21,18 +21,20 @@ export function addToCart(productId) {
     cart.push({ id: productId, quantity: 1 });
   }
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  console.log("Added to cart:", productId);
 }
 
 export function removeFromCart(productId) {
   const cart = getCart().filter((item) => item.id !== productId);
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  console.log("Removed from cart:", productId);
 }
 
 export function setQuantity(productId, quantity) {
-  const amount = Number(quantity);
+  const newQuantity = Number(quantity);
 
   // TODO: kolla isFinie funktionen. NNär skulle detta hända? Detta betyder iaf att amount inte är ett tal(är ogiltigt) eller 0 så ta bort raden
-  if (!Number.isFinite(amount) || amount <= 0) {
+  if (!Number.isFinite(newQuantity) || newQuantity <= 0) {
     removeFromCart(productId);
     return;
   }
@@ -41,12 +43,13 @@ export function setQuantity(productId, quantity) {
   const item = cart.find((item) => item.id === productId);
 
   if (item) {
-    item.quantity = amount;
+    item.quantity = newQuantity;
   } else {
-    cart.push({ id: productId, quantity: amount });
+    cart.push({ id: productId, quantity: newQuantity });
   }
 
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  console.log("Quantity updated:", productId, newQuantity);
 }
 
 export function addToFavorites(productId) {
@@ -54,12 +57,14 @@ export function addToFavorites(productId) {
   if (!favorites.includes(productId)) {
     favorites.push(productId);
     localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+    console.log("Added to favorites:", productId);
   }
 }
 
 export function removeFromFavorites(productId) {
   const favorites = getFavorites().filter((id) => id !== productId);
   localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+  console.log("Removed from favorites:", productId);
 }
 
 export function toggleFavorite(productId) {
