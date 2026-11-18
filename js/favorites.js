@@ -1,6 +1,21 @@
 // Favoritsida: visa och ta bort favoriter från LocalStorage.
 
-const backLink = document.querySelector("#back-link")
+import { getFavorites, removeFromFavorites } from "./storage.js";
+
+const favorites = getFavorites();
+console.log(favorites);
+
+// Hämta ta bort-knapp
+const removeFavorites = document.querySelector(".remove-product-btn");
+
+removeFavorites.addEventListener("click", () => {
+
+});
+
+
+
+
+const backLink = document.querySelector("#back-link");
 
 backLink.addEventListener("click", (e) => {
     if (history.length > 1) {
@@ -8,3 +23,4 @@ backLink.addEventListener("click", (e) => {
         history.back();
     }
 });
+
