@@ -1,8 +1,9 @@
 // Produktkatalog: lista, filter, sortering och create.
+//Nästa gång: kolla todo och börja med product sidan (chatten öppen)
 
 // IMPORT
 import { fetchAllProducts, addNewProduct } from "./api.js";
-import { saveProducts, getCachedProducts, addToCart, getFavorites, toggleFavorite } from "./storage.js";
+import { saveProductsToLocalStorage, getProductsFromLocalStorage, addToCart, getFavorites, toggleFavorite } from "./storage.js";
 
 // DOM ELEMENTS
 const openFilterBtn = document.getElementById("open-filter-btn");
@@ -124,16 +125,16 @@ function refreshCatalog() { // TODO: när själva produktlistan ändras (load / 
 
 // FUNCTIONS (load)
 async function loadProducts() {
-    const cached = getCachedProducts();
+    const data = getProductsFromLocalStorage();
 
-    if (cached) {
-        allProducts = cached.products;
-        totalProducts = cached.total;
-    } else {
-        const data = await fetchAllProducts();
+    if (data) {
         allProducts = data.products;
         totalProducts = data.total;
-        saveProducts(allProducts, totalProducts);
+    } else {
+        const newData = await fetchAllProducts();
+        allProducts = newData.products;
+        totalProducts = newData.total;
+        saveProductsToLocalStorage(allProducts, totalProducts);
     }
 
     refreshCatalog();
@@ -182,7 +183,7 @@ addProductForm.addEventListener("submit", async (event) => {
     const createdProduct = await addNewProduct(product);
     allProducts.push(createdProduct);
     totalProducts++;
-    saveProducts(allProducts, totalProducts);
+    saveProductsToLocalStorage(allProducts, totalProducts);
     refreshCatalog();
     closeAddProductModal();
 });
