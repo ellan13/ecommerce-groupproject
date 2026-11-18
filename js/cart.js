@@ -3,20 +3,28 @@
 // Först och främst måste vi se till att varje rad har data-id och ett input med aktuellt antal.
 
 // plus
-setQuantity(productId, currentQuantity + 1);
+// setQuantity(productId, currentQuantity + 1);
 
-updateTotalPrice();
+// updateTotalPrice();
 // minus
-setQuantity(productId, currentQuantity - 1);
+// setQuantity(productId, currentQuantity - 1);
 
 // användaren skriver "3" i fältet
-setQuantity(productId, input.value);
+// setQuantity(productId, input.value);
 
 // "ta bort"-ikon
-removeFromCart(productId);
+// removeFromCart(productId);
 
-const cartItems = document.querySelector("#cart-items")
-const backLink = document.querySelector("#back-link")
+import { getCart, setQuantity, removeFromCart } from "./storage.js";
+import { fetchSingleProduct } from "./api.js";
+
+const cartItems = document.querySelector("#cart-items");
+const cartTotal = document.querySelector("#cart-total");
+const backLink = document.querySelector("#back-link");
+
+// Läs sparad varukorg
+const cart = getCart();
+console.log(cart);
 
 console.log("Varukorg:", cartItems);
 console.log("Tillbaka-länk:", backLink);
@@ -27,6 +35,18 @@ backLink.addEventListener("click", (e) => {
         history.back();
     }
 });
+
+// Hämta varukorgens produkter
+async function showCart() {
+    for (const item of cart) {
+        const product = await fetchSingleProduct(item.id);
+
+        console.log(product);
+        console.log("Antal: ", item.quantity);
+    }
+}
+
+showCart()
 
 cartItems.innerHTML = `
     <tr class="cart-empty" hidden>
