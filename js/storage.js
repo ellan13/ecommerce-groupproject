@@ -30,7 +30,10 @@ export function removeFromCart(productId) {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
   console.log("Removed from cart:", productId);
 }
-
+// Ella
+export function clearCart() {
+  localStorage.setItem(CART_KEY, JSON.stringify([]));
+}
 //Ella
 export function setQuantity(productId, quantity) {
   const newQuantity = Number(quantity);
