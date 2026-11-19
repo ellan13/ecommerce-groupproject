@@ -22,6 +22,7 @@ const cartItems = document.querySelector("#cart-items");
 const cartTotal = document.querySelector("#cart-total");
 const backLink = document.querySelector("#back-link");
 const cartEmpty = document.querySelector("#cart-empty");
+const cartStatus = document.querySelector("#cart-status");
 
 // Läs sparad varukorg
 const cart = getCart();
@@ -40,6 +41,10 @@ backLink.addEventListener("click", (e) => {
 
 // Hämta varukorgens produkter
 async function showCart() {
+    cartStatus.textContent = "Loading cart...";
+    cartStatus.hidden = false;
+    
+try{
     for (const item of cart) {
         const product = await fetchSingleProduct(item.id);
 
@@ -144,7 +149,17 @@ async function showCart() {
             cartEmpty.hidden = getCart().length > 0;
         });
     }
-}
+
+        // Dölj laddningstexten
+        cartStatus.hidden = true;
+
+        } catch (error) {
+            cartStatus.textContent = "Could not load all cart items. Please reload the page";
+            cartStatus.hidden = false;
+
+            console.error(error);
+        }
+        }
 
 function updateTotalPrice() {
     let total = 0;
