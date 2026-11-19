@@ -20,11 +20,21 @@
             <a href="index.html" class="logo">MY WEBSITE</a>
 
             <div class="nav-right">
-                <a href="search.html" aria-label="Search">🔍</a>
+                <button class="search-btn" id="search-btn" aria-label="Search">🔍</button>
                 <a href="favorites.html" aria-label="Favorites">♡</a>
                 <a href="cart.html" aria-label="Cart">🛍</a>
             </div>
         </nav>
+
+        <!-- Sökruta (dold tills man klickar på 🔍) -->
+        <div class="search-panel" id="search-panel">
+            <form id="search-form" class="search-form">
+                <input type="search" id="search-input" placeholder="Search products">
+            </form>
+
+            <p id="search-message"></p>
+            <div class="products-grid" id="search-results"></div>
+        </div>
 
         <!-- Menu overlay (dold tills man klickar på ☰) -->
         <div class="menu-modal" id="menu-modal">
@@ -109,7 +119,7 @@
     </footer>
 
     <script src="js/navigation.js"></script>
-    <script src="js/home.js"></script>
+    <script type="module" src="js/home.js"></script>
 
 </body>
 

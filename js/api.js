@@ -32,3 +32,11 @@ export async function addNewProduct(product) {
     const data = await response.json();
     return data;
 }
+
+export async function searchProducts(query) {
+    const response = await fetch(
+        `${BASE_URL}/search?q=${encodeURIComponent(query)}&limit=${limit}&select=${select}`
+    );
+    const data = await response.json();
+    return data.products;
+}
