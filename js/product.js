@@ -167,7 +167,7 @@ async function loadProduct() {
 
     try {
         currentProduct = await fetchSingleProduct(productId);
-        // Lokala create/update vinner (DummyJSON sparar inte permanent)
+        // INFO: lokala create/update vinner (DummyJSON sparar inte permanent)
         if (localProduct) {
             currentProduct = {
                 ...currentProduct,

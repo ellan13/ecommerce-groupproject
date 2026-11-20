@@ -89,7 +89,7 @@ function readProductsData() {
   };
 }
 
-// returnerar null om äldre än 30 min så listan refetchas
+// INFO: returnerar null om äldre än 30 min så listan refetchas
 export function getProductsFromLocalStorage() {
   const data = readProductsData();
   if (!data) return null;
@@ -117,7 +117,7 @@ export function saveProductsToLocalStorage(products, total) {
   localStorage.setItem(PRODUCTS_KEY, dataAsText);
 }
 
-// Skapa/uppdatera produkt lokalt
+// INFO: kan användas för create/update produkt lokalt
 // TODO: kolla om denna kan användas för create
 export function syncProductInLocalStorage(product) {
   const data = readProductsData() ?? { products: [], total: 0 };

@@ -1,5 +1,5 @@
 // Produktkatalog: lista, filter, sortering och create.
-//Nästa gång (något av dessa börjar nog med felhanteringen t.ex  vill inte ha alaert eller confirm bara om det är styleade snygga, sedan product): felhantering sammarbete med api.js men fixa denna. skriv om favorites igen från chatten, kolla todo och börja med product sidan (chatten öppen), använd images till fler bilder.
+//TODO: Nästa gång (något av dessa börjar nog med felhanteringen t.ex  vill inte ha alaert eller confirm bara om det är styleade snygga, sedan product): felhantering sammarbete med api.js men fixa denna. skriv om favorites igen från chatten, kolla todo och börja med product sidan (chatten öppen), använd images till fler bilder.
 
 // IMPORT
 import { fetchAllProducts, addNewProduct } from "./api.js";
@@ -45,7 +45,7 @@ function getProductCategories() {
 
 
 function getFilteredAndSortedProducts() { 
-    // Kopia så filter/sort inte muterar allProducts
+    // INFO: Kopia så filter/sort inte muterar allProducts
     let productsToShow = [...allProducts];
 
     if (activeCategories.length > 0) {
@@ -158,7 +158,7 @@ closeFilterBtn.addEventListener("click", () => {
 applyFilterBtn.addEventListener("click", () => {
     filterModal.style.display = "none";
     const checked = filterModal.querySelectorAll("input[name='category']:checked");
-    // NodeList → Array så .map funkar
+    // INFO: NodeList → Array så .map funkar
     activeCategories = [...checked].map((input) => input.value);
     activeFilterCount.textContent = activeCategories.length > 0 ? `(${activeCategories.length})` : "";
 
