@@ -77,16 +77,34 @@ export function toggleFavorite(productId) {
   }
 }
 
-export function getProductsFromLocalStorage() {
+function readProductsData() {
   const dataAsText = localStorage.getItem(PRODUCTS_KEY);
   if (!dataAsText) return null;
 
   const data = JSON.parse(dataAsText);
+  return {
+    products: data.products ?? [],
+    total: data.total ?? 0,
+    savedAt: data.savedAt ?? 0,
+  };
+}
+
+// returnerar null om äldre än 30 min så listan refetchas
+export function getProductsFromLocalStorage() {
+  const data = readProductsData();
+  if (!data) return null;
 
   const isFresh = Date.now() - data.savedAt < MAX_AGE_MS;
   if (!isFresh) return null;
 
   return { products: data.products, total: data.total };
+}
+
+export function findProductInLocalStorage(id) {
+  const data = readProductsData();
+  if (!data) return null;
+
+  return data.products.find((product) => Number(product.id) === Number(id)) ?? null;
 }
 
 export function saveProductsToLocalStorage(products, total) {
@@ -97,4 +115,28 @@ export function saveProductsToLocalStorage(products, total) {
   });
 
   localStorage.setItem(PRODUCTS_KEY, dataAsText);
+}
+
+// Skapa/uppdatera produkt lokalt
+// TODO: kolla om denna kan användas för create
+export function syncProductInLocalStorage(product) {
+  const data = readProductsData() ?? { products: [], total: 0 };
+  const index = data.products.findIndex((item) => Number(item.id) === Number(product.id));
+
+  if (index === -1) {
+    data.products.push(product);
+    data.total += 1;
+  } else {
+    data.products[index] = { ...data.products[index], ...product };
+  }
+
+  saveProductsToLocalStorage(data.products, data.total);
+}
+
+export function removeProductFromLocalStorage(id) {
+  const data = readProductsData();
+  if (!data) return;
+
+  const products = data.products.filter((item) => Number(item.id) !== Number(id));
+  saveProductsToLocalStorage(products, Math.max(0, data.total - 1));
 }

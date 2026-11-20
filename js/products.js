@@ -1,5 +1,5 @@
 // Produktkatalog: lista, filter, sortering och create.
-//Nästa gång: kolla todo och börja med product sidan (chatten öppen)
+//Nästa gång (något av dessa börjar nog med felhanteringen t.ex  vill inte ha alaert eller confirm bara om det är styleade snygga, sedan product): felhantering sammarbete med api.js men fixa denna. skriv om favorites igen från chatten, kolla todo och börja med product sidan (chatten öppen), använd images till fler bilder.
 
 // IMPORT
 import { fetchAllProducts, addNewProduct } from "./api.js";
@@ -44,7 +44,8 @@ function getProductCategories() {
 }
 
 
-function getFilteredAndSortedProducts() { // TODO: filtrera och sortera produkter lokalt, vilket kqnske är fel?
+function getFilteredAndSortedProducts() { 
+    // Kopia så filter/sort inte muterar allProducts
     let productsToShow = [...allProducts];
 
     if (activeCategories.length > 0) {
@@ -131,10 +132,15 @@ async function loadProducts() {
         allProducts = data.products;
         totalProducts = data.total;
     } else {
-        const newData = await fetchAllProducts();
-        allProducts = newData.products;
-        totalProducts = newData.total;
-        saveProductsToLocalStorage(allProducts, totalProducts);
+        try {
+            const newData = await fetchAllProducts();
+            allProducts = newData.products;
+            totalProducts = newData.total;
+            saveProductsToLocalStorage(allProducts, totalProducts);
+        } catch (error) {
+            productsGrid.innerHTML = "<p>Could not load products. Please try again later.</p>";
+            return;
+        }
     }
 
     refreshCatalog();
@@ -152,10 +158,11 @@ closeFilterBtn.addEventListener("click", () => {
 applyFilterBtn.addEventListener("click", () => {
     filterModal.style.display = "none";
     const checked = filterModal.querySelectorAll("input[name='category']:checked");
+    // NodeList → Array så .map funkar
     activeCategories = [...checked].map((input) => input.value);
     activeFilterCount.textContent = activeCategories.length > 0 ? `(${activeCategories.length})` : "";
 
-    renderProductGrid(); // TODO:bara lokalt filter dvs ingen fetch, också fel?
+    renderProductGrid();
 });
 
 sortSelect.addEventListener("change", () => {
@@ -180,12 +187,17 @@ addProductForm.addEventListener("submit", async (event) => {
         category: formData.get("category"),
         description: formData.get("description"),
     };
-    const createdProduct = await addNewProduct(product);
-    allProducts.push(createdProduct);
-    totalProducts++;
-    saveProductsToLocalStorage(allProducts, totalProducts);
-    refreshCatalog();
-    closeAddProductModal();
+
+    try {
+        const createdProduct = await addNewProduct(product);
+        allProducts.push(createdProduct);
+        totalProducts++;
+        saveProductsToLocalStorage(allProducts, totalProducts);
+        refreshCatalog();
+        closeAddProductModal();
+    } catch (error) {
+        window.alert("Could not create product. Please try again.");
+    }
 });
 
 // EVENTS (product card actions)
@@ -204,9 +216,10 @@ productsGrid.addEventListener("click", (event) => {
         //TODO: uppdatera UI så att varukorgen uppdateras med produkten
     } else if (favBtn) {
         toggleFavorite(productId);
-        favBtn.classList.toggle("active");
+        const isFavorite = getFavorites().includes(productId);
+        favBtn.classList.toggle("active", isFavorite);
         //TODO: ha iconer dvs två svg filer för fyllt och tomt hjärta
-        favBtn.textContent = favBtn.classList.contains("active") ? "♥" : "♡";
+        favBtn.textContent = isFavorite ? "♥" : "♡";
     }
 });
 
