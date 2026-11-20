@@ -694,6 +694,19 @@ main {
     letter-spacing: normal;
 }
 
+.product-image-preview {
+    display: none;
+    width: 8rem;
+    height: 8rem;
+    margin-top: var(--space);
+    object-fit: cover;
+    border: 1px solid #e0e0e0;
+}
+
+.product-image-preview.is-visible {
+    display: block;
+}
+
 .product-form-actions {
     display: flex;
     flex-wrap: wrap;

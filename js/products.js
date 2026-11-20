@@ -25,6 +25,8 @@ const closeAddProductBtn = document.getElementById("close-add-product-btn");
 const cancelAddProductBtn = document.getElementById("cancel-add-product-btn");
 const addProductModal = document.getElementById("add-product-modal");
 const addProductForm = document.getElementById("add-product-form");
+const addProductImageInput = document.getElementById("add-product-image");
+const addProductImagePreview = document.getElementById("add-product-image-preview");
 
 const productsGrid = document.getElementById("products-grid");
 
@@ -32,6 +34,7 @@ const productsGrid = document.getElementById("products-grid");
 let allProducts = [];
 let activeCategories = [];
 let totalProducts = 0;
+let selectedImageDataUrl = null;
 
 // FUNCTIONS (helpers)
 function countProductsInCategory(category) {
@@ -68,9 +71,16 @@ function getFilteredAndSortedProducts() {
     return productsToShow;
 }
 
+function clearImagePreview() {
+    selectedImageDataUrl = null;
+    addProductImagePreview.src = "";
+    addProductImagePreview.classList.remove("is-visible");
+}
+
 function closeAddProductModal() {
     addProductModal.style.display = "none";
     addProductForm.reset();
+    clearImagePreview();
 }
 
 // FUNCTIONS (render)
@@ -184,9 +194,26 @@ openAddProductBtn.addEventListener("click", () => {
 closeAddProductBtn.addEventListener("click", closeAddProductModal);
 cancelAddProductBtn.addEventListener("click", closeAddProductModal);
 
+addProductImageInput.addEventListener("change", () => {
+    const file = addProductImageInput.files?.[0];
+    if (!file) {
+        clearImagePreview();
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        selectedImageDataUrl = reader.result;
+        addProductImagePreview.src = selectedImageDataUrl;
+        addProductImagePreview.classList.add("is-visible");
+    };
+    reader.readAsDataURL(file);
+});
+
 addProductForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(addProductForm);
+    // INFO: skicka bara textfält till API – bilder (data-URL) ger 403 hos DummyJSON
     const product = {
         title: formData.get("title"),
         brand: formData.get("brand"),
@@ -202,9 +229,16 @@ addProductForm.addEventListener("submit", async (event) => {
 
     try {
         const createdProduct = await addNewProduct(product);
-        allProducts.push(createdProduct);
+        const productToSave = selectedImageDataUrl
+            ? {
+                  ...createdProduct,
+                  thumbnail: selectedImageDataUrl,
+                  images: [selectedImageDataUrl],
+              }
+            : createdProduct;
+        allProducts.push(productToSave);
         totalProducts++;
-        saveProductToLocalStorage(createdProduct);
+        saveProductToLocalStorage(productToSave);
         refreshCatalog();
         closeAddProductModal();
     } catch (error) {
