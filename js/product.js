@@ -6,7 +6,7 @@ import {
     addToCart,
     getFavorites,
     toggleFavorite,
-    findProductInLocalStorage,
+    getProductFromLocalStorage,
     saveProductToLocalStorage,
     removeProductFromLocalStorage,
 } from "./storage.js";
@@ -164,7 +164,7 @@ async function loadProduct() {
     }
 
     productContainer.innerHTML = '<p class="status-message">Loading product...</p>';
-    const localProduct = findProductInLocalStorage(productId);
+    const localProduct = getProductFromLocalStorage(productId);
 
     try {
         currentProduct = await fetchSingleProduct(productId);

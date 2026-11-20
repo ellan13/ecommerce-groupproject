@@ -100,7 +100,7 @@ export function getProductsFromLocalStorage() {
   return { products: data.products, total: data.total };
 }
 
-export function findProductInLocalStorage(id) {
+export function getProductFromLocalStorage(id) {
   const data = readProductsData();
   if (!data) return null;
 
