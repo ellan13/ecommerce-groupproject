@@ -100,7 +100,7 @@ function createProductDetail(product) {
                 </button>
                 <button type="button" id="toggle-favorite-btn" class="toggle-favorite-btn${isFavorite ? " active" : ""}" aria-label="${isFavorite ? "Remove from favorites" : "Save as favorite"}">
                     <img src="assets/icons/${isFavorite ? "heart-filled" : "heart"}.svg" alt="" width="18" height="18">
-                    <span>Save as favorite</span>
+                    <span>${isFavorite ? "Remove from favorites" : "Save as favorite"}</span>
                 </button>
             </div>
         </div>
@@ -225,12 +225,11 @@ productContainer.addEventListener("click", async (event) => {
     if (favBtn) {
         toggleFavorite(currentProduct.id);
         const isFavorite = getFavorites().includes(currentProduct.id);
+        const favoriteLabel = isFavorite ? "Remove from favorites" : "Save as favorite";
         favBtn.classList.toggle("active", isFavorite);
         favBtn.querySelector("img").src = `assets/icons/${isFavorite ? "heart-filled" : "heart"}.svg`;
-        favBtn.setAttribute(
-            "aria-label",
-            isFavorite ? "Remove from favorites" : "Save as favorite"
-        );
+        favBtn.querySelector("span").textContent = favoriteLabel;
+        favBtn.setAttribute("aria-label", favoriteLabel);
     }
 });
 
