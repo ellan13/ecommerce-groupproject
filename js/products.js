@@ -30,21 +30,36 @@ const addProductImageInput = document.getElementById("add-product-image");
 const addProductImagePreview = document.getElementById("add-product-image-preview");
 
 const productsGrid = document.getElementById("products-grid");
+const breadcrumbCurrent = document.getElementById("breadcrumb-current");
 
 // VARIABLES
 let allProducts = [];
 let activeCategories = [];
 let totalProducts = 0;
 let selectedImageDataUrl = null;
+// INFO: sök från meny → products.html?q=... (Alex länkar hit). Browse all = ingen q.
+const searchQuery = (new URLSearchParams(window.location.search).get("q") ?? "").trim();
 
 // FUNCTIONS (helpers)
+function getCatalogProducts() {
+    // INFO: utgångspunkt för katalogen – alla produkter, eller bara de som matchar ?q=
+    if (!searchQuery) return allProducts;
+
+    const query = searchQuery.toLowerCase();
+
+    return allProducts.filter((product) => {
+        const text = `${product.title || ""} ${product.brand || ""} ${product.category || ""} ${product.description || ""}`;
+        return text.toLowerCase().includes(query);
+    });
+}
+
 function countProductsInCategory(category) {
-    return allProducts.filter((product) => product.category === category).length;
+    return getCatalogProducts().filter((product) => product.category === category).length;
 }
 
 function getProductCategories() {
     const categories = [];
-    allProducts.forEach((product) => {
+    getCatalogProducts().forEach((product) => {
         if (!categories.includes(product.category)) {
             categories.push(product.category);
         }
@@ -52,10 +67,9 @@ function getProductCategories() {
     return categories;
 }
 
-
-function getFilteredAndSortedProducts() { 
-    // INFO: Kopia så filter/sort inte muterar allProducts
-    let productsToShow = [...allProducts];
+function getFilteredAndSortedProducts() {
+    // INFO: sök först, sedan kategori-filter, sedan sortering
+    let productsToShow = [...getCatalogProducts()];
 
     if (activeCategories.length > 0) {
         productsToShow = productsToShow.filter((product) =>
@@ -76,6 +90,12 @@ function clearImagePreview() {
     selectedImageDataUrl = null;
     addProductImagePreview.src = "";
     addProductImagePreview.classList.remove("is-visible");
+}
+
+function updateBreadcrumbs() {
+    if (!breadcrumbCurrent) return;
+    // INFO: vanlig katalog → Products; sök → själva sökfrågan
+    breadcrumbCurrent.textContent = searchQuery || "Products";
 }
 
 function closeAddProductModal() {
@@ -138,6 +158,7 @@ function renderCategoryFilters() {
 function refreshCatalog() {
     renderCategoryFilters();
     renderProductGrid();
+    updateBreadcrumbs();
 }
 
 // FUNCTIONS (load)
