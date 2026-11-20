@@ -54,6 +54,16 @@ main {
 .back-to-shopping a:hover {
     text-decoration: underline;
 }
+
+.status-message {
+    padding-block: var(--space-md);
+    color: #666;
+}
+
+.status-message--error {
+    color: #b00020;
+}
+
 /* ----------------- NAVBAR ----------------- */
 .navbar {
     display: flex;

@@ -130,13 +130,15 @@ async function loadProducts() {
         allProducts = data.products;
         totalProducts = data.total;
     } else {
+        productsGrid.innerHTML = '<p class="status-message">Loading products...</p>';
         try {
             const newData = await fetchAllProducts();
             allProducts = newData.products;
             totalProducts = newData.total;
             saveProductsToLocalStorage(allProducts, totalProducts);
         } catch (error) {
-            productsGrid.innerHTML = "<p>Could not load products. Please try again later.</p>";
+            productsGrid.innerHTML =
+                '<p class="status-message status-message--error">Could not load products. Please try again later.</p>';
             return;
         }
     }
@@ -186,6 +188,11 @@ addProductForm.addEventListener("submit", async (event) => {
         description: formData.get("description"),
     };
 
+    const submitBtn = addProductForm.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Adding...";
+
     try {
         const createdProduct = await addNewProduct(product);
         allProducts.push(createdProduct);
@@ -195,6 +202,9 @@ addProductForm.addEventListener("submit", async (event) => {
         closeAddProductModal();
     } catch (error) {
         window.alert("Could not create product. Please try again.");
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
     }
 });
 

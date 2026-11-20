@@ -163,6 +163,7 @@ async function loadProduct() {
         return;
     }
 
+    productContainer.innerHTML = '<p class="status-message">Loading product...</p>';
     const localProduct = findProductInLocalStorage(productId);
 
     try {
@@ -177,7 +178,8 @@ async function loadProduct() {
         }
     } catch (error) {
         if (!localProduct) {
-            productContainer.innerHTML = "<p>Product not found.</p>";
+            productContainer.innerHTML =
+                '<p class="status-message status-message--error">Could not load product. Please try again later.</p>';
             return;
         }
         currentProduct = localProduct;
@@ -209,11 +211,16 @@ productContainer.addEventListener("click", async (event) => {
         const shouldDelete = window.confirm("Delete this product?");
         if (!shouldDelete) return;
 
+        deleteBtn.disabled = true;
+        deleteBtn.textContent = "Deleting...";
+
         try {
             await deleteProduct(currentProduct.id);
             removeProductFromLocalStorage(currentProduct.id);
             window.location.href = "products.html";
         } catch (error) {
+            deleteBtn.disabled = false;
+            deleteBtn.textContent = "Delete product";
             window.alert("Could not delete product. Please try again.");
         }
         return;
@@ -246,6 +253,11 @@ productContainer.addEventListener("submit", async (event) => {
         description: formData.get("description"),
     };
 
+    const saveBtn = event.target.querySelector("#save-edit-btn");
+    const originalLabel = saveBtn.textContent;
+    saveBtn.disabled = true;
+    saveBtn.textContent = "Saving...";
+
     try {
         const updatedProduct = await updateProduct(currentProduct.id, updatedFields);
         currentProduct = {
@@ -257,6 +269,8 @@ productContainer.addEventListener("submit", async (event) => {
         syncProductInLocalStorage(currentProduct);
         renderProduct();
     } catch (error) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = originalLabel;
         window.alert("Could not update product. Please try again.");
     }
 });
