@@ -123,8 +123,12 @@ function createProductCard(product) {
           <p>$${product.price}</p>
         </div>
         <div class="product-info-icons">
-          <button type="button" class="toggle-favorite-btn${isFavorite ? " active" : ""}">${isFavorite ? "♥" : "♡"}</button>
-          <button type="button" class="add-to-cart-btn">👜</button>
+          <button type="button" class="toggle-favorite-btn${isFavorite ? " active" : ""}" aria-label="${isFavorite ? "Remove from favorites" : "Add to favorites"}">
+            <img src="assets/icons/${isFavorite ? "heart-filled" : "heart"}.svg" alt="" width="18" height="18">
+          </button>
+          <button type="button" class="add-to-cart-btn" aria-label="Add to cart">
+            <img src="assets/icons/shopping-bag.svg" alt="" width="18" height="18">
+          </button>
         </div>
       </div>
     `;
@@ -310,7 +314,11 @@ productsGrid.addEventListener("click", (event) => {
         toggleFavorite(productId);
         const isFavorite = getFavorites().includes(productId);
         favBtn.classList.toggle("active", isFavorite);
-        favBtn.textContent = isFavorite ? "♥" : "♡";
+        favBtn.querySelector("img").src = `assets/icons/${isFavorite ? "heart-filled" : "heart"}.svg`;
+        favBtn.setAttribute(
+            "aria-label",
+            isFavorite ? "Remove from favorites" : "Add to favorites"
+        );
     }
 });
 

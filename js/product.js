@@ -94,9 +94,13 @@ function createProductDetail(product) {
             </form>
 
             <div class="product-details-actions" id="product-details-actions">
-                <button type="button" id="add-to-cart-btn" class="add-to-cart-btn">👜 Add to cart</button>
-                <button type="button" id="toggle-favorite-btn" class="toggle-favorite-btn${isFavorite ? " active" : ""}">
-                    ${isFavorite ? "♥" : "♡"}
+                <button type="button" id="add-to-cart-btn" class="add-to-cart-btn">
+                    <img src="assets/icons/shopping-bag-white.svg" alt="" width="18" height="18">
+                    <span>Add to cart</span>
+                </button>
+                <button type="button" id="toggle-favorite-btn" class="toggle-favorite-btn${isFavorite ? " active" : ""}" aria-label="${isFavorite ? "Remove from favorites" : "Save as favorite"}">
+                    <img src="assets/icons/${isFavorite ? "heart-filled" : "heart"}.svg" alt="" width="18" height="18">
+                    <span>Save as favorite</span>
                 </button>
             </div>
         </div>
@@ -222,7 +226,11 @@ productContainer.addEventListener("click", async (event) => {
         toggleFavorite(currentProduct.id);
         const isFavorite = getFavorites().includes(currentProduct.id);
         favBtn.classList.toggle("active", isFavorite);
-        favBtn.textContent = isFavorite ? "♥" : "♡";
+        favBtn.querySelector("img").src = `assets/icons/${isFavorite ? "heart-filled" : "heart"}.svg`;
+        favBtn.setAttribute(
+            "aria-label",
+            isFavorite ? "Remove from favorites" : "Save as favorite"
+        );
     }
 });
 
