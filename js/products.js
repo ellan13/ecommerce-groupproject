@@ -1,7 +1,14 @@
 // Produktkatalog: lista, filter, sortering och create.
 // IMPORT
 import { fetchAllProducts, addNewProduct } from "./api.js";
-import { saveProductsToLocalStorage, getProductsFromLocalStorage, addToCart, getFavorites, toggleFavorite } from "./storage.js";
+import {
+    saveProductsToLocalStorage,
+    saveProductToLocalStorage,
+    getProductsFromLocalStorage,
+    addToCart,
+    getFavorites,
+    toggleFavorite,
+} from "./storage.js";
 
 // DOM ELEMENTS
 const openFilterBtn = document.getElementById("open-filter-btn");
@@ -197,7 +204,7 @@ addProductForm.addEventListener("submit", async (event) => {
         const createdProduct = await addNewProduct(product);
         allProducts.push(createdProduct);
         totalProducts++;
-        saveProductsToLocalStorage(allProducts, totalProducts);
+        saveProductToLocalStorage(createdProduct);
         refreshCatalog();
         closeAddProductModal();
     } catch (error) {

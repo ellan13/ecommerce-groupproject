@@ -7,7 +7,7 @@ import {
     getFavorites,
     toggleFavorite,
     findProductInLocalStorage,
-    syncProductInLocalStorage,
+    saveProductToLocalStorage,
     removeProductFromLocalStorage,
 } from "./storage.js";
 
@@ -266,7 +266,7 @@ productContainer.addEventListener("submit", async (event) => {
             ...updatedFields,
         };
 
-        syncProductInLocalStorage(currentProduct);
+        saveProductToLocalStorage(currentProduct);
         renderProduct();
     } catch (error) {
         saveBtn.disabled = false;

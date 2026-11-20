@@ -117,8 +117,8 @@ export function saveProductsToLocalStorage(products, total) {
   localStorage.setItem(PRODUCTS_KEY, dataAsText);
 }
 
-// INFO: kan användas för create/update produkt lokalt
-export function syncProductInLocalStorage(product) {
+// INFO: sparar en produkt lokalt – lägger till om den är ny, uppdaterar om den finns
+export function saveProductToLocalStorage(product) {
   const data = readProductsData() ?? { products: [], total: 0 };
   const index = data.products.findIndex((item) => Number(item.id) === Number(product.id));
 
