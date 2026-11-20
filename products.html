@@ -85,7 +85,6 @@
         </section>
 
         <section class="pagination container">
-            <!-- TODO:Fixa denna typ sist, inte med sidor dock vill ha laddning när man scrollar ner (infinit scroll) -->
             <button type="button" id="prev-page-btn" class="prev-page-btn">Previous</button>
             <button type="button" id="next-page-btn" class="next-page-btn">Next</button>
         </section>
@@ -116,6 +115,11 @@
                 <label>
                     Description
                     <textarea name="description" rows="4"></textarea>
+                </label>
+                <label>
+                    Image
+                    <input type="file" name="image" id="add-product-image" accept="image/*" required>
+                    <img id="add-product-image-preview" class="product-image-preview" alt="">
                 </label>
                 <div class="product-form-actions">
                     <button type="submit" class="save-btn">Add product</button>

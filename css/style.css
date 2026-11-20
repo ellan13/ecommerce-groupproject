@@ -54,6 +54,16 @@ main {
 .back-to-shopping a:hover {
     text-decoration: underline;
 }
+
+.status-message {
+    padding-block: var(--space-md);
+    color: #666;
+}
+
+.status-message--error {
+    color: #b00020;
+}
+
 /* ----------------- NAVBAR ----------------- */
 .navbar {
     display: flex;
@@ -588,7 +598,6 @@ main {
 }
 
 /* ----------------- CREATE / EDIT FORMS ----------------- */
-/* TODO: Gör en gemensam styling för add och edit form, kanske att filtret kan vara med på något vänster där att knappar osv också är gemenssamt */
 
 .open-add-product-btn {
     position: fixed;
@@ -685,6 +694,19 @@ main {
     letter-spacing: normal;
 }
 
+.product-image-preview {
+    display: none;
+    width: 8rem;
+    height: 8rem;
+    margin-top: var(--space);
+    object-fit: cover;
+    border: 1px solid #e0e0e0;
+}
+
+.product-image-preview.is-visible {
+    display: block;
+}
+
 .product-form-actions {
     display: flex;
     flex-wrap: wrap;
@@ -721,6 +743,47 @@ main {
     color: #c00;
     font-size: 0.875rem;
     cursor: pointer;
+}
+
+/* ----------------- APP DIALOG (alert/confirm) ----------------- */
+.app-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.app-dialog {
+    width: min(100%, 22rem);
+    padding: var(--space-md);
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.app-dialog-message {
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    color: #000;
+}
+
+.app-dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    justify-content: flex-end;
+}
+
+.app-dialog-actions .save-btn,
+.app-dialog-actions .cancel-btn,
+.app-dialog-actions .delete-btn {
+    width: auto;
+    flex: 0 1 auto;
 }
 
 /* ----------------- CART PAGE ----------------- */

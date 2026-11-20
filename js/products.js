@@ -1,9 +1,15 @@
 // Produktkatalog: lista, filter, sortering och create.
-//Nästa gång: kolla todo och börja med product sidan (chatten öppen)
-
 // IMPORT
 import { fetchAllProducts, addNewProduct } from "./api.js";
-import { saveProductsToLocalStorage, getProductsFromLocalStorage, addToCart, getFavorites, toggleFavorite } from "./storage.js";
+import {
+    saveProductsToLocalStorage,
+    saveProductToLocalStorage,
+    getProductsFromLocalStorage,
+    addToCart,
+    getFavorites,
+    toggleFavorite,
+} from "./storage.js";
+import { showAlert } from "./dialog.js";
 
 // DOM ELEMENTS
 const openFilterBtn = document.getElementById("open-filter-btn");
@@ -20,6 +26,8 @@ const closeAddProductBtn = document.getElementById("close-add-product-btn");
 const cancelAddProductBtn = document.getElementById("cancel-add-product-btn");
 const addProductModal = document.getElementById("add-product-modal");
 const addProductForm = document.getElementById("add-product-form");
+const addProductImageInput = document.getElementById("add-product-image");
+const addProductImagePreview = document.getElementById("add-product-image-preview");
 
 const productsGrid = document.getElementById("products-grid");
 
@@ -27,6 +35,7 @@ const productsGrid = document.getElementById("products-grid");
 let allProducts = [];
 let activeCategories = [];
 let totalProducts = 0;
+let selectedImageDataUrl = null;
 
 // FUNCTIONS (helpers)
 function countProductsInCategory(category) {
@@ -44,7 +53,8 @@ function getProductCategories() {
 }
 
 
-function getFilteredAndSortedProducts() { // TODO: filtrera och sortera produkter lokalt, vilket kqnske är fel?
+function getFilteredAndSortedProducts() { 
+    // INFO: Kopia så filter/sort inte muterar allProducts
     let productsToShow = [...allProducts];
 
     if (activeCategories.length > 0) {
@@ -62,9 +72,16 @@ function getFilteredAndSortedProducts() { // TODO: filtrera och sortera produkte
     return productsToShow;
 }
 
+function clearImagePreview() {
+    selectedImageDataUrl = null;
+    addProductImagePreview.src = "";
+    addProductImagePreview.classList.remove("is-visible");
+}
+
 function closeAddProductModal() {
     addProductModal.style.display = "none";
     addProductForm.reset();
+    clearImagePreview();
 }
 
 // FUNCTIONS (render)
@@ -118,7 +135,7 @@ function renderCategoryFilters() {
 }
 
 
-function refreshCatalog() { // TODO: när själva produktlistan ändras (load / create (frågan är dock om det ska vara även för update eller delete från product.js?))
+function refreshCatalog() {
     renderCategoryFilters();
     renderProductGrid();
 }
@@ -131,10 +148,17 @@ async function loadProducts() {
         allProducts = data.products;
         totalProducts = data.total;
     } else {
-        const newData = await fetchAllProducts();
-        allProducts = newData.products;
-        totalProducts = newData.total;
-        saveProductsToLocalStorage(allProducts, totalProducts);
+        productsGrid.innerHTML = '<p class="status-message">Loading products...</p>';
+        try {
+            const newData = await fetchAllProducts();
+            allProducts = newData.products;
+            totalProducts = newData.total;
+            saveProductsToLocalStorage(allProducts, totalProducts);
+        } catch (error) {
+            productsGrid.innerHTML =
+                '<p class="status-message status-message--error">Could not load products. Please try again later.</p>';
+            return;
+        }
     }
 
     refreshCatalog();
@@ -152,10 +176,11 @@ closeFilterBtn.addEventListener("click", () => {
 applyFilterBtn.addEventListener("click", () => {
     filterModal.style.display = "none";
     const checked = filterModal.querySelectorAll("input[name='category']:checked");
+    // INFO: NodeList → Array så .map funkar
     activeCategories = [...checked].map((input) => input.value);
     activeFilterCount.textContent = activeCategories.length > 0 ? `(${activeCategories.length})` : "";
 
-    renderProductGrid(); // TODO:bara lokalt filter dvs ingen fetch, också fel?
+    renderProductGrid();
 });
 
 sortSelect.addEventListener("change", () => {
@@ -170,9 +195,26 @@ openAddProductBtn.addEventListener("click", () => {
 closeAddProductBtn.addEventListener("click", closeAddProductModal);
 cancelAddProductBtn.addEventListener("click", closeAddProductModal);
 
+addProductImageInput.addEventListener("change", () => {
+    const file = addProductImageInput.files?.[0];
+    if (!file) {
+        clearImagePreview();
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        selectedImageDataUrl = reader.result;
+        addProductImagePreview.src = selectedImageDataUrl;
+        addProductImagePreview.classList.add("is-visible");
+    };
+    reader.readAsDataURL(file);
+});
+
 addProductForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(addProductForm);
+    // INFO: skicka bara textfält till API – bilder (data-URL) ger 403 hos DummyJSON
     const product = {
         title: formData.get("title"),
         brand: formData.get("brand"),
@@ -180,12 +222,32 @@ addProductForm.addEventListener("submit", async (event) => {
         category: formData.get("category"),
         description: formData.get("description"),
     };
-    const createdProduct = await addNewProduct(product);
-    allProducts.push(createdProduct);
-    totalProducts++;
-    saveProductsToLocalStorage(allProducts, totalProducts);
-    refreshCatalog();
-    closeAddProductModal();
+
+    const submitBtn = addProductForm.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Adding...";
+
+    try {
+        const createdProduct = await addNewProduct(product);
+        const productToSave = selectedImageDataUrl
+            ? {
+                  ...createdProduct,
+                  thumbnail: selectedImageDataUrl,
+                  images: [selectedImageDataUrl],
+              }
+            : createdProduct;
+        allProducts.push(productToSave);
+        totalProducts++;
+        saveProductToLocalStorage(productToSave);
+        refreshCatalog();
+        closeAddProductModal();
+    } catch (error) {
+        showAlert("Could not create product. Please try again.");
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+    }
 });
 
 // EVENTS (product card actions)
@@ -201,12 +263,11 @@ productsGrid.addEventListener("click", (event) => {
 
     if (cartBtn) {
         addToCart(productId);
-        //TODO: uppdatera UI så att varukorgen uppdateras med produkten
     } else if (favBtn) {
         toggleFavorite(productId);
-        favBtn.classList.toggle("active");
-        //TODO: ha iconer dvs två svg filer för fyllt och tomt hjärta
-        favBtn.textContent = favBtn.classList.contains("active") ? "♥" : "♡";
+        const isFavorite = getFavorites().includes(productId);
+        favBtn.classList.toggle("active", isFavorite);
+        favBtn.textContent = isFavorite ? "♥" : "♡";
     }
 });
 
