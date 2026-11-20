@@ -35,7 +35,7 @@ export function removeFromCart(productId) {
 export function setQuantityInCart(productId, quantity) {
   const newQuantity = Number(quantity);
 
-  // TODO: kolla isFinie funktionen. NNär skulle detta hända? Detta betyder iaf att amount inte är ett tal(är ogiltigt) eller 0 så ta bort raden
+  // INFO: ogiltigt antal eller ≤ 0 → ta bort raden
   if (!Number.isFinite(newQuantity) || newQuantity <= 0) {
     removeFromCart(productId);
     return;
@@ -118,7 +118,6 @@ export function saveProductsToLocalStorage(products, total) {
 }
 
 // INFO: kan användas för create/update produkt lokalt
-// TODO: kolla om denna kan användas för create
 export function syncProductInLocalStorage(product) {
   const data = readProductsData() ?? { products: [], total: 0 };
   const index = data.products.findIndex((item) => Number(item.id) === Number(product.id));

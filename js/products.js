@@ -1,6 +1,4 @@
 // Produktkatalog: lista, filter, sortering och create.
-//TODO: Nästa gång (något av dessa börjar nog med felhanteringen t.ex  vill inte ha alaert eller confirm bara om det är styleade snygga, sedan product): felhantering sammarbete med api.js men fixa denna. skriv om favorites igen från chatten, kolla todo och börja med product sidan (chatten öppen), använd images till fler bilder.
-
 // IMPORT
 import { fetchAllProducts, addNewProduct } from "./api.js";
 import { saveProductsToLocalStorage, getProductsFromLocalStorage, addToCart, getFavorites, toggleFavorite } from "./storage.js";
@@ -119,7 +117,7 @@ function renderCategoryFilters() {
 }
 
 
-function refreshCatalog() { // TODO: när själva produktlistan ändras (load / create (frågan är dock om det ska vara även för update eller delete från product.js?))
+function refreshCatalog() {
     renderCategoryFilters();
     renderProductGrid();
 }
@@ -213,12 +211,10 @@ productsGrid.addEventListener("click", (event) => {
 
     if (cartBtn) {
         addToCart(productId);
-        //TODO: uppdatera UI så att varukorgen uppdateras med produkten
     } else if (favBtn) {
         toggleFavorite(productId);
         const isFavorite = getFavorites().includes(productId);
         favBtn.classList.toggle("active", isFavorite);
-        //TODO: ha iconer dvs två svg filer för fyllt och tomt hjärta
         favBtn.textContent = isFavorite ? "♥" : "♡";
     }
 });

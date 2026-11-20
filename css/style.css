@@ -588,7 +588,6 @@ main {
 }
 
 /* ----------------- CREATE / EDIT FORMS ----------------- */
-/* TODO: Gör en gemensam styling för add och edit form, kanske att filtret kan vara med på något vänster där att knappar osv också är gemenssamt */
 
 .open-add-product-btn {
     position: fixed;
