@@ -110,8 +110,6 @@ function createProductCard(product) {
     const card = document.createElement("article");
     card.className = "product-card";
     card.dataset.id = product.id;
-    card.dataset.category = product.category;
-    card.dataset.price = product.price;
     card.innerHTML = `
       <a href="product.html?id=${product.id}">
         <img src="${product.thumbnail ?? ""}" alt="${product.title}">
