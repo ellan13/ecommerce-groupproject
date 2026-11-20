@@ -31,11 +31,14 @@ const addProductImagePreview = document.getElementById("add-product-image-previe
 
 const productsGrid = document.getElementById("products-grid");
 const breadcrumbCurrent = document.getElementById("breadcrumb-current");
+const loadMoreBtn = document.getElementById("load-more-btn");
 
 // VARIABLES
+const PRODUCTS_PER_LOAD = 20; // hur många kort som visas / läggs till per "Load more"
 let allProducts = [];
 let activeCategories = [];
 let totalProducts = 0;
+let shownCount = PRODUCTS_PER_LOAD; // antal produkter som syns just nu
 let selectedImageDataUrl = null;
 // INFO: sök från meny → products.html?q=... (Alex länkar hit). Browse all = ingen q.
 const searchQuery = (new URLSearchParams(window.location.search).get("q") ?? "").trim();
@@ -129,10 +132,18 @@ function createProductCard(product) {
 }
 
 function renderProductGrid() {
+    const matchingProducts = getFilteredAndSortedProducts();
+    // INFO: slice(start, end) = ta ut en bit av listan. Ex: 20 → index 0–19
+    const productsToShow = matchingProducts.slice(0, shownCount);
+
     productsGrid.innerHTML = "";
-    getFilteredAndSortedProducts().forEach((product) => {
+    productsToShow.forEach((product) => {
         productsGrid.appendChild(createProductCard(product));
     });
+
+    // INFO: knappen syns bara om det finns fler att visa
+    const hasMoreToShow = shownCount < matchingProducts.length;
+    loadMoreBtn.hidden = !hasMoreToShow;
 }
 
 function renderCategoryFilters() {
@@ -154,6 +165,7 @@ function renderCategoryFilters() {
 
 
 function refreshCatalog() {
+    shownCount = PRODUCTS_PER_LOAD; // börja om från första batchen
     renderCategoryFilters();
     renderProductGrid();
     updateBreadcrumbs();
@@ -161,17 +173,21 @@ function refreshCatalog() {
 
 // FUNCTIONS (load)
 async function loadProducts() {
-    const data = getProductsFromLocalStorage();
+    // INFO: samma idé som tidigare – först localStorage, annars API
+    const saved = getProductsFromLocalStorage();
+    const hasAllProductsSaved = saved && saved.products.length >= saved.total;
 
-    if (data) {
-        allProducts = data.products;
-        totalProducts = data.total;
+    if (hasAllProductsSaved) {
+        allProducts = saved.products;
+        totalProducts = saved.total;
     } else {
+        // INFO: saknas sparade produkter, eller bara en del (t.ex. gamla 40) → hämta från API
         productsGrid.innerHTML = '<p class="status-message">Loading products...</p>';
+        loadMoreBtn.hidden = true;
         try {
-            const newData = await fetchAllProducts();
-            allProducts = newData.products;
-            totalProducts = newData.total;
+            const fromApi = await fetchAllProducts();
+            allProducts = fromApi.products;
+            totalProducts = fromApi.total;
             saveProductsToLocalStorage(allProducts, totalProducts);
         } catch (error) {
             productsGrid.innerHTML =
@@ -199,10 +215,18 @@ applyFilterBtn.addEventListener("click", () => {
     activeCategories = [...checked].map((input) => input.value);
     activeFilterCount.textContent = activeCategories.length > 0 ? `(${activeCategories.length})` : "";
 
+    shownCount = PRODUCTS_PER_LOAD;
     renderProductGrid();
 });
 
 sortSelect.addEventListener("change", () => {
+    shownCount = PRODUCTS_PER_LOAD;
+    renderProductGrid();
+});
+
+// INFO: visa 20 till utan att byta sida
+loadMoreBtn.addEventListener("click", () => {
+    shownCount += PRODUCTS_PER_LOAD;
     renderProductGrid();
 });
 

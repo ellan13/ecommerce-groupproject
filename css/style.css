@@ -344,6 +344,29 @@ main {
     }
 }
 
+.load-more {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-md) 0 var(--space-lg);
+}
+
+.load-more-btn {
+    padding: var(--space-sm) var(--space-lg);
+    border: 1px solid #000;
+    background: #fff;
+    color: #000;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.load-more-btn:hover {
+    background: #000;
+    color: #fff;
+}
+
 .filter-modal {
     display: none;
     position: fixed;
