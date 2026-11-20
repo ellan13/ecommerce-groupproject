@@ -1,4 +1,4 @@
-@import url("https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&display=swap");
 
 *,
 *::before,
@@ -15,7 +15,7 @@
     --space-md: calc(var(--space) * 8);
     --space-lg: calc(var(--space) * 16);
     --space-xl: calc(var(--space) * 20);
-    --font-sans: "Satoshi", system-ui, sans-serif;
+    --font-sans: "Figtree", system-ui, sans-serif;
     --color-text: #1a1a1a;
     --color-icon-bg: #f0f0f0;
 }
@@ -411,11 +411,13 @@ main {
     flex-direction: column;
     gap: var(--space-sm);
     z-index: 100;
+    overflow: hidden;
 }
 
 .filter-header {
     display: flex;
     justify-content: center;
+    flex-shrink: 0;
     padding-top: var(--space-md);
     padding-bottom: var(--space-sm);
 }
@@ -435,6 +437,13 @@ main {
     font-size: 1rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
+}
+
+.filter-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: var(--space-sm);
 }
 
 .filter-content h3 {
@@ -472,13 +481,15 @@ main {
 
 .category-count {
     margin-left: auto;
+    padding-right: var(--space-sm);
     font-size: 0.875rem;
     color: #666;
 }
 
 .filter-footer {
-    margin-top: auto;
-    padding-top: var(--space-md);
+    flex-shrink: 0;
+    padding-top: var(--space-sm);
+    padding-bottom: var(--space-sm);
 }
 
 .apply-filter-btn {
