@@ -3,14 +3,14 @@
 // Först och främst måste vi se till att varje rad har data-id och ett input med aktuellt antal.
 
 // plus
-// setQuantity(productId, currentQuantity + 1);
+setQuantityInCart(productId, currentQuantity + 1);
 
 // updateTotalPrice();
 // minus
-// setQuantity(productId, currentQuantity - 1);
+setQuantityInCart(productId, currentQuantity - 1);
 
 // användaren skriver "3" i fältet
-// setQuantity(productId, input.value);
+setQuantityInCart(productId, input.value);
 
 // "ta bort"-ikon
 // removeFromCart(productId);
