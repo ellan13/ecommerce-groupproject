@@ -735,14 +735,6 @@ main {
     border-collapse: collapse;
 }
 
-/* Text för tom varukorg */
-.cart-table .cart-empty {
-    padding: var(--space-md) var(--space-sm);
-    text-align: center;
-    font-size: 0.875rem;
-    color: #666;
-}
-
 /* Kolumnrubriker */
 .cart-table th {
     padding: var(--space-sm) var(--space);
@@ -778,6 +770,14 @@ main {
 .cart-table td:last-child {
     padding-right: 0;
     text-align: right;
+}
+
+/* Text för tom varukorg */
+.cart-table td.cart-empty {
+    padding: var(--space-md) var(--space-sm);
+    text-align: center;
+    font-size: 0.875rem;
+    color: #666;
 }
 
 /* Produktcellerna */
