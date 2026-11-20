@@ -10,6 +10,7 @@ import {
     saveProductToLocalStorage,
     removeProductFromLocalStorage,
 } from "./storage.js";
+import { showAlert, showConfirm } from "./dialog.js";
 
 // DOM ELEMENTS
 const productId = Number(new URLSearchParams(location.search).get("id"));
@@ -208,7 +209,7 @@ productContainer.addEventListener("click", async (event) => {
     }
 
     if (deleteBtn) {
-        const shouldDelete = window.confirm("Delete this product?");
+        const shouldDelete = await showConfirm("Delete this product?");
         if (!shouldDelete) return;
 
         deleteBtn.disabled = true;
@@ -221,7 +222,7 @@ productContainer.addEventListener("click", async (event) => {
         } catch (error) {
             deleteBtn.disabled = false;
             deleteBtn.textContent = "Delete product";
-            window.alert("Could not delete product. Please try again.");
+            showAlert("Could not delete product. Please try again.");
         }
         return;
     }
@@ -271,7 +272,7 @@ productContainer.addEventListener("submit", async (event) => {
     } catch (error) {
         saveBtn.disabled = false;
         saveBtn.textContent = originalLabel;
-        window.alert("Could not update product. Please try again.");
+        showAlert("Could not update product. Please try again.");
     }
 });
 

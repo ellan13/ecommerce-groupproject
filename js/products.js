@@ -9,6 +9,7 @@ import {
     getFavorites,
     toggleFavorite,
 } from "./storage.js";
+import { showAlert } from "./dialog.js";
 
 // DOM ELEMENTS
 const openFilterBtn = document.getElementById("open-filter-btn");
@@ -242,7 +243,7 @@ addProductForm.addEventListener("submit", async (event) => {
         refreshCatalog();
         closeAddProductModal();
     } catch (error) {
-        window.alert("Could not create product. Please try again.");
+        showAlert("Could not create product. Please try again.");
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = originalLabel;
