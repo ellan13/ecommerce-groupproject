@@ -31,18 +31,6 @@ function formatReviewDate(dateText) {
     return new Date(dateText).toLocaleDateString("sv-SE");
 }
 
-function showViewMode() {
-    const editForm = document.getElementById("edit-product-form");
-    const productView = document.getElementById("product-view");
-    const editBtn = document.getElementById("edit-product-btn");
-    const actions = document.getElementById("product-details-actions");
-
-    editForm.style.display = "none";
-    productView.style.display = "flex";
-    editBtn.style.display = "";
-    actions.style.display = "";
-}
-
 function showEditMode() {
     const editForm = document.getElementById("edit-product-form");
     const productView = document.getElementById("product-view");
@@ -62,8 +50,6 @@ function createProductDetail(product) {
     article.className = "product";
     article.id = "product";
     article.dataset.id = product.id;
-    article.dataset.category = product.category;
-    article.dataset.price = product.price;
 
     article.innerHTML = `
         <img src="${product.thumbnail ?? product.images?.[0] ?? ""}" alt="${product.title ?? ""}">
