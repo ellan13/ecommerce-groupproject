@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&display=swap");
+
 *,
 *::before,
 *::after {
@@ -13,6 +15,9 @@
     --space-md: calc(var(--space) * 8);
     --space-lg: calc(var(--space) * 16);
     --space-xl: calc(var(--space) * 20);
+    --font-sans: "Figtree", system-ui, sans-serif;
+    --color-text: #1a1a1a;
+    --color-icon-bg: #f0f0f0;
 }
 
 /* ----------------- GENERAL ----------------- */
@@ -20,6 +25,15 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    font-family: var(--font-sans);
+    color: var(--color-text);
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
 }
 
 
@@ -90,9 +104,13 @@ main {
 }
 
 .nav-right a {
-    color: #000;
+    color: inherit;
     text-decoration: none;
-    font-size: 1.25rem;
+}
+
+.nav-right a img {
+    width: 1.25rem;
+    height: 1.25rem;
 }
 
 .logo {
@@ -222,7 +240,7 @@ main {
     text-transform: uppercase;
 }
 
-/* Grid för att visa produkter på startsidan. */ 
+/* Grid för att visa produkter på startsidan. */
 
 .home-grid {
     display: grid;
@@ -239,6 +257,7 @@ main {
         font-size: 2.5rem;
     }
 }
+
 /* ----------------- PRODUCTS PAGE ----------------- */
 
 .sort-filter-wrapper {
@@ -306,6 +325,8 @@ main {
 .product-info a {
     text-decoration: none;
     font-size: 0.875rem;
+    font-weight: 500;
+    color: inherit;
 }
 
 .product-info p {
@@ -324,11 +345,26 @@ main {
 }
 
 .product-info-icons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
     border: none;
-    background: none;
-    padding: var(--space);
-    font-size: 1rem;
+    background: var(--color-icon-bg);
     cursor: pointer;
+}
+
+.product-info-icons img {
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+
+.product-info-icons .add-to-cart-btn img {
+    width: 1rem;
+    height: 1rem;
 }
 
 @media (min-width: 768px) {
@@ -344,6 +380,29 @@ main {
     }
 }
 
+.load-more {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-md) 0 var(--space-lg);
+}
+
+.load-more-btn {
+    padding: var(--space-sm) var(--space-lg);
+    border: 1px solid #000;
+    background: #fff;
+    color: #000;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.load-more-btn:hover {
+    background: #000;
+    color: #fff;
+}
+
 .filter-modal {
     display: none;
     position: fixed;
@@ -353,11 +412,13 @@ main {
     flex-direction: column;
     gap: var(--space-sm);
     z-index: 100;
+    overflow: hidden;
 }
 
 .filter-header {
     display: flex;
     justify-content: center;
+    flex-shrink: 0;
     padding-top: var(--space-md);
     padding-bottom: var(--space-sm);
 }
@@ -377,6 +438,13 @@ main {
     font-size: 1rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
+}
+
+.filter-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: var(--space-sm);
 }
 
 .filter-content h3 {
@@ -414,13 +482,15 @@ main {
 
 .category-count {
     margin-left: auto;
+    padding-right: var(--space-sm);
     font-size: 0.875rem;
     color: #666;
 }
 
 .filter-footer {
-    margin-top: auto;
-    padding-top: var(--space-md);
+    flex-shrink: 0;
+    padding-top: var(--space-sm);
+    padding-bottom: var(--space-sm);
 }
 
 .apply-filter-btn {
@@ -447,11 +517,44 @@ main {
     padding-bottom: var(--space-md);
 }
 
-.product>img {
+.product-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.product-main-image {
     width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
     background: #f0f0f0;
+}
+
+.product-thumbnails {
+    display: flex;
+    gap: var(--space-sm);
+    overflow-x: auto;
+}
+
+.product-thumbnail {
+    flex-shrink: 0;
+    width: 4.5rem;
+    height: 4.5rem;
+    padding: 0;
+    border: 1px solid transparent;
+    background: #f0f0f0;
+    cursor: pointer;
+}
+
+.product-thumbnail img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-thumbnail.is-active {
+    border-color: #000;
 }
 
 .product-details {
@@ -468,7 +571,7 @@ main {
 
 .product h1 {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .product .brand {
@@ -482,6 +585,12 @@ main {
     font-size: 1.125rem;
     font-weight: 600;
     color: #000;
+}
+
+.product .stock {
+    margin-top: 0;
+    font-size: 0.875rem;
+    color: #666;
 }
 
 .product .category {
@@ -503,35 +612,41 @@ main {
 
 .product-details-actions {
     display: flex;
-    align-items: center;
     gap: var(--space-sm);
 }
 
-.add-to-cart-btn {
+.product-details-actions button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
     flex: 1;
     padding: var(--space-sm) var(--space-md);
     border: none;
-    background: #000;
-    color: #fff;
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     cursor: pointer;
 }
 
-.toggle-favorite-btn {
-    border: 1px solid #000;
-    background: none;
-    width: 2.75rem;
-    height: 2.75rem;
-    font-size: 1.25rem;
-    cursor: pointer;
+.product-details-actions button img {
+    width: 1.125rem;
+    height: 1.125rem;
 }
 
-.toggle-favorite-btn.active {
-    color: #ff0000;
-    font-size: 1.5rem;
+.product-details-actions .add-to-cart-btn {
+    background: #000;
+    color: #fff;
+}
+
+.product-details-actions .add-to-cart-btn img {
+    width: 1rem;
+    height: 1rem;
+}
+
+.product-details-actions .toggle-favorite-btn {
+    background: var(--color-icon-bg);
 }
 
 @media (min-width: 768px) {
@@ -542,8 +657,13 @@ main {
         align-items: start;
     }
 
-    .product>img {
+    .product-main-image {
         aspect-ratio: 3 / 4;
+    }
+
+    .product-thumbnail {
+        width: 5rem;
+        height: 5rem;
     }
 }
 
@@ -652,7 +772,9 @@ main {
 }
 
 
-.edit-product-btn, .remove-product-btn, .go-back-link {
+.edit-product-btn,
+.remove-product-btn,
+.go-back-link {
     align-self: flex-end;
     border: none;
     background: none;
@@ -915,7 +1037,7 @@ main {
     background-color: #333;
 }
 
-#checkout-button + .back-to-shopping {
+#checkout-button+.back-to-shopping {
     justify-content: center;
     margin-top: var(--space-sm);
     text-decoration: underline;

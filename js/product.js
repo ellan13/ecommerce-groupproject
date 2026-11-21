@@ -46,13 +46,28 @@ function showEditMode() {
 // FUNCTIONS (render)
 function createProductDetail(product) {
     const isFavorite = getFavorites().includes(product.id);
+    // INFO: images[] från API, annars thumbnail. Thumbnails visas bara om det finns fler än 1.
+    const images = product.images?.length ? product.images : [product.thumbnail];
+    const thumbnailsHtml = images.length > 1
+        ? `<div class="product-thumbnails">
+            ${images.map((src, i) => `
+              <button type="button" class="product-thumbnail${i === 0 ? " is-active" : ""}" data-src="${src}">
+                <img src="${src}" alt="">
+              </button>
+            `).join("")}
+          </div>`
+        : "";
+
     const article = document.createElement("article");
     article.className = "product";
     article.id = "product";
     article.dataset.id = product.id;
 
     article.innerHTML = `
-        <img src="${product.thumbnail ?? product.images?.[0] ?? ""}" alt="${product.title ?? ""}">
+        <div class="product-gallery">
+            <img id="product-main-image" class="product-main-image" src="${images[0] ?? ""}" alt="${product.title ?? ""}">
+            ${thumbnailsHtml}
+        </div>
 
         <div class="product-details">
             <button type="button" id="edit-product-btn" class="edit-product-btn">Edit</button>
@@ -61,6 +76,9 @@ function createProductDetail(product) {
                 <h1>${product.title ?? ""}</h1>
                 <p class="brand">${product.brand ?? ""}</p>
                 <p class="price">$${product.price}</p>
+                ${product.stock != null
+                    ? `<p class="stock">${product.availabilityStatus ?? "In Stock"} · ${product.stock} left</p>`
+                    : ""}
                 <span class="category">${product.category ?? ""}</span>
                 <p class="description">${product.description ?? ""}</p>
             </div>
@@ -94,9 +112,13 @@ function createProductDetail(product) {
             </form>
 
             <div class="product-details-actions" id="product-details-actions">
-                <button type="button" id="add-to-cart-btn" class="add-to-cart-btn">👜 Add to cart</button>
-                <button type="button" id="toggle-favorite-btn" class="toggle-favorite-btn${isFavorite ? " active" : ""}">
-                    ${isFavorite ? "♥" : "♡"}
+                <button type="button" id="add-to-cart-btn" class="add-to-cart-btn">
+                    <img src="assets/icons/shopping-bag-white.svg" alt="" width="18" height="18">
+                    <span>Add to cart</span>
+                </button>
+                <button type="button" id="toggle-favorite-btn" class="toggle-favorite-btn${isFavorite ? " active" : ""}" aria-label="${isFavorite ? "Remove from favorites" : "Save as favorite"}">
+                    <img src="assets/icons/${isFavorite ? "heart-filled" : "heart"}.svg" alt="" width="18" height="18">
+                    <span>${isFavorite ? "Remove from favorites" : "Save as favorite"}</span>
                 </button>
             </div>
         </div>
@@ -178,11 +200,20 @@ async function loadProduct() {
 
 // EVENTS (delegation – innehållet byggs om vid varje render)
 productContainer.addEventListener("click", async (event) => {
+    const thumbnailBtn = event.target.closest(".product-thumbnail");
     const editBtn = event.target.closest("#edit-product-btn");
     const cancelBtn = event.target.closest("#cancel-edit-btn");
     const deleteBtn = event.target.closest("#delete-product-btn");
     const cartBtn = event.target.closest("#add-to-cart-btn");
     const favBtn = event.target.closest("#toggle-favorite-btn");
+
+    if (thumbnailBtn) {
+        document.getElementById("product-main-image").src = thumbnailBtn.dataset.src;
+        productContainer.querySelectorAll(".product-thumbnail").forEach((btn) => {
+            btn.classList.toggle("is-active", btn === thumbnailBtn);
+        });
+        return;
+    }
 
     if (editBtn) {
         showEditMode();
@@ -221,8 +252,11 @@ productContainer.addEventListener("click", async (event) => {
     if (favBtn) {
         toggleFavorite(currentProduct.id);
         const isFavorite = getFavorites().includes(currentProduct.id);
+        const favoriteLabel = isFavorite ? "Remove from favorites" : "Save as favorite";
         favBtn.classList.toggle("active", isFavorite);
-        favBtn.textContent = isFavorite ? "♥" : "♡";
+        favBtn.querySelector("img").src = `assets/icons/${isFavorite ? "heart-filled" : "heart"}.svg`;
+        favBtn.querySelector("span").textContent = favoriteLabel;
+        favBtn.setAttribute("aria-label", favoriteLabel);
     }
 });
 

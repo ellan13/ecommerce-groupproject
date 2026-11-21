@@ -1,12 +1,10 @@
 // Fetch-funktioner för produkter (GET, POST, PUT, DELETE) mot DummyJSON.
 
 const BASE_URL = "https://dummyjson.com/products";
-const limit = 40;
-const skip = 0;
 const select = "id,title,price,thumbnail,category";
 
 export async function fetchAllProducts() {
-    const response = await fetch(`${BASE_URL}?limit=${limit}&skip=${skip}&select=${select}`);
+    const response = await fetch(`${BASE_URL}?limit=0&select=${select}`);
     if (!response.ok) {
         throw new Error(`Failed to fetch products (${response.status})`);
     }
