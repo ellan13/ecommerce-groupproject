@@ -195,6 +195,10 @@ checkoutButton.addEventListener("click", () => {
     cartEmpty.hidden = false;
 
     checkoutButton.disabled = true;
+
+    setTimeout(() => {
+        cartEmpty.querySelector("td").textContent = "Your cart is empty";
+      }, 4000);
 })
 
 
