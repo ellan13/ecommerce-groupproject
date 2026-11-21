@@ -17,6 +17,7 @@
 
 import { getCart, setQuantityInCart, removeFromCart, clearCart } from "./storage.js";
 import { fetchSingleProduct } from "./api.js";
+import { updateCartBadge } from "./navigation.js";
 
 const cartItems = document.querySelector("#cart-items");
 const cartTotal = document.querySelector("#cart-total");
@@ -126,6 +127,7 @@ try{
 
             row.dataset.total = product.price * item.quantity;
             updateTotalPrice();
+            updateCartBadge();
         });
 
         // Minska antal
@@ -139,6 +141,7 @@ try{
 
                 row.dataset.total = product.price * item.quantity;
                 updateTotalPrice();
+                updateCartBadge();
             }
         })
 
@@ -147,6 +150,7 @@ try{
             removeFromCart(item.id);
             row.remove();
             updateTotalPrice();
+            updateCartBadge();
 
             cartEmpty.hidden = getCart().length > 0;
         });
@@ -195,6 +199,7 @@ checkoutButton.addEventListener("click", () => {
     cartEmpty.hidden = false;
 
     checkoutButton.disabled = true;
+    updateCartBadge();
 
     setTimeout(() => {
         cartEmpty.querySelector("td").textContent = "Your cart is empty";

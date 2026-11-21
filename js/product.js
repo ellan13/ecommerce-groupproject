@@ -11,6 +11,7 @@ import {
     removeProductFromLocalStorage,
 } from "./storage.js";
 import { showAlert, showConfirm } from "./dialog.js";
+import { updateCartBadge } from "./navigation.js";
 
 // DOM ELEMENTS
 const productId = Number(new URLSearchParams(location.search).get("id"));
@@ -246,6 +247,7 @@ productContainer.addEventListener("click", async (event) => {
 
     if (cartBtn) {
         addToCart(currentProduct.id);
+        updateCartBadge();
         return;
     }
 

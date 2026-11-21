@@ -10,6 +10,7 @@ import {
     toggleFavorite,
 } from "./storage.js";
 import { showAlert } from "./dialog.js";
+import { updateCartBadge } from "./navigation.js";
 
 // DOM ELEMENTS
 const openFilterBtn = document.getElementById("open-filter-btn");
@@ -317,6 +318,7 @@ productsGrid.addEventListener("click", (event) => {
 
     if (cartBtn) {
         addToCart(productId);
+        updateCartBadge();
     } else if (favBtn) {
         toggleFavorite(productId);
         const isFavorite = getFavorites().includes(productId);

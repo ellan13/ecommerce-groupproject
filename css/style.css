@@ -113,6 +113,23 @@ main {
     height: 1.25rem;
 }
 
+.cart-link {
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -0.35rem;
+    right: -0.45rem;
+    min-width: 1rem;
+    padding: 0 0.25rem;
+    border-radius: 999px;
+    background: #111;
+    color: #fff;
+    font-size: 0.625rem;
+    text-align: center;
+}
+
 .logo {
     color: #000;
     text-decoration: none;
