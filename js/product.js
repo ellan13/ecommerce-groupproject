@@ -10,7 +10,7 @@ import {
     saveProductToLocalStorage,
     removeProductFromLocalStorage,
 } from "./storage.js";
-import { showAlert, showConfirm } from "./dialog.js";
+import { showAlert, showConfirm, showToast } from "./dialog.js";
 import { updateCartBadge } from "./navigation.js";
 
 // DOM ELEMENTS
@@ -248,6 +248,7 @@ productContainer.addEventListener("click", async (event) => {
     if (cartBtn) {
         addToCart(currentProduct.id);
         updateCartBadge();
+        showToast(`${currentProduct.title ?? "Product"} added to cart`);
         return;
     }
 

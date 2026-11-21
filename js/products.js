@@ -9,7 +9,7 @@ import {
     getFavorites,
     toggleFavorite,
 } from "./storage.js";
-import { showAlert } from "./dialog.js";
+import { showAlert, showToast } from "./dialog.js";
 import { updateCartBadge } from "./navigation.js";
 
 // DOM ELEMENTS
@@ -319,6 +319,9 @@ productsGrid.addEventListener("click", (event) => {
     if (cartBtn) {
         addToCart(productId);
         updateCartBadge();
+        const product = allProducts.find((item) => item.id === productId);
+        const title = product?.title ?? "Product";
+        showToast(`${title} added to cart`);
     } else if (favBtn) {
         toggleFavorite(productId);
         const isFavorite = getFavorites().includes(productId);

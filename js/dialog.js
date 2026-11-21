@@ -1,4 +1,28 @@
 // Egna modaler istället för window.alert och window.confirm.
+// Toast: kort feedback som försvinner av sig själv (setTimeout).
+
+let toastHideTimer;
+
+// INFO: visar en ruta några sekunder, sedan tas den bort
+export function showToast(message, durationMs = 3000) {
+    let toast = document.getElementById("app-toast");
+
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "app-toast";
+        toast.className = "app-toast";
+        toast.setAttribute("role", "status");
+        document.body.appendChild(toast);
+    }
+
+    toast.textContent = message;
+    toast.classList.add("is-visible");
+
+    clearTimeout(toastHideTimer);
+    toastHideTimer = setTimeout(() => {
+        toast.classList.remove("is-visible");
+    }, durationMs);
+}
 
 // INFO: returnerar en Promise så vi kan använda await (vänta tills användaren klickar)
 export function showAlert(message) {
