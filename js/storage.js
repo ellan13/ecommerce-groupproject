@@ -1,5 +1,5 @@
 // LocalStorage-hjälpare för favoriter, varukorg och Create/Update/Delete-ändringar.
-const PRODUCTS_KEY = "productsCache";
+const PRODUCTS_KEY = "products";
 const CART_KEY = "cart";
 const FAVORITES_KEY = "favorites";
 const MAX_AGE_MS = 1000 * 60 * 30; // 30 min
@@ -35,7 +35,7 @@ export function clearCart() {
   localStorage.setItem(CART_KEY, JSON.stringify([]));
 }
 //Ella
-export function setQuantity(productId, quantity) {
+export function setQuantityInCart(productId, quantity) {
   const newQuantity = Number(quantity);
 
   // TODO: kolla isFinie funktionen. NNär skulle detta hända? Detta betyder iaf att amount inte är ett tal(är ogiltigt) eller 0 så ta bort raden
@@ -80,20 +80,24 @@ export function toggleFavorite(productId) {
   }
 }
 
-export function getCachedProducts() {
-  const raw = localStorage.getItem(PRODUCTS_KEY);
-  if (!raw) return null;
+export function getProductsFromLocalStorage() {
+  const dataAsText = localStorage.getItem(PRODUCTS_KEY);
+  if (!dataAsText) return null;
 
-  const cache = JSON.parse(raw);
-  const isFresh = Date.now() - cache.savedAt < MAX_AGE_MS;
+  const data = JSON.parse(dataAsText);
+
+  const isFresh = Date.now() - data.savedAt < MAX_AGE_MS;
   if (!isFresh) return null;
 
-  return { products: cache.products, total: cache.total };
+  return { products: data.products, total: data.total };
 }
 
-export function saveProducts(products, total) {
-  localStorage.setItem(
-    PRODUCTS_KEY,
-    JSON.stringify({ savedAt: Date.now(), products, total })
-  );
+export function saveProductsToLocalStorage(products, total) {
+  const dataAsText = JSON.stringify({
+    savedAt: Date.now(),
+    products,
+    total,
+  });
+
+  localStorage.setItem(PRODUCTS_KEY, dataAsText);
 }

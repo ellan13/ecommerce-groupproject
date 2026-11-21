@@ -643,7 +643,7 @@ main {
 }
 
 
-.edit-product-btn {
+.edit-product-btn, .remove-product-btn, .go-back-link {
     align-self: flex-end;
     border: none;
     background: none;
@@ -907,17 +907,6 @@ main {
 /* Namn och Remove-knapp */
 .favorite-info p {
     font-weight: 600;
-}
-
-.favorite-info button {
-    margin-top: var(--space);
-    padding: var(--space) 0;
-    border: none;
-    background: none;
-    color: #666;
-    font: inherit;
-    text-decoration: underline;
-    cursor: pointer;
 }
 
 
