@@ -9,7 +9,8 @@ import {
     getFavorites,
     toggleFavorite,
 } from "./storage.js";
-import { showAlert } from "./dialog.js";
+import { showAlert, showToast } from "./dialog.js";
+import { updateCartBadge } from "./navigation.js";
 
 // DOM ELEMENTS
 const openFilterBtn = document.getElementById("open-filter-btn");
@@ -141,13 +142,20 @@ function renderProductGrid() {
     const productsToShow = matchingProducts.slice(0, shownCount);
 
     productsGrid.innerHTML = "";
+
+    if (matchingProducts.length === 0) {
+        productsGrid.innerHTML =
+          '<p class="status-message">No products found.</p>';
+        loadMoreBtn.hidden = true;
+        return;
+      }
+
     productsToShow.forEach((product) => {
         productsGrid.appendChild(createProductCard(product));
     });
 
     // INFO: knappen syns bara om det finns fler att visa
-    const hasMoreToShow = shownCount < matchingProducts.length;
-    loadMoreBtn.hidden = !hasMoreToShow;
+    loadMoreBtn.hidden = shownCount >= matchingProducts.length;
 }
 
 function renderCategoryFilters() {
@@ -310,6 +318,10 @@ productsGrid.addEventListener("click", (event) => {
 
     if (cartBtn) {
         addToCart(productId);
+        updateCartBadge();
+        const product = allProducts.find((item) => item.id === productId);
+        const title = product?.title ?? "Product";
+        showToast(`${title} added to cart`);
     } else if (favBtn) {
         toggleFavorite(productId);
         const isFavorite = getFavorites().includes(productId);

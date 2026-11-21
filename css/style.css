@@ -113,6 +113,23 @@ main {
     height: 1.25rem;
 }
 
+.cart-link {
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -0.35rem;
+    right: -0.45rem;
+    min-width: 1rem;
+    padding: 0 0.25rem;
+    border-radius: 999px;
+    background: #111;
+    color: #fff;
+    font-size: 0.625rem;
+    text-align: center;
+}
+
 .logo {
     color: #000;
     text-decoration: none;
@@ -906,6 +923,29 @@ main {
 .app-dialog-actions .delete-btn {
     width: auto;
     flex: 0 1 auto;
+}
+
+/* Toast: fast längst ner, synlig när .is-visible finns */
+.app-toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1rem;
+    right: 1rem;
+    z-index: 250;
+    max-width: 22rem;
+    margin-inline: auto;
+    padding: 0.75rem 1rem;
+    background: #111;
+    color: #fff;
+    font-size: 0.875rem;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.app-toast.is-visible {
+    opacity: 1;
 }
 
 /* ----------------- CART PAGE ----------------- */

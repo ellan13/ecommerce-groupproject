@@ -2,21 +2,22 @@
 // Vi behöver anropa till storage.js för att ändra antal och ta bort produkter från varukorgen. 
 // Först och främst måste vi se till att varje rad har data-id och ett input med aktuellt antal.
 
-// plus
-setQuantityInCart(productId, currentQuantity + 1);
+// // plus
+// setQuantityInCart(productId, currentQuantity + 1);
 
-// updateTotalPrice();
-// minus
-setQuantityInCart(productId, currentQuantity - 1);
+// // updateTotalPrice();
+// // minus
+// setQuantityInCart(productId, currentQuantity - 1);
 
-// användaren skriver "3" i fältet
-setQuantityInCart(productId, input.value);
+// // användaren skriver "3" i fältet
+// setQuantityInCart(productId, input.value);
 
 // "ta bort"-ikon
 // removeFromCart(productId);
 
-import { getCart, setQuantity, removeFromCart, clearCart } from "./storage.js";
+import { getCart, setQuantityInCart, removeFromCart, clearCart } from "./storage.js";
 import { fetchSingleProduct } from "./api.js";
+import { updateCartBadge } from "./navigation.js";
 
 const cartItems = document.querySelector("#cart-items");
 const cartTotal = document.querySelector("#cart-total");
@@ -119,26 +120,28 @@ try{
         // Öka antal
         plusButton.addEventListener("click", () => {
             item.quantity = item.quantity + 1;
-            setQuantity(item.id, item.quantity);
+            setQuantityInCart(item.id, item.quantity);
 
             quantity.textContent = item.quantity;
             totalCell. textContent = (product.price * item.quantity).toFixed(2) + " kr";
 
             row.dataset.total = product.price * item.quantity;
             updateTotalPrice();
+            updateCartBadge();
         });
 
         // Minska antal
         minusButton.addEventListener("click", () => {
             if (item.quantity > 1) {
                 item.quantity = item.quantity - 1;
-                setQuantity(item.id, item.quantity);
+                setQuantityInCart(item.id, item.quantity);
 
                 quantity.textContent = item.quantity;
                 totalCell.textContent = (product.price * item.quantity).toFixed(2) + " kr"
 
                 row.dataset.total = product.price * item.quantity;
                 updateTotalPrice();
+                updateCartBadge();
             }
         })
 
@@ -147,6 +150,7 @@ try{
             removeFromCart(item.id);
             row.remove();
             updateTotalPrice();
+            updateCartBadge();
 
             cartEmpty.hidden = getCart().length > 0;
         });
@@ -195,6 +199,11 @@ checkoutButton.addEventListener("click", () => {
     cartEmpty.hidden = false;
 
     checkoutButton.disabled = true;
+    updateCartBadge();
+
+    setTimeout(() => {
+        cartEmpty.querySelector("td").textContent = "Your cart is empty";
+      }, 4000);
 })
 
 
