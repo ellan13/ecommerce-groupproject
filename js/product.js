@@ -76,6 +76,9 @@ function createProductDetail(product) {
                 <h1>${product.title ?? ""}</h1>
                 <p class="brand">${product.brand ?? ""}</p>
                 <p class="price">$${product.price}</p>
+                ${product.stock != null
+                    ? `<p class="stock">${product.availabilityStatus ?? "In Stock"} · ${product.stock} left</p>`
+                    : ""}
                 <span class="category">${product.category ?? ""}</span>
                 <p class="description">${product.description ?? ""}</p>
             </div>

@@ -587,6 +587,12 @@ main {
     color: #000;
 }
 
+.product .stock {
+    margin-top: 0;
+    font-size: 0.875rem;
+    color: #666;
+}
+
 .product .category {
     display: inline-block;
     align-self: flex-start;
