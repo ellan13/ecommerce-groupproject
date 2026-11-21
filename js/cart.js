@@ -15,13 +15,15 @@ setQuantityInCart(productId, input.value);
 // "ta bort"-ikon
 // removeFromCart(productId);
 
-import { getCart, setQuantity, removeFromCart } from "./storage.js";
+import { getCart, setQuantity, removeFromCart, clearCart } from "./storage.js";
 import { fetchSingleProduct } from "./api.js";
 
 const cartItems = document.querySelector("#cart-items");
 const cartTotal = document.querySelector("#cart-total");
 const backLink = document.querySelector("#back-link");
 const cartEmpty = document.querySelector("#cart-empty");
+const cartStatus = document.querySelector("#cart-status");
+const checkoutButton = document.querySelector("#checkout-button");
 
 // Läs sparad varukorg
 const cart = getCart();
@@ -40,6 +42,11 @@ backLink.addEventListener("click", (e) => {
 
 // Hämta varukorgens produkter
 async function showCart() {
+    cartStatus.textContent = "Loading cart...";
+    cartStatus.hidden = false;
+    checkoutButton.disabled = true;
+    
+try{
     for (const item of cart) {
         const product = await fetchSingleProduct(item.id);
 
@@ -144,7 +151,19 @@ async function showCart() {
             cartEmpty.hidden = getCart().length > 0;
         });
     }
-}
+
+        // Dölj laddningstexten
+        cartStatus.hidden = true;
+
+        checkoutButton.disabled = getCart().length === 0;
+
+        } catch (error) {
+            cartStatus.textContent = "Could not load all cart items. Please reload the page";
+            cartStatus.hidden = false;
+
+            console.error(error);
+        }
+        }
 
 function updateTotalPrice() {
     let total = 0;
@@ -156,5 +175,27 @@ function updateTotalPrice() {
     }
     cartTotal.textContent = total.toFixed(2) + " kr";
 }
+
+checkoutButton.addEventListener("click", () => {
+    if (getCart().length === 0) {
+        return;
+    }
+
+    clearCart();
+
+    const rows = cartItems.querySelectorAll("tr[data-id]");
+
+    for (const row of rows) {
+        row.remove();
+    }
+
+    updateTotalPrice();
+
+    cartEmpty.querySelector("td").textContent = "Thank you for your order! Your purchase is complete";
+    cartEmpty.hidden = false;
+
+    checkoutButton.disabled = true;
+})
+
 
 showCart()

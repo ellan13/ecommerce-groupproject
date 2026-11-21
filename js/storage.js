@@ -27,7 +27,11 @@ export function removeFromCart(productId) {
   const cart = getCart().filter((item) => item.id !== productId);
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
 }
-
+// Ella
+export function clearCart() {
+  localStorage.setItem(CART_KEY, JSON.stringify([]));
+}
+//Ella
 export function setQuantityInCart(productId, quantity) {
   const newQuantity = Number(quantity);
 
