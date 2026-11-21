@@ -141,13 +141,20 @@ function renderProductGrid() {
     const productsToShow = matchingProducts.slice(0, shownCount);
 
     productsGrid.innerHTML = "";
+
+    if (matchingProducts.length === 0) {
+        productsGrid.innerHTML =
+          '<p class="status-message">No products found.</p>';
+        loadMoreBtn.hidden = true;
+        return;
+      }
+
     productsToShow.forEach((product) => {
         productsGrid.appendChild(createProductCard(product));
     });
 
     // INFO: knappen syns bara om det finns fler att visa
-    const hasMoreToShow = shownCount < matchingProducts.length;
-    loadMoreBtn.hidden = !hasMoreToShow;
+    loadMoreBtn.hidden = shownCount >= matchingProducts.length;
 }
 
 function renderCategoryFilters() {
