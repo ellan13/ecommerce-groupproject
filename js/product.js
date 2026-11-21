@@ -46,13 +46,28 @@ function showEditMode() {
 // FUNCTIONS (render)
 function createProductDetail(product) {
     const isFavorite = getFavorites().includes(product.id);
+    // INFO: images[] från API, annars thumbnail. Thumbnails visas bara om det finns fler än 1.
+    const images = product.images?.length ? product.images : [product.thumbnail];
+    const thumbnailsHtml = images.length > 1
+        ? `<div class="product-thumbnails">
+            ${images.map((src, i) => `
+              <button type="button" class="product-thumbnail${i === 0 ? " is-active" : ""}" data-src="${src}">
+                <img src="${src}" alt="">
+              </button>
+            `).join("")}
+          </div>`
+        : "";
+
     const article = document.createElement("article");
     article.className = "product";
     article.id = "product";
     article.dataset.id = product.id;
 
     article.innerHTML = `
-        <img src="${product.thumbnail ?? product.images?.[0] ?? ""}" alt="${product.title ?? ""}">
+        <div class="product-gallery">
+            <img id="product-main-image" class="product-main-image" src="${images[0] ?? ""}" alt="${product.title ?? ""}">
+            ${thumbnailsHtml}
+        </div>
 
         <div class="product-details">
             <button type="button" id="edit-product-btn" class="edit-product-btn">Edit</button>
@@ -182,11 +197,20 @@ async function loadProduct() {
 
 // EVENTS (delegation – innehållet byggs om vid varje render)
 productContainer.addEventListener("click", async (event) => {
+    const thumbnailBtn = event.target.closest(".product-thumbnail");
     const editBtn = event.target.closest("#edit-product-btn");
     const cancelBtn = event.target.closest("#cancel-edit-btn");
     const deleteBtn = event.target.closest("#delete-product-btn");
     const cartBtn = event.target.closest("#add-to-cart-btn");
     const favBtn = event.target.closest("#toggle-favorite-btn");
+
+    if (thumbnailBtn) {
+        document.getElementById("product-main-image").src = thumbnailBtn.dataset.src;
+        productContainer.querySelectorAll(".product-thumbnail").forEach((btn) => {
+            btn.classList.toggle("is-active", btn === thumbnailBtn);
+        });
+        return;
+    }
 
     if (editBtn) {
         showEditMode();
