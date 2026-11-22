@@ -8,6 +8,11 @@ export function getCart() {
   return JSON.parse(localStorage.getItem(CART_KEY)) ?? [];
 }
 
+// INFO: totalt antal varor (summan av quantity), för badge i headern
+export function getCartCount() {
+  return getCart().reduce((sum, item) => sum + item.quantity, 0);
+}
+
 export function getFavorites() {
   return JSON.parse(localStorage.getItem(FAVORITES_KEY)) ?? [];
 }
