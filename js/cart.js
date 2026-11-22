@@ -3,19 +3,19 @@
 // Först och främst måste vi se till att varje rad har data-id och ett input med aktuellt antal.
 
 // plus
-setQuantityInCart(productId, currentQuantity + 1);
+// setQuantityInCart(productId, currentQuantity + 1);
 
 // updateTotalPrice();
 // minus
-setQuantityInCart(productId, currentQuantity - 1);
+// setQuantityInCart(productId, currentQuantity - 1);
 
 // användaren skriver "3" i fältet
-setQuantityInCart(productId, input.value);
+// setQuantityInCart(productId, input.value);
 
 // "ta bort"-ikon
 // removeFromCart(productId);
 
-import { getCart, setQuantity, removeFromCart, clearCart } from "./storage.js";
+import { getCart, setQuantityInCart, removeFromCart, clearCart } from "./storage.js";
 import { fetchSingleProduct } from "./api.js";
 
 const cartItems = document.querySelector("#cart-items");
@@ -66,18 +66,28 @@ try{
         image.src = product.thumbnail;
         image.alt = product.title; 
 
+        // Länk runt bild
+        const imageLink = document.createElement("a");
+        imageLink.href = `product.html?id=${product.id}`;
+        imageLink.append(image);
+
         const info = document.createElement("div");
         info.className = "cart-product-info";
 
         const name = document.createElement("p");
         name.textContent = product.title;
 
+        // Länk runt titeln
+        const nameLink = document.createElement("a");
+        nameLink.href = `product.html?id=${product.id}`;
+        nameLink.append(name);
+
         const removeButton = document.createElement("button");
         removeButton.type = "button";
         removeButton.textContent = "Remove";
 
-        info.append(name, removeButton);
-        productBox.append(image, info);
+        info.append(nameLink, removeButton);
+        productBox.append(imageLink, info);
         productCell.append(productBox);
 
         // Styckpris
@@ -119,7 +129,7 @@ try{
         // Öka antal
         plusButton.addEventListener("click", () => {
             item.quantity = item.quantity + 1;
-            setQuantity(item.id, item.quantity);
+            setQuantityInCart(item.id, item.quantity);
 
             quantity.textContent = item.quantity;
             totalCell. textContent = (product.price * item.quantity).toFixed(2) + " kr";
@@ -132,7 +142,7 @@ try{
         minusButton.addEventListener("click", () => {
             if (item.quantity > 1) {
                 item.quantity = item.quantity - 1;
-                setQuantity(item.id, item.quantity);
+                setQuantityInCart(item.id, item.quantity);
 
                 quantity.textContent = item.quantity;
                 totalCell.textContent = (product.price * item.quantity).toFixed(2) + " kr"

@@ -980,6 +980,14 @@ main {
     object-fit: cover;
 }
 
+/* Produktlänkar */
+.cart-product a,
+.favorite-item a {
+    color: black;
+    font: inherit;
+    text-decoration: none;
+}
+
 .cart-product-info button {
     margin-top: var(--space);
     border: none;
@@ -1051,7 +1059,7 @@ main {
     text-align: center;
 }
 
-/* Text för tom varukorg */
+/* Text för tom favoritlista */
 #favorites-empty {
     padding: var(--space-md) var(--space-sm);
     text-align: center;
@@ -1087,11 +1095,6 @@ main {
     flex-shrink: 0;
     background-color: #f0f0f0;
     object-fit: cover;
-}
-
-/* Namn och Remove-knapp */
-.favorite-info p {
-    font-weight: 600;
 }
 
 
