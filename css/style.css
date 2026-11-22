@@ -89,6 +89,8 @@ main {
 .search-panel[hidden] {
     display: none;
 }
+
+
 /* Homepage */
 
 /* Flebox för att dela upp vänster och höger del av navbaren. Vänster del innehåller loggan, höger del innehåller länkarna */

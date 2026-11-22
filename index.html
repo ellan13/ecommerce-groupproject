@@ -1,56 +1,22 @@
 <!doctype html>
-<html lang="en">
+<html lang="sv">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <link rel="stylesheet" href="css/style.css" />
-    <script type="module" src="js/navigation.js"></script>
-    <script type="module" src="js/home.js"></script>
-    <title>Home</title>
+
+    <title>My Website</title>
   </head>
 
   <body>
     <!-- Header -->
     <header>
-<<<<<<< HEAD
       <nav class="navbar">
         <div class="nav-left">
           <button class="menu-btn" id="open-menu-btn" aria-label="Open menu">
             ☰
           </button>
-=======
-        <nav class="navbar">
-            <div class="nav-left">
-                <button class="menu-btn" id="open-menu-btn" aria-label="Open menu">☰</button>
-            </div>
-
-            <a href="index.html" class="logo">MY WEBSITE</a>
-
-            <div class="nav-right">
-                <a href="search.html" aria-label="Search">
-                    <img src="assets/icons/search.svg" alt="" width="20" height="20">
-                </a>
-                <a href="favorites.html" aria-label="Favorites">
-                    <img src="assets/icons/heart.svg" alt="" width="20" height="20">
-                </a>
-                <a href="cart.html" class="cart-link" aria-label="Cart">
-                    <img src="assets/icons/shopping-bag.svg" alt="" width="20" height="20">
-                    <span id="cart-badge" class="cart-badge" hidden>0</span>
-                </a>
-            </div>
-        </nav>
-
-        <!-- Menu overlay (dold tills man klickar på ☰) -->
-        <div class="menu-modal" id="menu-modal">
-            <button class="close-menu-btn" id="close-menu-btn" aria-label="Close menu">✕</button>
-            <h2>Categories</h2>
-            <ul class="menu-list">
-                <li><a href="products.html">Shop all</a></li>
-                <li><a href="products.html">Category 1</a></li>
-                <li><a href="products.html">Category 2</a></li>
-                <li><a href="products.html">Category 3</a></li>
-            </ul>
->>>>>>> origin/main
         </div>
 
         <a href="index.html" class="logo">MY WEBSITE</a>
@@ -60,7 +26,9 @@
             🔍
           </button>
           <a href="favorites.html" aria-label="Favorites">♡</a>
-          <a href="cart.html" aria-label="Cart">🛍</a>
+          <a href="cart.html" class="cart-link" aria-label="Cart">
+            🛍<span id="cart-badge" class="cart-badge" hidden>0</span>
+          </a>
         </div>
       </nav>
 
@@ -91,34 +59,38 @@
         <h2>Categories</h2>
         <ul class="menu-list">
           <li><a href="products.html">Shop all</a></li>
-          <li><a href="products.html">Category 1</a></li>
-          <li><a href="products.html">Category 2</a></li>
-          <li><a href="products.html">Category 3</a></li>
+          <li><a href="products.html?category=beauty">Beauty</a></li>
+          <li><a href="products.html?category=electronics">Electronics</a></li>
+          <li><a href="products.html?category=furniture">Furniture</a></li>
         </ul>
       </div>
     </header>
 
     <!-- Main -->
     <main>
-      <!-- Hero -->
+      <!-- Hero section -->
       <section class="hero-section container">
-        <img id="hero-image" alt="Latest news" />
-        <div class="hero-content">
-          <h1>New collection</h1>
-          <a href="products.html" class="hero-btn">See products</a>
+        <div id="hero-content">
+          <p>Loading product...</p>
         </div>
       </section>
 
-      <!-- News (fylls av js/home.js) -->
+      <!-- News -->
       <section class="home-section container">
         <h2>News</h2>
-        <div class="home-grid" id="news-grid"></div>
+
+        <div id="news-grid" class="home-grid">
+          <p>Loading products...</p>
+        </div>
       </section>
 
-      <!-- Best Sellers (fylls av js/home.js) -->
+      <!-- Best Sellers -->
       <section class="home-section container">
         <h2>Best Sellers</h2>
-        <div class="home-grid" id="bestsellers-grid"></div>
+
+        <div id="best-sellers-grid" class="home-grid">
+          <p>Loading products...</p>
+        </div>
       </section>
     </main>
 
@@ -126,15 +98,9 @@
     <footer>
       <p>&copy; 2026 Ecommerce Group Project</p>
     </footer>
-<<<<<<< HEAD
+
+    <!-- JavaScript -->
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/home.js"></script>
   </body>
 </html>
-=======
-
-    <script type="module" src="js/navigation.js"></script>
-    <script src="js/home.js"></script>
-
-</body>
-
-</html>
->>>>>>> origin/main

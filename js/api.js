@@ -33,19 +33,6 @@ export async function addNewProduct(product) {
         },
         body: JSON.stringify(product),
     });
-<<<<<<< HEAD
-    const data = await response.json();
-    return data;
-}
-
-export async function searchProducts(query) {
-    const response = await fetch(
-        `${BASE_URL}/search?q=${encodeURIComponent(query)}&limit=${limit}&select=${select}`
-    );
-    const data = await response.json();
-    return data.products;
-}
-=======
     if (!response.ok) {
         throw new Error(`Failed to create product (${response.status})`);
     }
@@ -78,4 +65,17 @@ export async function deleteProduct(id) {
 
     return response.json();
 }
->>>>>>> origin/main
+
+
+export async function searchProducts(query) {
+    const response = await fetch(
+        `${BASE_URL}/search?q=${encodeURIComponent(query)}`
+    );
+
+    if (!response.ok) {
+        throw new Error("Search failed");
+    }
+
+    const data = await response.json();
+    return data.products;
+}

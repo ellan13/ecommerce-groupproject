@@ -1,29 +1,34 @@
 import { searchProducts } from "./api.js";
 
-<<<<<<< HEAD
-// ---------- HAMBURGERMENY ----------
-=======
 import { getCartCount } from "./storage.js";
 
-// hämta element från DOM
->>>>>>> origin/main
+// ---------- HAMBURGERMENY ----------
 const openMenuBtn = document.querySelector("#open-menu-btn");
 const closeMenuBtn = document.querySelector("#close-menu-btn");
 const menuModal = document.querySelector("#menu-modal");
 
-<<<<<<< HEAD
-// Menyn öppnas med klassen "open" (se .menu-modal.open i style.css)
-if (openMenuBtn && menuModal) {
-  openMenuBtn.addEventListener("click", function () {
-    menuModal.classList.add("open");
-  });
+// event listener för att öppna menyn när man klickar på hamburgermenyn
+openMenuBtn.addEventListener("click", function () {
+  menuModal.classList.add("open");
+});
+
+// Event listener för att stänga menyn när man klickar på stäng-knappen
+closeMenuBtn.addEventListener("click", function () {
+  menuModal.classList.remove("open");
+});
+
+// ---------- VARUKORGS-BADGE ----------
+// Varukorgs-badge i headern
+export function updateCartBadge() {
+  const badge = document.getElementById("cart-badge");
+  if (!badge) return;
+
+  const count = getCartCount();
+  badge.textContent = String(count);
+  badge.hidden = count === 0;
 }
 
-if (closeMenuBtn && menuModal) {
-  closeMenuBtn.addEventListener("click", function () {
-    menuModal.classList.remove("open");
-  });
-}
+updateCartBadge();
 
 // ---------- SÖK ----------
 const searchBtn = document.querySelector("#search-btn");
@@ -33,15 +38,15 @@ const searchInput = document.querySelector("#search-input");
 const searchMessage = document.querySelector("#search-message");
 const searchResults = document.querySelector("#search-results");
 
-// Skapar ett kort för varje produkt och lägger in det på sidan
-function showProducts(products) {
+// Skapar ett kort för varje produkt och lägger in det i sökrutan
+function showSearchResults(products) {
   searchResults.innerHTML = "";
 
   products.forEach(function (product) {
     const card = document.createElement("article");
     card.className = "product-card";
 
-    // Länk med bara bilden (samma som på startsidan)
+    // Länk med bara bilden
     const link = document.createElement("a");
     link.href = "product.html?id=" + product.id;
 
@@ -89,7 +94,7 @@ async function runSearch() {
     }
 
     searchMessage.textContent = "";
-    showProducts(products);
+    showSearchResults(products);
   } catch (error) {
     console.error(error);
     searchResults.innerHTML = "";
@@ -97,40 +102,14 @@ async function runSearch() {
   }
 }
 
-// Koppla ihop knapparna (if-satsen gör att inget kraschar om sökrutan saknas)
-if (searchBtn && searchPanel && searchForm && searchInput) {
-  // Visa/dölj sökpanelen när man klickar på 🔍
-  searchBtn.addEventListener("click", function () {
-    searchPanel.classList.toggle("active");
-    searchInput.focus();
-  });
-
-  // Tryck Enter i sökfältet
-  searchForm.addEventListener("submit", function (event) {
-    event.preventDefault(); // stoppar att sidan laddas om
-    runSearch();
-  });
-}
-=======
-// Varukorgs-badge i headern
-export function updateCartBadge() {
-  const badge = document.getElementById("cart-badge");
-  if (!badge) return;
-
-  const count = getCartCount();
-  badge.textContent = String(count);
-  badge.hidden = count === 0;
-}
-
-// event listener för att öppna menyn när man klickar på hamburgermenyn
-openMenuBtn.addEventListener("click", function () {
-  menuModal.classList.add("open");
+// Visa/dölj sökpanelen när man klickar på 🔍
+searchBtn.addEventListener("click", function () {
+  searchPanel.classList.toggle("active");
+  searchInput.focus();
 });
 
- //Event listener för att stänga menyn när man klickar på stäng-knappen
-closeMenuBtn.addEventListener("click", function () {
-  menuModal.classList.remove("open");
+// Tryck Enter i sökfältet
+searchForm.addEventListener("submit", function (event) {
+  event.preventDefault(); // stoppar att sidan laddas om
+  runSearch();
 });
-
-updateCartBadge();
->>>>>>> origin/main

@@ -11,47 +11,12 @@
 
   <body>
     <!-- Header -->
-    <!-- Header -->
     <header>
-<<<<<<< HEAD
       <nav class="navbar">
         <div class="nav-left">
           <button class="menu-btn" id="open-menu-btn" aria-label="Open menu">
             ☰
           </button>
-=======
-        <nav class="navbar">
-            <div class="nav-left">
-                <button class="menu-btn" id="open-menu-btn" aria-label="Open menu">☰</button>
-            </div>
-
-            <a href="index.html" class="logo">MY WEBSITE</a>
-
-            <div class="nav-right">
-                <a href="search.html" aria-label="Search">
-                    <img src="assets/icons/search.svg" alt="" width="20" height="20">
-                </a>
-                <a href="favorites.html" aria-label="Favorites">
-                    <img src="assets/icons/heart.svg" alt="" width="20" height="20">
-                </a>
-                <a href="cart.html" class="cart-link" aria-label="Cart">
-                    <img src="assets/icons/shopping-bag.svg" alt="" width="20" height="20">
-                    <span id="cart-badge" class="cart-badge" hidden>0</span>
-                </a>
-            </div>
-        </nav>
-
-        <!-- Menu overlay (dold tills man klickar på ☰) -->
-        <div class="menu-modal" id="menu-modal">
-            <button class="close-menu-btn" id="close-menu-btn" aria-label="Close menu">✕</button>
-            <h2>Categories</h2>
-            <ul class="menu-list">
-                <li><a href="products.html">Shop all</a></li>
-                <li><a href="products.html">Category 1</a></li>
-                <li><a href="products.html">Category 2</a></li>
-                <li><a href="products.html">Category 3</a></li>
-            </ul>
->>>>>>> origin/main
         </div>
 
         <a href="index.html" class="logo">MY WEBSITE</a>
@@ -92,9 +57,9 @@
         <h2>Categories</h2>
         <ul class="menu-list">
           <li><a href="products.html">Shop all</a></li>
-          <li><a href="products.html">Category 1</a></li>
-          <li><a href="products.html">Category 2</a></li>
-          <li><a href="products.html">Category 3</a></li>
+          <li><a href="products.html?category=beauty">Beauty</a></li>
+          <li><a href="products.html?category=electronics">Electronics</a></li>
+          <li><a href="products.html?category=furniture">Furniture</a></li>
         </ul>
       </div>
     </header>
@@ -108,27 +73,7 @@
         <ul id="favorite-items">
           <!-- Läggs in med JavaScript -->
 
-<<<<<<< HEAD
-          <li class="favorite-item">
-            <div class="favorite-image"></div>
-
-            <div class="favorite-info">
-              <p>T-shirt</p>
-              <button type="button" class="remove-product-btn">Remove</button>
-            </div>
-          </li>
-        </ul>
-
-        <a
-          class="back-to-shopping"
-          href="products.html"
-          id="back-link"
-          class="go-back-link"
-          >Back to shopping</a
-        >
-      </section>
-=======
-                <!-- <li class="favorite-item">
+          <!-- <li class="favorite-item">
                     <div class="favorite-image"></div>
 
                     <div class="favorite-info">
@@ -136,13 +81,15 @@
                         <button type="button" class="remove-product-btn">Remove</button>
                     </div>
                 </li> -->
+        </ul>
 
-            </ul>
-
-            <a class="back-to-shopping go-back-link" href="products.html" id="back-link">Back to shopping</a>
-
-        </section>
->>>>>>> origin/main
+        <a
+          class="back-to-shopping go-back-link"
+          href="products.html"
+          id="back-link"
+          >Back to shopping</a
+        >
+      </section>
     </main>
 
     <footer>
