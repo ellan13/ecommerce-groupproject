@@ -1,134 +1,180 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
     <script type="module" src="js/products.js"></script>
     <script type="module" src="js/navigation.js"></script>
     <title>Products catalog</title>
-</head>
+  </head>
 
-<body>
+  <body>
+    <!-- Header -->
     <!-- Header -->
     <header>
-        <nav class="navbar">
-            <div class="nav-left">
-                <button class="menu-btn" id="open-menu-btn" aria-label="Open menu">☰</button>
-            </div>
-
-            <a href="index.html" class="logo">MY WEBSITE</a>
-
-            <div class="nav-right">
-                <a href="search.html" aria-label="Search">🔍</a>
-                <a href="favorites.html" aria-label="Favorites">♡</a>
-                <a href="cart.html" aria-label="Cart">🛍</a>
-            </div>
-        </nav>
-
-        <!-- Menu overlay (dold tills man klickar på ☰) -->
-        <div class="menu-modal" id="menu-modal">
-            <button class="close-menu-btn" id="close-menu-btn" aria-label="Close menu">✕</button>
-            <h2>Categories</h2>
-            <ul class="menu-list">
-                <li><a href="products.html">Shop all</a></li>
-                <li><a href="products.html">Category 1</a></li>
-                <li><a href="products.html">Category 2</a></li>
-                <li><a href="products.html">Category 3</a></li>
-            </ul>
+      <nav class="navbar">
+        <div class="nav-left">
+          <button class="menu-btn" id="open-menu-btn" aria-label="Open menu">
+            ☰
+          </button>
         </div>
+
+        <a href="index.html" class="logo">MY WEBSITE</a>
+
+        <div class="nav-right">
+          <button class="search-btn" id="search-btn" aria-label="Search">
+            🔍
+          </button>
+          <a href="favorites.html" aria-label="Favorites">♡</a>
+          <a href="cart.html" aria-label="Cart">🛍</a>
+        </div>
+      </nav>
+
+      <!-- Sökruta (dold tills man klickar på 🔍) -->
+      <div class="search-panel" id="search-panel">
+        <form id="search-form" class="search-form">
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Search products"
+            autocomplete="off"
+          />
+        </form>
+
+        <p id="search-message"></p>
+        <div class="products-grid" id="search-results"></div>
+      </div>
+
+      <!-- Menu overlay (dold tills man klickar på ☰) -->
+      <div class="menu-modal" id="menu-modal">
+        <button
+          class="close-menu-btn"
+          id="close-menu-btn"
+          aria-label="Close menu"
+        >
+          ✕
+        </button>
+        <h2>Categories</h2>
+        <ul class="menu-list">
+          <li><a href="products.html">Shop all</a></li>
+          <li><a href="products.html">Category 1</a></li>
+          <li><a href="products.html">Category 2</a></li>
+          <li><a href="products.html">Category 3</a></li>
+        </ul>
+      </div>
     </header>
 
     <main>
-        <nav class="breadcrumbs container">
-            <a href="index.html">Home</a>
-            <span>&gt;</span>
-            <span>All products</span>
-        </nav>
+      <nav class="breadcrumbs container">
+        <a href="index.html">Home</a>
+        <span>&gt;</span>
+        <span>All products</span>
+      </nav>
 
-        <div class="sort-filter-wrapper container">
-            <button type="button" id="open-filter-btn" class="open-filter-btn">
-                Filter<span id="active-filter-count"></span>
+      <div class="sort-filter-wrapper container">
+        <button type="button" id="open-filter-btn" class="open-filter-btn">
+          Filter<span id="active-filter-count"></span>
+        </button>
+
+        <select id="products-sort-select" name="products-sort">
+          <option value="default">Default</option>
+          <option value="price-asc">Price: low to high</option>
+          <option value="price-desc">Price: high to low</option>
+        </select>
+      </div>
+
+      <div id="filter-modal" class="filter-modal">
+        <div class="filter-header">
+          <button type="button" id="close-filter-btn" class="close-filter-btn">
+            &times;
+          </button>
+          <h2>Filter</h2>
+        </div>
+
+        <div class="filter-content">
+          <h3>Categories</h3>
+
+          <ul id="filter-category-list" class="filter-list"></ul>
+        </div>
+
+        <div class="filter-footer">
+          <button type="button" id="apply-filter-btn" class="apply-filter-btn">
+            Apply filter
+          </button>
+        </div>
+      </div>
+
+      <section class="container">
+        <div id="products-grid" class="products-grid"></div>
+      </section>
+
+      <section class="pagination container">
+        <!-- TODO:Fixa denna typ sist, inte med sidor dock vill ha laddning när man scrollar ner (infinit scroll) -->
+        <button type="button" id="prev-page-btn" class="prev-page-btn">
+          Previous
+        </button>
+        <button type="button" id="next-page-btn" class="next-page-btn">
+          Next
+        </button>
+      </section>
+
+      <button
+        type="button"
+        id="open-add-product-btn"
+        class="open-add-product-btn"
+        aria-label="Add product"
+      >
+        +
+      </button>
+      <div id="add-product-modal" class="add-product-modal">
+        <div class="add-product-header">
+          <button
+            type="button"
+            id="close-add-product-btn"
+            class="close-add-product-btn"
+          >
+            &times;
+          </button>
+          <h2>Add product</h2>
+        </div>
+        <form id="add-product-form" class="product-form">
+          <label>
+            Title
+            <input type="text" name="title" required />
+          </label>
+          <label>
+            Brand
+            <input type="text" name="brand" required />
+          </label>
+          <label>
+            Price
+            <input type="number" name="price" min="0" step="0.01" required />
+          </label>
+          <label>
+            Category
+            <input type="text" name="category" required />
+          </label>
+          <label>
+            Description
+            <textarea name="description" rows="4"></textarea>
+          </label>
+          <div class="product-form-actions">
+            <button type="submit" class="save-btn">Add product</button>
+            <button
+              type="button"
+              id="cancel-add-product-btn"
+              class="cancel-btn"
+            >
+              Cancel
             </button>
-
-            <select id="products-sort-select" name="products-sort">
-                <option value="default">Default</option>
-                <option value="price-asc">Price: low to high</option>
-                <option value="price-desc">Price: high to low</option>
-            </select>
-        </div>
-
-        <div id="filter-modal" class="filter-modal">
-            <div class="filter-header">
-                <button type="button" id="close-filter-btn" class="close-filter-btn">&times;</button>
-                <h2>Filter</h2>
-            </div>
-
-            <div class="filter-content">
-                <h3>Categories</h3>
-
-                <ul id="filter-category-list" class="filter-list">
-                </ul>
-
-            </div>
-
-            <div class="filter-footer">
-                <button type="button" id="apply-filter-btn" class="apply-filter-btn">Apply filter</button>
-            </div>
-        </div>
-
-
-        <section class="container">
-            <div id="products-grid" class="products-grid">
-            </div>
-        </section>
-
-        <section class="pagination container">
-            <!-- TODO:Fixa denna typ sist, inte med sidor dock vill ha laddning när man scrollar ner (infinit scroll) -->
-            <button type="button" id="prev-page-btn" class="prev-page-btn">Previous</button>
-            <button type="button" id="next-page-btn" class="next-page-btn">Next</button>
-        </section>
-
-        <button type="button" id="open-add-product-btn" class="open-add-product-btn" aria-label="Add product">+</button>
-        <div id="add-product-modal" class="add-product-modal">
-            <div class="add-product-header">
-                <button type="button" id="close-add-product-btn" class="close-add-product-btn">&times;</button>
-                <h2>Add product</h2>
-            </div>
-            <form id="add-product-form" class="product-form">
-                <label>
-                    Title
-                    <input type="text" name="title" required>
-                </label>
-                <label>
-                    Brand
-                    <input type="text" name="brand" required>
-                </label>
-                <label>
-                    Price
-                    <input type="number" name="price" min="0" step="0.01" required>
-                </label>
-                <label>
-                    Category
-                    <input type="text" name="category" required>
-                </label>
-                <label>
-                    Description
-                    <textarea name="description" rows="4"></textarea>
-                </label>
-                <div class="product-form-actions">
-                    <button type="submit" class="save-btn">Add product</button>
-                    <button type="button" id="cancel-add-product-btn" class="cancel-btn">Cancel</button>
-                </div>
-            </form>
-        </div>
-
+          </div>
+        </form>
+      </div>
     </main>
 
     <footer>
-        <p>&copy; 2026 Ecommerce Group Project</p>
+      <p>&copy; 2026 Ecommerce Group Project</p>
     </footer>
-</body>
-
+  </body>
 </html>

@@ -1,143 +1,210 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
     <script type="module" src="js/product.js"></script>
     <script type="module" src="js/navigation.js"></script>
     <title>Product Details</title>
-</head>
+  </head>
 
-<body>
+  <body>
+    <!-- Header -->
     <!-- Header -->
     <header>
-        <nav class="navbar">
-            <div class="nav-left">
-                <button class="menu-btn" id="open-menu-btn" aria-label="Open menu">☰</button>
-            </div>
-
-            <a href="index.html" class="logo">MY WEBSITE</a>
-
-            <div class="nav-right">
-                <a href="search.html" aria-label="Search">🔍</a>
-                <a href="favorites.html" aria-label="Favorites">♡</a>
-                <a href="cart.html" aria-label="Cart">🛍</a>
-            </div>
-        </nav>
-
-        <!-- Menu overlay (dold tills man klickar på ☰) -->
-        <div class="menu-modal" id="menu-modal">
-            <button class="close-menu-btn" id="close-menu-btn" aria-label="Close menu">✕</button>
-            <h2>Categories</h2>
-            <ul class="menu-list">
-                <li><a href="products.html">Shop all</a></li>
-                <li><a href="products.html">Category 1</a></li>
-                <li><a href="products.html">Category 2</a></li>
-                <li><a href="products.html">Category 3</a></li>
-            </ul>
+      <nav class="navbar">
+        <div class="nav-left">
+          <button class="menu-btn" id="open-menu-btn" aria-label="Open menu">
+            ☰
+          </button>
         </div>
+
+        <a href="index.html" class="logo">MY WEBSITE</a>
+
+        <div class="nav-right">
+          <button class="search-btn" id="search-btn" aria-label="Search">
+            🔍
+          </button>
+          <a href="favorites.html" aria-label="Favorites">♡</a>
+          <a href="cart.html" aria-label="Cart">🛍</a>
+        </div>
+      </nav>
+
+      <!-- Sökruta (dold tills man klickar på 🔍) -->
+      <div class="search-panel" id="search-panel">
+        <form id="search-form" class="search-form">
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Search products"
+            autocomplete="off"
+          />
+        </form>
+
+        <p id="search-message"></p>
+        <div class="products-grid" id="search-results"></div>
+      </div>
+
+      <!-- Menu overlay (dold tills man klickar på ☰) -->
+      <div class="menu-modal" id="menu-modal">
+        <button
+          class="close-menu-btn"
+          id="close-menu-btn"
+          aria-label="Close menu"
+        >
+          ✕
+        </button>
+        <h2>Categories</h2>
+        <ul class="menu-list">
+          <li><a href="products.html">Shop all</a></li>
+          <li><a href="products.html">Category 1</a></li>
+          <li><a href="products.html">Category 2</a></li>
+          <li><a href="products.html">Category 3</a></li>
+        </ul>
+      </div>
     </header>
-
     <main>
-        <nav class="breadcrumbs container">
-            <a href="index.html">Home</a>
-            <span>&gt;</span>
-            <a href="products.html">All products</a>
-            <span>&gt;</span>
-            <span>Product Details</span>
-        </nav>
+      <nav class="breadcrumbs container">
+        <a href="index.html">Home</a>
+        <span>&gt;</span>
+        <a href="products.html">All products</a>
+        <span>&gt;</span>
+        <span>Product Details</span>
+      </nav>
 
-        <section class="container">
-            <!-- TODO: Fixa så edit knappe, add to cart och favorit knappen försvinner i edit läge, sedan Läs in produkt från API utifrån ?id= -->
-            <article class="product" data-id="1" data-category="smartphones" data-price="549">
-                <img src="" alt="title">
+      <section class="container">
+        <!-- TODO: Fixa så edit knappe, add to cart och favorit knappen försvinner i edit läge, sedan Läs in produkt från API utifrån ?id= -->
+        <article
+          class="product"
+          data-id="1"
+          data-category="smartphones"
+          data-price="549"
+        >
+          <img src="" alt="title" />
 
-                <div class="product-details">
+          <div class="product-details">
+            <button
+              type="button"
+              id="edit-product-btn"
+              class="edit-product-btn"
+            >
+              Edit
+            </button>
 
-                    <button type="button" id="edit-product-btn" class="edit-product-btn">Edit</button>
+            <div class="product-details-text" id="product-view">
+              <h1>iPhone 9</h1>
+              <p class="brand">Apple</p>
+              <p class="price">$549</p>
+              <span class="category">smartphones</span>
+              <p class="description">
+                An apple mobile which is nothing like apple.
+              </p>
+            </div>
 
+            <!-- Edit-läge (också gömmd från början tills de klickas) -->
+            <form id="edit-product-form" class="product-form product-edit-form">
+              <label>
+                Title
+                <input type="text" name="title" value="iPhone 9" required />
+              </label>
+              <label>
+                Brand
+                <input type="text" name="brand" value="Apple" />
+              </label>
+              <label>
+                Price
+                <input
+                  type="number"
+                  name="price"
+                  value="549"
+                  min="0"
+                  step="0.01"
+                  required
+                />
+              </label>
+              <label>
+                Category
+                <input
+                  type="text"
+                  name="category"
+                  value="smartphones"
+                  required
+                />
+              </label>
+              <label>
+                Description
+                <textarea name="description" rows="4">
+An apple mobile which is nothing like apple.</textarea
+                >
+              </label>
+              <div class="product-form-actions">
+                <button type="submit" id="save-edit-btn" class="save-btn">
+                  Save
+                </button>
+                <button type="button" id="cancel-edit-btn" class="cancel-btn">
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  id="delete-product-btn"
+                  class="delete-btn"
+                >
+                  Delete product
+                </button>
+              </div>
+            </form>
 
-                    <div class="product-details-text" id="product-view">
-                        <h1>iPhone 9</h1>
-                        <p class="brand">Apple</p>
-                        <p class="price">$549</p>
-                        <span class="category">smartphones</span>
-                        <p class="description">
-                            An apple mobile which is nothing like apple.
-                        </p>
-                    </div>
+            <div class="product-details-actions" id="product-details-actions">
+              <button
+                type="button"
+                id="add-to-cart-btn"
+                class="add-to-cart-btn"
+              >
+                👜 Add to cart
+              </button>
+              <button
+                type="button"
+                id="toggle-favorite-btn"
+                class="toggle-favorite-btn"
+              >
+                ♡
+              </button>
+            </div>
+          </div>
+        </article>
+      </section>
 
-                    <!-- Edit-läge (också gömmd från början tills de klickas) -->
-                    <form id="edit-product-form" class="product-form product-edit-form">
-                        <label>
-                            Title
-                            <input type="text" name="title" value="iPhone 9" required>
-                        </label>
-                        <label>
-                            Brand
-                            <input type="text" name="brand" value="Apple">
-                        </label>
-                        <label>
-                            Price
-                            <input type="number" name="price" value="549" min="0" step="0.01" required>
-                        </label>
-                        <label>
-                            Category
-                            <input type="text" name="category" value="smartphones" required>
-                        </label>
-                        <label>
-                            Description
-                            <textarea name="description"
-                                rows="4">An apple mobile which is nothing like apple.</textarea>
-                        </label>
-                        <div class="product-form-actions">
-                            <button type="submit" id="save-edit-btn" class="save-btn">Save</button>
-                            <button type="button" id="cancel-edit-btn" class="cancel-btn">Cancel</button>
-                            <button type="button" id="delete-product-btn" class="delete-btn">Delete product</button>
-                        </div>
-                    </form>
-
-                    <div class="product-details-actions" id="product-details-actions">
-                        <button type="button" id="add-to-cart-btn" class="add-to-cart-btn">👜 Add to cart</button>
-                        <button type="button" id="toggle-favorite-btn" class="toggle-favorite-btn">♡</button>
-                    </div>
-                </div>
-            </article>
-        </section>
-
-        <section class="reviews container">
-            <h2>Reviews</h2>
-            <ul class="reviews-list">
-                <!-- Review 1 -->
-                <li class="review">
-                    <p class="review-name">John Doe</p>
-                    <p class="review-rating">★★☆☆☆</p>
-                    <p class="review-comment">Very unhappy with my purchase!</p>
-                    <p class="review-date">2024-05-23</p>
-                </li>
-                <!-- Review 2 -->
-                <li class="review">
-                    <p class="review-name">Nolan Gonzalez</p>
-                    <p class="review-rating">★★☆☆☆</p>
-                    <p class="review-comment">Not as described!</p>
-                    <p class="review-date">2024-05-23</p>
-                </li>
-                <!-- Review 3 -->
-                <li class="review">
-                    <p class="review-name">Scarlett Wright</p>
-                    <p class="review-rating">★★★★★</p>
-                    <p class="review-comment">Very satisfied!</p>
-                    <p class="review-date">2024-05-23</p>
-                </li>
-            </ul>
-        </section>
+      <section class="reviews container">
+        <h2>Reviews</h2>
+        <ul class="reviews-list">
+          <!-- Review 1 -->
+          <li class="review">
+            <p class="review-name">John Doe</p>
+            <p class="review-rating">★★☆☆☆</p>
+            <p class="review-comment">Very unhappy with my purchase!</p>
+            <p class="review-date">2024-05-23</p>
+          </li>
+          <!-- Review 2 -->
+          <li class="review">
+            <p class="review-name">Nolan Gonzalez</p>
+            <p class="review-rating">★★☆☆☆</p>
+            <p class="review-comment">Not as described!</p>
+            <p class="review-date">2024-05-23</p>
+          </li>
+          <!-- Review 3 -->
+          <li class="review">
+            <p class="review-name">Scarlett Wright</p>
+            <p class="review-rating">★★★★★</p>
+            <p class="review-comment">Very satisfied!</p>
+            <p class="review-date">2024-05-23</p>
+          </li>
+        </ul>
+      </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 Ecommerce Group Project</p>
+      <p>&copy; 2026 Ecommerce Group Project</p>
     </footer>
-</body>
-
+  </body>
 </html>

@@ -62,7 +62,9 @@ main {
     padding: var(--space-sm);
     border-bottom: 1px solid #e5e5e5;
 }
-
+.search-panel[hidden] {
+    display: none;
+}
 /* Homepage */
 
 /* Flebox för att dela upp vänster och höger del av navbaren. Vänster del innehåller loggan, höger del innehåller länkarna */
@@ -268,6 +270,7 @@ main {
 }
 
 .product-card>a {
+    display: block;
     aspect-ratio: 3 / 4;
     background: #f0f0f0;
     /* bakgrund sålägne tills bild finns */
@@ -411,6 +414,54 @@ main {
 .filter-footer {
     margin-top: auto;
     padding-top: var(--space-md);
+}
+
+/* ----------------- SEARCH ----------------- */
+/* ----------------- SEARCH ----------------- */
+header {
+    position: relative;
+}
+
+.search-btn {
+    border: none;
+    background: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.search-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: min(100%, 22rem);
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: var(--space-sm);
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    z-index: 50;
+}
+
+.search-panel.active {
+    display: block;
+}
+
+.search-panel .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.search-form input {
+    width: 100%;
+    padding: var(--space-sm);
+    border: 1px solid #e0e0e0;
+    font-size: 0.875rem;
+}
+
+#search-message {
+    padding-block: var(--space-sm);
+    font-size: 0.875rem;
+    color: #666;
 }
 
 .apply-filter-btn {

@@ -1,53 +1,68 @@
-// Startsida: hämta och visa utvalda produkter.
-import { searchProducts } from "./api.js";
+const newsGrid = document.querySelector("#news-grid");
+const bestsellersGrid = document.querySelector("#bestsellers-grid");
+const heroImage = document.querySelector("#hero-image");
 
-const searchForm = document.querySelector("#search-form");
-const searchInput = document.querySelector("#search-input");
-const searchMessage = document.querySelector("#search-message");
-const searchResults = document.querySelector("#search-results");
-
-function showProducts(products) {
-    searchResults.innerHTML = "";
-
-    if (products.length === 0) {
-        searchMessage.textContent = "Inga produkter hittades.";
-        return;
-    }
-
-    searchMessage.textContent = products.length + " träffar";
-
-    products.forEach(function (product) {
-        searchResults.innerHTML += `
-            <article class="product-card">
-                <a href="product.html?id=${product.id}">
-                    <img src="${product.thumbnail}" alt="${product.title}">
-                </a>
-                <div class="product-info">
-                    <div class="product-info-text">
-                        <a href="product.html?id=${product.id}">${product.title}</a>
-                        <p>${product.price} $</p>
-                    </div>
-                </div>
-            </article>
-        `;
-    });
+// Hämtar produkter från DummyJSON
+async function getProducts(url) {
+  const response = await fetch(url);
+  const data = await response.json();
+  return data.products;
 }
 
-searchForm.addEventListener("submit", async function (event) {
-    event.preventDefault();
+// Skapar ett kort för varje produkt
+function showProducts(container, products) {
+  container.innerHTML = "";
 
-    const query = searchInput.value.trim();
-    if (query === "") {
-        return;
-    }
+  products.forEach(function (product) {
+    const card = document.createElement("article");
+    card.className = "product-card";
 
-    searchMessage.textContent = "Söker...";
+    const link = document.createElement("a");
+    link.href = "product.html?id=" + product.id;
 
-    try {
-        const products = await searchProducts(query);
-        showProducts(products);
-    } catch (error) {
-        searchMessage.textContent = "Något gick fel. Försök igen.";
-        console.log(error);
-    }
-});
+    const img = document.createElement("img");
+    img.src = product.thumbnail;
+    img.alt = product.title;
+
+    link.append(img);
+    card.append(link);
+    container.append(card);
+  });
+}
+
+async function loadHome() {
+  newsGrid.textContent = "Loading...";
+  bestsellersGrid.textContent = "Loading...";
+
+  try {
+    const news = await getProducts("https://dummyjson.com/products?limit=6");
+    showProducts(newsGrid, news);
+
+    const best = await getProducts(
+      "https://dummyjson.com/products?limit=6&sortBy=rating&order=desc"
+    );
+    showProducts(bestsellersGrid, best);
+  } catch (error) {
+    console.error(error);
+    newsGrid.textContent = "Could not load products.";
+    bestsellersGrid.textContent = "Could not load products.";
+  }
+}
+
+// Hämtar en produkt och använder dess bild som hero-bild
+async function loadHeroImage() {
+  try {
+    const response = await fetch("https://dummyjson.com/products/6");
+    const product = await response.json();
+
+    console.log("Hero-produkt:", product);
+
+    heroImage.src = product.images[0];
+    heroImage.alt = product.title;
+  } catch (error) {
+    console.error("Hero-bilden gick fel:", error);
+  }
+}
+
+loadHeroImage();
+loadHome();
