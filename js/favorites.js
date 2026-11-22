@@ -28,19 +28,29 @@ async function showFavorites() {
             image.src = product.thumbnail;
             image.alt = product.title;
 
+            // Länk runt bilden
+            const imageLink = document.createElement("a");
+            imageLink.href = `product.html?id=${product.id}`;
+            imageLink.append(image);
+
             const info = document.createElement("div");
             info.className = "favorite-info";
 
             const name = document.createElement("p");
             name.textContent = product.title;
 
+            // Länk runt titeln
+            const nameLink = document.createElement("a");
+            nameLink.href = `product.html?id=${product.id}`;
+            nameLink.append(name);
+
             const removeButton = document.createElement("button")
             removeButton.type = "button";
             removeButton.className = "remove-product-btn";
             removeButton.textContent = "Remove"
 
-            info.append(name, removeButton);
-            card.append(image, info);
+            info.append(nameLink, removeButton);
+            card.append(imageLink, info);
             favoriteItems.append(card);
 
             removeButton.addEventListener("click", () => {

@@ -67,18 +67,28 @@ try{
         image.src = product.thumbnail;
         image.alt = product.title; 
 
+        // Länk runt bild
+        const imageLink = document.createElement("a");
+        imageLink.href = `product.html?id=${product.id}`;
+        imageLink.append(image);
+
         const info = document.createElement("div");
         info.className = "cart-product-info";
 
         const name = document.createElement("p");
         name.textContent = product.title;
 
+        // Länk runt titeln
+        const nameLink = document.createElement("a");
+        nameLink.href = `product.html?id=${product.id}`;
+        nameLink.append(name);
+
         const removeButton = document.createElement("button");
         removeButton.type = "button";
         removeButton.textContent = "Remove";
 
-        info.append(name, removeButton);
-        productBox.append(image, info);
+        info.append(nameLink, removeButton);
+        productBox.append(imageLink, info);
         productCell.append(productBox);
 
         // Styckpris
