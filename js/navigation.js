@@ -1,10 +1,17 @@
 import { searchProducts } from "./api.js";
 
+<<<<<<< HEAD
 // ---------- HAMBURGERMENY ----------
+=======
+import { getCartCount } from "./storage.js";
+
+// hämta element från DOM
+>>>>>>> origin/main
 const openMenuBtn = document.querySelector("#open-menu-btn");
 const closeMenuBtn = document.querySelector("#close-menu-btn");
 const menuModal = document.querySelector("#menu-modal");
 
+<<<<<<< HEAD
 // Menyn öppnas med klassen "open" (se .menu-modal.open i style.css)
 if (openMenuBtn && menuModal) {
   openMenuBtn.addEventListener("click", function () {
@@ -104,3 +111,26 @@ if (searchBtn && searchPanel && searchForm && searchInput) {
     runSearch();
   });
 }
+=======
+// Varukorgs-badge i headern
+export function updateCartBadge() {
+  const badge = document.getElementById("cart-badge");
+  if (!badge) return;
+
+  const count = getCartCount();
+  badge.textContent = String(count);
+  badge.hidden = count === 0;
+}
+
+// event listener för att öppna menyn när man klickar på hamburgermenyn
+openMenuBtn.addEventListener("click", function () {
+  menuModal.classList.add("open");
+});
+
+ //Event listener för att stänga menyn när man klickar på stäng-knappen
+closeMenuBtn.addEventListener("click", function () {
+  menuModal.classList.remove("open");
+});
+
+updateCartBadge();
+>>>>>>> origin/main

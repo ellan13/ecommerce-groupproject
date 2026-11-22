@@ -1,9 +1,16 @@
 // Produktkatalog: lista, filter, sortering och create.
-//Nästa gång: kolla todo och börja med product sidan (chatten öppen)
-
 // IMPORT
 import { fetchAllProducts, addNewProduct } from "./api.js";
-import { saveProductsToLocalStorage, getProductsFromLocalStorage, addToCart, getFavorites, toggleFavorite } from "./storage.js";
+import {
+    saveProductsToLocalStorage,
+    saveProductToLocalStorage,
+    getProductsFromLocalStorage,
+    addToCart,
+    getFavorites,
+    toggleFavorite,
+} from "./storage.js";
+import { showAlert, showToast } from "./dialog.js";
+import { updateCartBadge } from "./navigation.js";
 
 // DOM ELEMENTS
 const openFilterBtn = document.getElementById("open-filter-btn");
@@ -20,22 +27,43 @@ const closeAddProductBtn = document.getElementById("close-add-product-btn");
 const cancelAddProductBtn = document.getElementById("cancel-add-product-btn");
 const addProductModal = document.getElementById("add-product-modal");
 const addProductForm = document.getElementById("add-product-form");
+const addProductImageInput = document.getElementById("add-product-image");
+const addProductImagePreview = document.getElementById("add-product-image-preview");
 
 const productsGrid = document.getElementById("products-grid");
+const breadcrumbCurrent = document.getElementById("breadcrumb-current");
+const loadMoreBtn = document.getElementById("load-more-btn");
 
 // VARIABLES
+const PRODUCTS_PER_LOAD = 20; // hur många kort som visas / läggs till per "Load more"
 let allProducts = [];
 let activeCategories = [];
 let totalProducts = 0;
+let shownCount = PRODUCTS_PER_LOAD; // antal produkter som syns just nu
+let selectedImageDataUrl = null;
+// INFO: sök från meny → products.html?q=... (Alex länkar hit). Browse all = ingen q.
+const searchQuery = (new URLSearchParams(window.location.search).get("q") ?? "").trim();
 
 // FUNCTIONS (helpers)
+function getCatalogProducts() {
+    // INFO: utgångspunkt för katalogen – alla produkter, eller bara de som matchar ?q=
+    if (!searchQuery) return allProducts;
+
+    const query = searchQuery.toLowerCase();
+
+    return allProducts.filter((product) => {
+        const text = `${product.title || ""} ${product.brand || ""} ${product.category || ""} ${product.description || ""}`;
+        return text.toLowerCase().includes(query);
+    });
+}
+
 function countProductsInCategory(category) {
-    return allProducts.filter((product) => product.category === category).length;
+    return getCatalogProducts().filter((product) => product.category === category).length;
 }
 
 function getProductCategories() {
     const categories = [];
-    allProducts.forEach((product) => {
+    getCatalogProducts().forEach((product) => {
         if (!categories.includes(product.category)) {
             categories.push(product.category);
         }
@@ -43,9 +71,9 @@ function getProductCategories() {
     return categories;
 }
 
-
-function getFilteredAndSortedProducts() { // TODO: filtrera och sortera produkter lokalt, vilket kqnske är fel?
-    let productsToShow = [...allProducts];
+function getFilteredAndSortedProducts() {
+    // INFO: sök först, sedan kategori-filter, sedan sortering
+    let productsToShow = [...getCatalogProducts()];
 
     if (activeCategories.length > 0) {
         productsToShow = productsToShow.filter((product) =>
@@ -62,9 +90,22 @@ function getFilteredAndSortedProducts() { // TODO: filtrera och sortera produkte
     return productsToShow;
 }
 
+function clearImagePreview() {
+    selectedImageDataUrl = null;
+    addProductImagePreview.src = "";
+    addProductImagePreview.classList.remove("is-visible");
+}
+
+function updateBreadcrumbs() {
+    if (!breadcrumbCurrent) return;
+    // INFO: vanlig katalog → Products; sök → själva sökfrågan
+    breadcrumbCurrent.textContent = searchQuery || "Products";
+}
+
 function closeAddProductModal() {
     addProductModal.style.display = "none";
     addProductForm.reset();
+    clearImagePreview();
 }
 
 // FUNCTIONS (render)
@@ -73,8 +114,6 @@ function createProductCard(product) {
     const card = document.createElement("article");
     card.className = "product-card";
     card.dataset.id = product.id;
-    card.dataset.category = product.category;
-    card.dataset.price = product.price;
     card.innerHTML = `
       <a href="product.html?id=${product.id}">
         <img src="${product.thumbnail ?? ""}" alt="${product.title}">
@@ -85,8 +124,12 @@ function createProductCard(product) {
           <p>$${product.price}</p>
         </div>
         <div class="product-info-icons">
-          <button type="button" class="toggle-favorite-btn${isFavorite ? " active" : ""}">${isFavorite ? "♥" : "♡"}</button>
-          <button type="button" class="add-to-cart-btn">👜</button>
+          <button type="button" class="toggle-favorite-btn${isFavorite ? " active" : ""}" aria-label="${isFavorite ? "Remove from favorites" : "Add to favorites"}">
+            <img src="assets/icons/${isFavorite ? "heart-filled" : "heart"}.svg" alt="" width="18" height="18">
+          </button>
+          <button type="button" class="add-to-cart-btn" aria-label="Add to cart">
+            <img src="assets/icons/shopping-bag.svg" alt="" width="18" height="18">
+          </button>
         </div>
       </div>
     `;
@@ -94,10 +137,25 @@ function createProductCard(product) {
 }
 
 function renderProductGrid() {
+    const matchingProducts = getFilteredAndSortedProducts();
+    // INFO: slice(start, end) = ta ut en bit av listan. Ex: 20 → index 0–19
+    const productsToShow = matchingProducts.slice(0, shownCount);
+
     productsGrid.innerHTML = "";
-    getFilteredAndSortedProducts().forEach((product) => {
+
+    if (matchingProducts.length === 0) {
+        productsGrid.innerHTML =
+          '<p class="status-message">No products found.</p>';
+        loadMoreBtn.hidden = true;
+        return;
+      }
+
+    productsToShow.forEach((product) => {
         productsGrid.appendChild(createProductCard(product));
     });
+
+    // INFO: knappen syns bara om det finns fler att visa
+    loadMoreBtn.hidden = shownCount >= matchingProducts.length;
 }
 
 function renderCategoryFilters() {
@@ -118,23 +176,36 @@ function renderCategoryFilters() {
 }
 
 
-function refreshCatalog() { // TODO: när själva produktlistan ändras (load / create (frågan är dock om det ska vara även för update eller delete från product.js?))
+function refreshCatalog() {
+    shownCount = PRODUCTS_PER_LOAD; // börja om från första batchen
     renderCategoryFilters();
     renderProductGrid();
+    updateBreadcrumbs();
 }
 
 // FUNCTIONS (load)
 async function loadProducts() {
-    const data = getProductsFromLocalStorage();
+    // INFO: samma idé som tidigare – först localStorage, annars API
+    const saved = getProductsFromLocalStorage();
+    const hasAllProductsSaved = saved && saved.products.length >= saved.total;
 
-    if (data) {
-        allProducts = data.products;
-        totalProducts = data.total;
+    if (hasAllProductsSaved) {
+        allProducts = saved.products;
+        totalProducts = saved.total;
     } else {
-        const newData = await fetchAllProducts();
-        allProducts = newData.products;
-        totalProducts = newData.total;
-        saveProductsToLocalStorage(allProducts, totalProducts);
+        // INFO: saknas sparade produkter, eller bara en del (t.ex. gamla 40) → hämta från API
+        productsGrid.innerHTML = '<p class="status-message">Loading products...</p>';
+        loadMoreBtn.hidden = true;
+        try {
+            const fromApi = await fetchAllProducts();
+            allProducts = fromApi.products;
+            totalProducts = fromApi.total;
+            saveProductsToLocalStorage(allProducts, totalProducts);
+        } catch (error) {
+            productsGrid.innerHTML =
+                '<p class="status-message status-message--error">Could not load products. Please try again later.</p>';
+            return;
+        }
     }
 
     refreshCatalog();
@@ -152,13 +223,22 @@ closeFilterBtn.addEventListener("click", () => {
 applyFilterBtn.addEventListener("click", () => {
     filterModal.style.display = "none";
     const checked = filterModal.querySelectorAll("input[name='category']:checked");
+    // INFO: NodeList → Array så .map funkar
     activeCategories = [...checked].map((input) => input.value);
     activeFilterCount.textContent = activeCategories.length > 0 ? `(${activeCategories.length})` : "";
 
-    renderProductGrid(); // TODO:bara lokalt filter dvs ingen fetch, också fel?
+    shownCount = PRODUCTS_PER_LOAD;
+    renderProductGrid();
 });
 
 sortSelect.addEventListener("change", () => {
+    shownCount = PRODUCTS_PER_LOAD;
+    renderProductGrid();
+});
+
+// INFO: visa 20 till utan att byta sida
+loadMoreBtn.addEventListener("click", () => {
+    shownCount += PRODUCTS_PER_LOAD;
     renderProductGrid();
 });
 
@@ -170,9 +250,26 @@ openAddProductBtn.addEventListener("click", () => {
 closeAddProductBtn.addEventListener("click", closeAddProductModal);
 cancelAddProductBtn.addEventListener("click", closeAddProductModal);
 
+addProductImageInput.addEventListener("change", () => {
+    const file = addProductImageInput.files?.[0];
+    if (!file) {
+        clearImagePreview();
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        selectedImageDataUrl = reader.result;
+        addProductImagePreview.src = selectedImageDataUrl;
+        addProductImagePreview.classList.add("is-visible");
+    };
+    reader.readAsDataURL(file);
+});
+
 addProductForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(addProductForm);
+    // INFO: skicka bara textfält till API – bilder (data-URL) ger 403 hos DummyJSON
     const product = {
         title: formData.get("title"),
         brand: formData.get("brand"),
@@ -180,12 +277,32 @@ addProductForm.addEventListener("submit", async (event) => {
         category: formData.get("category"),
         description: formData.get("description"),
     };
-    const createdProduct = await addNewProduct(product);
-    allProducts.push(createdProduct);
-    totalProducts++;
-    saveProductsToLocalStorage(allProducts, totalProducts);
-    refreshCatalog();
-    closeAddProductModal();
+
+    const submitBtn = addProductForm.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Adding...";
+
+    try {
+        const createdProduct = await addNewProduct(product);
+        const productToSave = selectedImageDataUrl
+            ? {
+                  ...createdProduct,
+                  thumbnail: selectedImageDataUrl,
+                  images: [selectedImageDataUrl],
+              }
+            : createdProduct;
+        allProducts.push(productToSave);
+        totalProducts++;
+        saveProductToLocalStorage(productToSave);
+        refreshCatalog();
+        closeAddProductModal();
+    } catch (error) {
+        showAlert("Could not create product. Please try again.");
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+    }
 });
 
 // EVENTS (product card actions)
@@ -201,12 +318,19 @@ productsGrid.addEventListener("click", (event) => {
 
     if (cartBtn) {
         addToCart(productId);
-        //TODO: uppdatera UI så att varukorgen uppdateras med produkten
+        updateCartBadge();
+        const product = allProducts.find((item) => item.id === productId);
+        const title = product?.title ?? "Product";
+        showToast(`${title} added to cart`);
     } else if (favBtn) {
         toggleFavorite(productId);
-        favBtn.classList.toggle("active");
-        //TODO: ha iconer dvs två svg filer för fyllt och tomt hjärta
-        favBtn.textContent = favBtn.classList.contains("active") ? "♥" : "♡";
+        const isFavorite = getFavorites().includes(productId);
+        favBtn.classList.toggle("active", isFavorite);
+        favBtn.querySelector("img").src = `assets/icons/${isFavorite ? "heart-filled" : "heart"}.svg`;
+        favBtn.setAttribute(
+            "aria-label",
+            isFavorite ? "Remove from favorites" : "Add to favorites"
+        );
     }
 });
 
