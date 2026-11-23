@@ -1,5 +1,6 @@
 // Produktkatalog: lista, filter, sortering och create.
-// IMPORT
+
+// IMPORTS
 import { fetchAllProducts, addNewProduct } from "./api.js";
 import {
     saveProductsToLocalStorage,
@@ -34,19 +35,22 @@ const productsGrid = document.getElementById("products-grid");
 const breadcrumbCurrent = document.getElementById("breadcrumb-current");
 const loadMoreBtn = document.getElementById("load-more-btn");
 
+
 // VARIABLES
-const PRODUCTS_PER_LOAD = 20; // hur många kort som visas / läggs till per "Load more"
 let allProducts = [];
 let activeCategories = [];
 let totalProducts = 0;
-let shownCount = PRODUCTS_PER_LOAD; // antal produkter som syns just nu
+
+const PRODUCTS_PER_LOAD = 20; // INFO: hur många kort som läggs till per "Load more"
+let shownCount = PRODUCTS_PER_LOAD; // INFO: antal produkter som syns. I början lika många som PRODUCTS_PER_LOAD.
 let selectedImageDataUrl = null;
-// INFO: sök från meny → products.html?q=... (Alex länkar hit). Browse all = ingen q.
-const searchQuery = (new URLSearchParams(window.location.search).get("q") ?? "").trim();
+
+
+const searchQuery = (new URLSearchParams(window.location.search).get("q") ?? "").trim(); // INFO: sök från meny → products.html?q=... (Alex länkar hit). Browse all = ingen q.
 
 // FUNCTIONS (helpers)
-function getCatalogProducts() {
-    // INFO: utgångspunkt för katalogen – alla produkter, eller bara de som matchar ?q=
+function getCatalogProducts() { 
+    // INFO: utgångspunkt för katalogen. Alla produkter, eller bara de som matchar ?q=
     if (!searchQuery) return allProducts;
 
     const query = searchQuery.toLowerCase();
@@ -177,7 +181,7 @@ function renderCategoryFilters() {
 
 
 function refreshCatalog() {
-    shownCount = PRODUCTS_PER_LOAD; // börja om från första batchen
+    shownCount = PRODUCTS_PER_LOAD; // INFO: börja om från första batchen
     renderCategoryFilters();
     renderProductGrid();
     updateBreadcrumbs();
@@ -185,7 +189,7 @@ function refreshCatalog() {
 
 // FUNCTIONS (load)
 async function loadProducts() {
-    // INFO: samma idé som tidigare – först localStorage, annars API
+    // INFO: samma idé som tidigare. Först localStorage, annars API
     const saved = getProductsFromLocalStorage();
     const hasAllProductsSaved = saved && saved.products.length >= saved.total;
 
@@ -193,7 +197,7 @@ async function loadProducts() {
         allProducts = saved.products;
         totalProducts = saved.total;
     } else {
-        // INFO: saknas sparade produkter, eller bara en del (t.ex. gamla 40) → hämta från API
+        // INFO: saknas sparade produkter eller om det finns färre produkter än det somm är reggat från API → hämta från API
         productsGrid.innerHTML = '<p class="status-message">Loading products...</p>';
         loadMoreBtn.hidden = true;
         try {
@@ -233,12 +237,6 @@ applyFilterBtn.addEventListener("click", () => {
 
 sortSelect.addEventListener("change", () => {
     shownCount = PRODUCTS_PER_LOAD;
-    renderProductGrid();
-});
-
-// INFO: visa 20 till utan att byta sida
-loadMoreBtn.addEventListener("click", () => {
-    shownCount += PRODUCTS_PER_LOAD;
     renderProductGrid();
 });
 
@@ -332,6 +330,11 @@ productsGrid.addEventListener("click", (event) => {
             isFavorite ? "Remove from favorites" : "Add to favorites"
         );
     }
+});
+
+loadMoreBtn.addEventListener("click", () => { // INFO: visa 20 till utan att byta sida
+    shownCount += PRODUCTS_PER_LOAD;
+    renderProductGrid();
 });
 
 // START

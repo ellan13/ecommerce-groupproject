@@ -29,10 +29,6 @@ const checkoutButton = document.querySelector("#checkout-button");
 // Läs sparad varukorg
 const cart = getCart();
 cartEmpty.hidden = cart.length > 0;
-console.log(cart);
-
-console.log("Varukorg:", cartItems);
-console.log("Tillbaka-länk:", backLink);
 
 backLink.addEventListener("click", (e) => {
     if (history.length > 1) {
@@ -50,9 +46,6 @@ async function showCart() {
     try{
         for (const item of cart) {
             const product = await fetchSingleProduct(item.id);
-
-            console.log(product);
-            console.log("Antal: ", item.quantity);
 
             const row = document.createElement("tr");
             row.dataset.id = item.id;

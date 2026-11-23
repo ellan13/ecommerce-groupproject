@@ -8,7 +8,6 @@ const favoriteItems = document.querySelector("#favorite-items");
 const favoritesEmpty = document.querySelector("#favorites-empty");
 
 const favorites = getFavorites();
-console.log(favorites);
 
 // Hämta favoritesproducts
 async function showFavorites() {
@@ -18,7 +17,6 @@ async function showFavorites() {
     try {
         for (const id of favorites){
             const product = await fetchSingleProduct(id);
-            console.log(product);
 
             const card = document.createElement("li");
             card.className = "favorite-item";
@@ -69,7 +67,6 @@ async function showFavorites() {
             favoritesEmpty.hidden = false;
             favoritesEmpty.textContent = "Could not load all favorites. Please reload the page.";
 
-            console.log(error);
         }
     }
 
