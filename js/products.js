@@ -32,6 +32,7 @@ const addProductImageInput = document.getElementById("add-product-image");
 const addProductImagePreview = document.getElementById("add-product-image-preview");
 
 const productsGrid = document.getElementById("products-grid");
+const productsHeading = document.getElementById("products-heading");
 const breadcrumbCurrent = document.getElementById("breadcrumb-current");
 const loadMoreBtn = document.getElementById("load-more-btn");
 
@@ -100,10 +101,13 @@ function clearImagePreview() {
     addProductImagePreview.classList.remove("is-visible");
 }
 
-function updateBreadcrumbs() {
+function updateHeadingAndBreadcrumb() {
     if (!breadcrumbCurrent) return;
     // INFO: vanlig katalog → Products; sök → själva sökfrågan
     breadcrumbCurrent.textContent = searchQuery || "Products";
+    if (productsHeading) {
+        productsHeading.textContent = searchQuery ? `Search results for ${searchQuery}` : "Products";
+    }
 }
 
 function closeAddProductModal() {
@@ -184,7 +188,7 @@ function refreshCatalog() {
     shownCount = PRODUCTS_PER_LOAD; // INFO: börja om från första batchen
     renderCategoryFilters();
     renderProductGrid();
-    updateBreadcrumbs();
+    updateHeadingAndBreadcrumb();
 }
 
 // FUNCTIONS (load)

@@ -277,6 +277,11 @@ main {
 
 /* ----------------- PRODUCTS PAGE ----------------- */
 
+.products-heading {
+    padding-bottom: var(--space-sm);
+    text-align: center;
+}
+
 .sort-filter-wrapper {
     display: flex;
     justify-content: space-between;
