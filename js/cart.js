@@ -47,137 +47,137 @@ async function showCart() {
     cartStatus.hidden = false;
     checkoutButton.disabled = true;
     
-try{
-    for (const item of cart) {
-        const product = await fetchSingleProduct(item.id);
+    try{
+        for (const item of cart) {
+            const product = await fetchSingleProduct(item.id);
 
-        console.log(product);
-        console.log("Antal: ", item.quantity);
+            console.log(product);
+            console.log("Antal: ", item.quantity);
 
-        const row = document.createElement("tr");
-        row.dataset.id = item.id;
+            const row = document.createElement("tr");
+            row.dataset.id = item.id;
 
-        const productCell = document.createElement("td");
+            const productCell = document.createElement("td");
 
-        const productBox = document.createElement("div");
-        productBox.className = "cart-product";
+            const productBox = document.createElement("div");
+            productBox.className = "cart-product";
 
-        const image = document.createElement("img");
-        image.className = "cart-image";
-        image.src = product.thumbnail;
-        image.alt = product.title; 
+            const image = document.createElement("img");
+            image.className = "cart-image";
+            image.src = product.thumbnail;
+            image.alt = product.title; 
 
-        // Länk runt bild
-        const imageLink = document.createElement("a");
-        imageLink.href = `product.html?id=${product.id}`;
-        imageLink.append(image);
+            // Länk runt bild
+            const imageLink = document.createElement("a");
+            imageLink.href = `product.html?id=${product.id}`;
+            imageLink.append(image);
 
-        const info = document.createElement("div");
-        info.className = "cart-product-info";
+            const info = document.createElement("div");
+            info.className = "cart-product-info";
 
-        const name = document.createElement("p");
-        name.textContent = product.title;
+            const name = document.createElement("p");
+            name.textContent = product.title;
 
-        // Länk runt titeln
-        const nameLink = document.createElement("a");
-        nameLink.href = `product.html?id=${product.id}`;
-        nameLink.append(name);
+            // Länk runt titeln
+            const nameLink = document.createElement("a");
+            nameLink.href = `product.html?id=${product.id}`;
+            nameLink.append(name);
 
-        const removeButton = document.createElement("button");
-        removeButton.type = "button";
-        removeButton.textContent = "Remove";
+            const removeButton = document.createElement("button");
+            removeButton.type = "button";
+            removeButton.textContent = "Remove";
 
-        info.append(nameLink, removeButton);
-        productBox.append(imageLink, info);
-        productCell.append(productBox);
+            info.append(nameLink, removeButton);
+            productBox.append(imageLink, info);
+            productCell.append(productBox);
 
-        // Styckpris
-        const priceCell = document.createElement("td");
-        priceCell.textContent = product.price.toFixed(2) + " kr";
+            // Styckpris
+            const priceCell = document.createElement("td");
+            priceCell.textContent = product.price.toFixed(2) + " kr";
 
-        // Antal
-        const quantityCell = document.createElement("td");
+            // Antal
+            const quantityCell = document.createElement("td");
 
-        const quantityBox = document.createElement("div");
-        quantityBox.className = "cart-quantity";
+            const quantityBox = document.createElement("div");
+            quantityBox.className = "cart-quantity";
 
-        const minusButton = document.createElement("button");
-        minusButton.type = "button";
-        minusButton.textContent = "-";
-        minusButton.setAttribute("aria-label", "Decrease quantity");
+            const minusButton = document.createElement("button");
+            minusButton.type = "button";
+            minusButton.textContent = "-";
+            minusButton.setAttribute("aria-label", "Decrease quantity");
 
-        const quantity = document.createElement("span");
-        quantity.textContent = item.quantity;
-
-        const plusButton = document.createElement("button");
-        plusButton.type = "button";
-        plusButton.textContent = "+";
-        plusButton.setAttribute("aria-label", "Increase quantity");
-
-        quantityBox.append(minusButton, quantity, plusButton);
-        quantityCell.append(quantityBox);
-
-        // Radsumma
-        const totalCell = document.createElement("td");
-        row.dataset.total = product.price * item.quantity;
-        totalCell.textContent = (product.price * item.quantity).toFixed(2) + " kr";
-
-        // Sätt ihop och visa raden
-        row.append(productCell, priceCell, quantityCell, totalCell);
-        cartItems.append(row);
-        updateTotalPrice();
-
-        // Öka antal
-        plusButton.addEventListener("click", () => {
-            item.quantity = item.quantity + 1;
-            setQuantityInCart(item.id, item.quantity);
-
+            const quantity = document.createElement("span");
             quantity.textContent = item.quantity;
-            totalCell. textContent = (product.price * item.quantity).toFixed(2) + " kr";
 
+            const plusButton = document.createElement("button");
+            plusButton.type = "button";
+            plusButton.textContent = "+";
+            plusButton.setAttribute("aria-label", "Increase quantity");
+
+            quantityBox.append(minusButton, quantity, plusButton);
+            quantityCell.append(quantityBox);
+
+            // Radsumma
+            const totalCell = document.createElement("td");
             row.dataset.total = product.price * item.quantity;
-            updateTotalPrice();
-            updateCartBadge();
-        });
+            totalCell.textContent = (product.price * item.quantity).toFixed(2) + " kr";
 
-        // Minska antal
-        minusButton.addEventListener("click", () => {
-            if (item.quantity > 1) {
-                item.quantity = item.quantity - 1;
+            // Sätt ihop och visa raden
+            row.append(productCell, priceCell, quantityCell, totalCell);
+            cartItems.append(row);
+            updateTotalPrice();
+
+            // Öka antal
+            plusButton.addEventListener("click", () => {
+                item.quantity = item.quantity + 1;
                 setQuantityInCart(item.id, item.quantity);
 
                 quantity.textContent = item.quantity;
-                totalCell.textContent = (product.price * item.quantity).toFixed(2) + " kr"
+                totalCell. textContent = (product.price * item.quantity).toFixed(2) + " kr";
 
                 row.dataset.total = product.price * item.quantity;
                 updateTotalPrice();
                 updateCartBadge();
+            });
+
+            // Minska antal
+            minusButton.addEventListener("click", () => {
+                if (item.quantity > 1) {
+                    item.quantity = item.quantity - 1;
+                    setQuantityInCart(item.id, item.quantity);
+
+                    quantity.textContent = item.quantity;
+                    totalCell.textContent = (product.price * item.quantity).toFixed(2) + " kr"
+
+                    row.dataset.total = product.price * item.quantity;
+                    updateTotalPrice();
+                    updateCartBadge();
+                }
+            })
+
+            // Ta bort vara
+            removeButton.addEventListener("click", () => {
+                removeFromCart(item.id);
+                row.remove();
+                updateTotalPrice();
+                updateCartBadge();
+
+                cartEmpty.hidden = getCart().length > 0;
+            });
+        }
+
+            // Dölj laddningstexten
+            cartStatus.hidden = true;
+
+            checkoutButton.disabled = getCart().length === 0;
+
+            } catch (error) {
+                cartStatus.textContent = "Could not load all cart items. Please reload the page";
+                cartStatus.hidden = false;
+
+                console.error(error);
             }
-        })
-
-        // Ta bort vara
-        removeButton.addEventListener("click", () => {
-            removeFromCart(item.id);
-            row.remove();
-            updateTotalPrice();
-            updateCartBadge();
-
-            cartEmpty.hidden = getCart().length > 0;
-        });
-    }
-
-        // Dölj laddningstexten
-        cartStatus.hidden = true;
-
-        checkoutButton.disabled = getCart().length === 0;
-
-        } catch (error) {
-            cartStatus.textContent = "Could not load all cart items. Please reload the page";
-            cartStatus.hidden = false;
-
-            console.error(error);
-        }
-        }
+            }
 
 function updateTotalPrice() {
     let total = 0;
