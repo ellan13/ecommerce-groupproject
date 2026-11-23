@@ -52,7 +52,7 @@ function createProductDetail(product) {
     const thumbnailsHtml = images.length > 1
         ? `<div class="product-thumbnails">
             ${images.map((src, i) => `
-              <button type="button" class="product-thumbnail${i === 0 ? " is-active" : ""}" data-src="${src}">
+              <button type="button" class="product-thumbnail${i === 0 ? " is-active" : ""}" data-src="${src}" aria-label="Show image ${i + 1}">
                 <img src="${src}" alt="">
               </button>
             `).join("")}
