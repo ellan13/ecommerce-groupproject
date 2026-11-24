@@ -195,9 +195,8 @@ function refreshCatalog() {
 async function loadProducts() {
     // INFO: samma idé som tidigare. Först localStorage, annars API
     const saved = getProductsFromLocalStorage();
-    const hasAllProductsSaved = saved && saved.products.length >= saved.total;
 
-    if (hasAllProductsSaved) {
+    if (saved) {
         allProducts = saved.products;
         totalProducts = saved.total;
     } else {
